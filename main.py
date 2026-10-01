@@ -18,14 +18,14 @@ class SimpleHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
-        self.wfile.write(b"M.K TRADER AI Signal Bot is running 24/7!")
+        self.wfile.write(b"M.K TRADER Professional Bot is running 24/7!")
 
 def run_web_server():
     port = int(os.environ.get("PORT", 10000))
     server = HTTPServer(("0.0.0.0", port), SimpleHandler)
     server.serve_forever()
 
-# Self-Ping function jo bot ko 24/7 active rakhega
+# Self-Ping function jo bot ko active rakhega
 def self_ping():
     app_url = os.environ.get("RENDER_EXTERNAL_URL")
     if not app_url:
@@ -33,16 +33,16 @@ def self_ping():
     while True:
         try:
             urllib.request.urlopen(app_url)
-            print("Self-ping successful, bot is active!")
+            print("Self-ping successful!")
         except Exception as e:
             print(f"Self-ping error: {e}")
         import time
         time.sleep(240)
 
-# Main Start Command
+# Main Start Command / Menu Hub
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-    print(f"Bot /start command aayi hai: {user.first_name}")
+    print(f"Start command received from: {user.first_name}")
     
     # Professional banner image (No King branding)
     photo_url = "https://i.postimg.cc/Pvt9mWMg/image.jpg"
@@ -50,29 +50,31 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     welcome_caption = (
         f"👋 **HELLO M.K TRADER!**\n\n"
         f"🚀 **WELCOME TO M.K TRADER OFFICIAL HUB**\n"
-        f"🤖 **Your AI-Powered Trading Assistant**\n\n"
-        f"📊 Analyze the market with advanced AI technology\n"
-        f"🔥 Get smarter insights and powerful signal analysis\n"
-        f"🎯 Designed to help you make better trading decisions\n\n"
-        f"━━━━━━━━━━━━━━━━━━━\n"
-        f"💎 **CHOOSE YOUR OPTION BELOW**\n\n"
-        f"✨ Select a button below to unlock your desired features:"
+        f"🤖 **Your Advanced AI Trading Assistant**\n\n"
+        f"📊 Analyze the market with high precision tools\n"
+        f"🔥 Get smart insights and powerful signals\n\n"
+        f"👇 **Select an option from the menu below:**"
     )
     
+    # Menu layout exactly matching your requirements
     keyboard = [
         [
-            InlineKeyboardButton("🚀 Starter Plan", callback_data="starter_plan"),
-            InlineKeyboardButton("👑 Royal Plan", callback_data="royal_plan")
+            InlineKeyboardButton("📊 Future Signals", callback_data="future_signals"),
+            InlineKeyboardButton("⭐ Live Signals", callback_data="live_signals")
         ],
         [
-            InlineKeyboardButton("🖤 LOSS RECOVERY SESSION", callback_data="recovery")
+            InlineKeyboardButton("✅ Signal Verifiers", callback_data="verification"),
+            InlineKeyboardButton("🖤 Loss Recovery", callback_data="recovery")
         ],
         [
-            InlineKeyboardButton("🆔 TRADER ID VERIFICATION", callback_data="verification"),
-            InlineKeyboardButton("⭐ FEEDBACKS & REVIEWS", callback_data="feedbacks")
+            InlineKeyboardButton("📈 Chart Analyzer", callback_data="chart_analyzer"),
+            InlineKeyboardButton("💬 Send Feedback", callback_data="send_feedback")
         ],
         [
-            InlineKeyboardButton("💬 ADMIN SUPPORT", url="https://t.me/MK_TRADER586")
+            InlineKeyboardButton("👑 Switch to Royal Plan", callback_data="royal_plan")
+        ],
+        [
+            InlineKeyboardButton("💬 ADMIN SUPPORT", url="https://T.me/MK_TRADER586")
         ]
     ]
     
@@ -91,19 +93,97 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
     
-    if query.data == "starter_plan":
+    if query.data == "future_signals":
         text = (
-            "🚀 **STARTER FREE SIGNALS ACTIVE** 🚀\n\n"
-            "🔥 **5 LIVE SIGNALS / 24H**\n"
-            "⚡ 2 TIME FUTURE SIGNALS GENERATE\n"
-            "📊 5 CHART ANALYZER SIGNALS DAILY\n"
-            "🤖 AI CHAT SUPPORT\n"
-            "✅ FS RESULTS CHECKER\n\n"
-            "✨ Get started with our Free Plan and experience the high accuracy signals.\n\n"
-            "👑 Want UNLIMITED Signals? Upgrade to the ROYAL PLAN 👑"
+            "📊 **FUTURE SIGNALS PANEL** 📊\n\n"
+            "⚡ 2 Time Future Signals Generate Daily\n"
+            "🔥 High accuracy trend forecasting for crypto & forex markets.\n\n"
+            "🔗 **Quotex Official Platform:** https://broker-qx.pro/?lid=1614511"
         )
         keyboard = [
-            [InlineKeyboardButton("👑 Switch to Royal Plan", callback_data="royal_plan")],
+            [InlineKeyboardButton("⭐ CREATE ACCOUNT", url="https://broker-qx.pro/?lid=1614511")],
+            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+        ]
+        try:
+            await query.edit_message_caption(caption=text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        except Exception:
+            pass
+
+    elif query.data == "live_signals":
+        text = (
+            "⭐ **LIVE SIGNALS ACTIVE** ⭐\n\n"
+            "🔥 5 Live Signals / 24H Provided\n"
+            "⚡ Real-time market execution alerts with high win-rate.\n\n"
+            "💬 Contact admin to join VIP Live sessions: T.me/MK_TRADER586"
+        )
+        keyboard = [
+            [InlineKeyboardButton("💬 CONTACT ADMIN", url="https://T.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+        ]
+        try:
+            await query.edit_message_caption(caption=text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        except Exception:
+            pass
+
+    elif query.data == "verification":
+        text = (
+            "🆔 **TRADER ID VERIFICATION GUIDE** 🆔\n\n"
+            "1️⃣ Sign up using our official link: https://broker-qx.pro/?lid=1614511[span_20](start_span)[span_20](end_span)\n"
+            "2️⃣ Deposit funds into your trading account.\n"
+            "3️⃣ Send your **Trader ID** directly to admin for verification ✅\n\n"
+            "💬 *Admin Contact Link:* T.me/MK_TRADER586[span_21](start_span)[span_21](end_span)"
+        )
+        keyboard = [
+            [InlineKeyboardButton("💬 SEND ID TO ADMIN", url="https://T.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+        ]
+        try:
+            await query.edit_message_caption(caption=text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        except Exception:
+            pass
+
+    elif query.data == "recovery":
+        text = (
+            "🚨 **LOSS RECOVERY SESSION** 🚨\n\n"
+            "📉 Facing losses? Recover your account balance with M.K Trader's expert recovery team.\n\n"
+            "✅ **Step 1:** Create a fresh account: https://broker-qx.pro/?lid=1614511[span_22](start_span)[span_22](end_span)\n"
+            "✅ **Step 2:** Deposit and share your ID with admin: T.me/MK_TRADER586[span_23](start_span)[span_23](end_span)"
+        )
+        keyboard = [
+            [InlineKeyboardButton("⭐ CREATE ACCOUNT", url="https://broker-qx.pro/?lid=1614511")],
+            [InlineKeyboardButton("💬 CONTACT ADMIN", url="https://T.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+        ]
+        try:
+            await query.edit_message_caption(caption=text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        except Exception:
+            pass
+
+    elif query.data == "chart_analyzer":
+        text = (
+            "📈 **AI CHART ANALYZER** 📈\n\n"
+            "⚡ Automatic support & resistance detection\n"
+            "🔥 Candlestick pattern scanner for accurate entry points.\n\n"
+            "💬 Need help reading charts? Contact admin: T.me/MK_TRADER586"
+        )
+        keyboard = [
+            [InlineKeyboardButton("💬 CONTACT ADMIN", url="https://T.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+        ]
+        try:
+            await query.edit_message_caption(caption=text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
+        except Exception:
+            pass
+
+    elif query.data == "send_feedback":
+        text = (
+            "💬 **SEND FEEDBACK & REVIEWS** 💬\n\n"
+            "🔥 Share your profit screenshots, feedback, or recovery results with us!\n"
+            "⭐ Your success stories motivate our community.\n\n"
+            "🔗 Send your reviews directly to admin: T.me/MK_TRADER586"
+        )
+        keyboard = [
+            [InlineKeyboardButton("⭐ SEND FEEDBACK TO ADMIN", url="https://T.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
         ]
         try:
@@ -114,67 +194,14 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif query.data == "royal_plan":
         text = (
             "👑 **M.K TRADER ROYAL VIP PLAN** 👑\n\n"
-            "✅ **UNLIMITED SIGNALS • PREMIUM ACCESS • MORE OPPORTUNITIES**\n"
-            "🔥 Go Royal. Unlock Unlimited.\n\n"
-            "🎯 Account banane ke liye niche diye gaye link par click karein aur ID admin ko bhejein:\n"
-            "🔗 https://broker-qx.pro/?lid=1614511"
-        )
-        keyboard = [
-            [InlineKeyboardButton("⭐ CREATE QX ACCOUNT NOW ⭐", url="https://broker-qx.pro/?lid=1614511")],
-            [InlineKeyboardButton("💬 CONTACT ADMIN", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
-        ]
-        try:
-            await query.edit_message_caption(caption=text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
-        except Exception:
-            pass
-
-    elif query.data == "recovery":
-        text = (
-            "🚨 **PERSONAL 1-on-1 LOSS RECOVERY SESSION** 🚨\n\n"
-            "📉 Bar bar loss ho raha hai? Apne loss ko recover karne ke liye M.K Trader ke sath join karein.\n\n"
-            "✅ Special OTC & Live Trading Strategy\n"
-            "✅ High Accuracy Entry Timing\n\n"
-            "🎯 **Step 1:** Account banayein: https://broker-qx.pro/?lid=1614511\n"
-            "🏦 **Step 2:** Deposit karke Trader ID admin ko bhejein: T.me/MK_TRADER586"
+            "✅ UNLIMITED SIGNALS • PREMIUM ACCESS • 24/7 SUPPORT\n"
+            "🔥 Go Royal. Unlock Maximum Profits.\n\n"
+            "🎯 **Step 1:** Create account: https://broker-qx.pro/?lid=1614511[span_24](start_span)[span_24](end_span)\n"
+            "🎯 **Step 2:** Send ID to admin: T.me/MK_TRADER586[span_25](start_span)[span_25](end_span)"
         )
         keyboard = [
             [InlineKeyboardButton("⭐ CREATE QX ACCOUNT", url="https://broker-qx.pro/?lid=1614511")],
-            [InlineKeyboardButton("💬 CONTACT ADMIN", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
-        ]
-        try:
-            await query.edit_message_caption(caption=text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
-        except Exception:
-            pass
-        
-    elif query.data == "verification":
-        text = (
-            "🆔 **TRADER ID VERIFICATION GUIDE** 🆔\n\n"
-            "1️⃣ Hamare official link se account banayein: https://broker-qx.pro/?lid=1614511\n"
-            "2️⃣ Account mein minimum deposit karein.\n"
-            "3️⃣ Apni **Quotex Trader ID** copy karke admin ko bhej dein ✅\n\n"
-            "💬 *Admin Link:* T.me/MK_TRADER586"
-        )
-        keyboard = [
-            [InlineKeyboardButton("💬 SEND ID TO ADMIN", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
-        ]
-        try:
-            await query.edit_message_caption(caption=text, parse_mode="Markdown", reply_markup=InlineKeyboardMarkup(keyboard))
-        except Exception:
-            pass
-
-    elif query.data == "feedbacks":
-        text = (
-            "⭐ **M.K TRADER CLIENT FEEDBACKS & REVIEWS** ⭐\n\n"
-            "🔥 100% Real Profit Screenshots\n"
-            "🔥 Successful Loss Recovery Results\n"
-            "🔥 Trusted by Hundreds of Traders\n\n"
-            "🔗 Proofs dekhne ke liye admin se rabta karein."
-        )
-        keyboard = [
-            [InlineKeyboardButton("💬 CONTACT ADMIN", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("💬 CONTACT ADMIN", url="https://T.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
         ]
         try:
@@ -186,25 +213,29 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         welcome_caption = (
             f"👋 **HELLO M.K TRADER!**\n\n"
             f"🚀 **WELCOME TO M.K TRADER OFFICIAL HUB**\n"
-            f"🤖 **Your AI-Powered Trading Assistant**\n\n"
-            f"📊 Analyze the market with advanced AI technology\n"
-            f"🔥 Get smarter insights and powerful signal analysis\n\n"
-            f"👇 *Select your preferred option to continue:*"
+            f"🤖 **Your Advanced AI Trading Assistant**\n\n"
+            f"📊 Analyze the market with high precision tools\n"
+            f"🔥 Get smart insights and powerful signals\n\n"
+            f"👇 **Select an option from the menu below:**"
         )
         keyboard = [
             [
-                InlineKeyboardButton("🚀 Starter Plan", callback_data="starter_plan"),
-                InlineKeyboardButton("👑 Royal Plan", callback_data="royal_plan")
+                InlineKeyboardButton("📊 Future Signals", callback_data="future_signals"),
+                InlineKeyboardButton("⭐ Live Signals", callback_data="live_signals")
             ],
             [
-                InlineKeyboardButton("🖤 LOSS RECOVERY SESSION", callback_data="recovery")
+                InlineKeyboardButton("✅ Signal Verifiers", callback_data="verification"),
+                InlineKeyboardButton("🖤 Loss Recovery", callback_data="recovery")
             ],
             [
-                InlineKeyboardButton("🆔 TRADER ID VERIFICATION", callback_data="verification"),
-                InlineKeyboardButton("⭐ FEEDBACKS & REVIEWS", callback_data="feedbacks")
+                InlineKeyboardButton("📈 Chart Analyzer", callback_data="chart_analyzer"),
+                InlineKeyboardButton("💬 Send Feedback", callback_data="send_feedback")
             ],
             [
-                InlineKeyboardButton("💬 ADMIN SUPPORT", url="https://t.me/MK_TRADER586")
+                InlineKeyboardButton("👑 Switch to Royal Plan", callback_data="royal_plan")
+            ],
+            [
+                InlineKeyboardButton("💬 ADMIN SUPPORT", url="https://T.me/MK_TRADER586")
             ]
         ]
         try:
@@ -220,7 +251,7 @@ async def main_bot():
     application.add_handler(CommandHandler("start", start_command))
     application.add_handler(CallbackQueryHandler(button_handler))
 
-    print("M.K TRADER Bot successfully start ho gaya hai...")
+    print("M.K TRADER Bot started successfully...")
     
     await application.initialize()
     await application.start()
