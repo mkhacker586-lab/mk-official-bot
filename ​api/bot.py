@@ -114,7 +114,7 @@ def get_main_menu():
         ]
     }
 
-@app.route('/api/bot', methods=['POST'])
+@app.route('/', methods=['POST'])
 def webhook():
     data = request.get_json()
     if not data:
