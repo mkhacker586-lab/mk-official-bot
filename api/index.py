@@ -4,7 +4,7 @@ import telebot
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 TOKEN = "8698303434:AAHN9ccgl5u3ZoIh0RKNRTIh55DiSbCJO-g"
-bot = telebot.TeleBot(TOKEN, parse_mode="Markdown")
+bot = telebot.TeleBot(TOKEN, parse_mode="Markdown", threaded=False)
 
 app = Flask(__name__)
 
@@ -25,6 +25,19 @@ def main_menu_keyboard():
         InlineKeyboardButton("💬 Contact Admin Support", url="https://t.me/MK_TRADER586")
     )
     return keyboard
+
+@app.route(f'/{TOKEN}', methods=['POST'])
+def webhook():
+    if request.headers.get('content-type') == 'application/json':
+        json_string = request.get_data().decode('utf-8')
+        update = telebot.types.Update.de_json(json_string)
+        bot.process_new_updates([update])
+        return "OK", 200
+    return "Invalid", 403
+
+@app.route('/')
+def index():
+    return "Bot is running perfectly!", 200
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -174,17 +187,3 @@ def callback_handler(call):
             "👇 **Choose an option below:**"
         )
         bot.edit_message_text(welcome_text, chat_id, message_id, reply_markup=main_menu_keyboard())
-
-@app.route(f'/{TOKEN}', methods=['POST'])
-def webhook():
-    if request.headers.get('content-type') == 'application/json':
-        json_string = request.get_data().decode('utf-8')
-        update = telebot.types.Update.de_json(json_string)
-        bot.process_new_updates([update])
-        return "OK", 200
-    else:
-        return "Invalid message", 403
-
-@app.route('/')
-def index():
-    return "M.K Trader Official Bot is active on Vercel!", 200
