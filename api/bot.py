@@ -114,9 +114,10 @@ def get_main_menu():
         ]
     }
 
+@app.route('/api/bot', methods=['POST'])
 @app.route('/', methods=['POST'])
 def webhook():
-    data = request.get_json()
+    data = request.get_json(silent=True)
     if not data:
         return "OK", 200
 
@@ -305,5 +306,6 @@ def webhook():
     return "OK", 200
 
 @app.route('/', methods=['GET'])
+@app.route('/api/bot', methods=['GET'])
 def index():
     return f"{BOT_NAME} is active on Vercel!", 200
