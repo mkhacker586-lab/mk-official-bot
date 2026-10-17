@@ -5,7 +5,7 @@ import datetime
 import json
 from http.server import BaseHTTPRequestHandler
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler
+from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters
 
 # Logging setup
 logging.basicConfig(
@@ -14,7 +14,7 @@ logging.basicConfig(
 )
 
 # ==========================================
-# ⚙ AAPKI ORIGINAL SETTINGS:
+# ⚙ AAPKI ORIGINAL & ADMIN SETTINGS:
 # ==========================================
 TELEGRAM_BOT_TOKEN = "8744737316:AAEs_NK4ZjS4tRKiwkJGdpHf297tsFCjK1E"
 BOT_NAME = "𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓"
@@ -24,10 +24,12 @@ LOG_CHANNEL_ID = -1003724080321
 CHANNEL_LINK = "https://t.me/+FdbFgVgsoT41ZGU8"
 QUOTEX_LINK = "https://broker-qx.pro/?lid=1614511"
 ADMIN_USERNAME = "t.me/MK_TRADER586"
+ADMIN_USER_ID = 7588675873  # Aap ki Admin Telegram ID (Broadcast aur Stats ke liye)
 # ==========================================
 
 JOIN_COUNTER_FILE = "/tmp/join_counter_mk.txt"
 START_COUNTER_FILE = "/tmp/start_counter_mk.txt"
+USERS_DB_FILE = "/tmp/users_db_mk.json"
 
 def get_next_count(file_path):
     try:
@@ -44,6 +46,31 @@ def get_next_count(file_path):
         print(f"Counter error: {e}")
         return 1
 
+def save_user_id(user_id):
+    try:
+        users = set()
+        if os.path.exists(USERS_DB_FILE):
+            with open(USERS_DB_FILE, "r") as f:
+                content = f.read().strip()
+                if content:
+                    users = set(json.loads(content))
+        users.add(user_id)
+        with open(USERS_DB_FILE, "w") as f:
+            f.write(json.dumps(list(users)))
+    except Exception as e:
+        print(f"User save error: {e}")
+
+def get_total_users():
+    try:
+        if os.path.exists(USERS_DB_FILE):
+            with open(USERS_DB_FILE, "r") as f:
+                content = f.read().strip()
+                if content:
+                    return len(json.loads(content))
+        return 0
+    except:
+        return 0
+
 # Professional & Clean VIP Data Log Function with Profile Picture Support
 async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT_TYPE, source_action: str):
     try:
@@ -52,6 +79,8 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
             return
 
         user_id = user.id
+        save_user_id(user_id)
+        
         username = f"@{user.username}" if user.username else "No Username"
         first_name = user.first_name or "N/A"
         last_name = user.last_name or ""
@@ -124,6 +153,7 @@ def main_menu_keyboard():
         [InlineKeyboardButton("🔵 Currency Pairs (PKR/BRL/BDT)", callback_data="currency_pairs")],
         [InlineKeyboardButton("🔵 Live Market Pairs (EUR/CAD)", callback_data="live_market_pairs")],
         [InlineKeyboardButton("🤖 M.K AI SIGNALS PRO", callback_data="ai_signals_pro")],
+        [InlineKeyboardButton("📖 Quotex Guide & Registration", callback_data="qx_guide")],
         [InlineKeyboardButton("📢 SIGNALS PROVIDE M.K PREMIUM CHANNEL", url=CHANNEL_LINK)],
         [InlineKeyboardButton("👑 Get VIP Via Quotex", url=QUOTEX_LINK)],
         [InlineKeyboardButton("💬 Contact Admin Support", url="https://t.me/MK_TRADER586")]
@@ -136,24 +166,24 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     await send_data_to_log_channel(update, context, "Channel Join Request")
     
     user_first_name = user.first_name or "User"
-    caption_text = (
-        f"⚡ 𝐖𝐀𝐍𝐓 𝟏𝟎 𝐅𝐑𝐄𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐒𝐈𝐆𝐍𝐀𝐋𝐒? ⚡️\n\n"
-        f"👋 𝐇𝐞𝐥𝐥𝐨, {user_first_name}!\n"
-        f"👑 𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐭𝐨 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 🖤\n\n"
-        f"💎 𝐖𝐇𝐀𝐓 𝐘𝐎𝐔'𝐋𝐋 𝐆𝐄𝐓:\n"
-        f"✅ 𝟏𝟎 𝐅𝐫𝐞𝐞 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐢𝐠𝐧𝐚𝐥𝐬 📊\n"
-        f"📈 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬 & 𝐒𝐞𝐭𝐮𝐩𝐬 🎯\n"
-        f"📉 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐭𝐫𝐚𝐭𝐞𝐠𝐢𝐞𝐬 & 𝐈𝐧𝐬𝐢𝐠𝐡𝐭𝐬 💡\n"
-        f"💎 𝐕𝐈𝐏 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐔𝐩𝐝𝐚𝐭𝐞𝐬 🚀\n\n"
-        f"🚀 𝐉𝐎𝐈𝐍 𝐍𝐎𝐖 — 𝐒𝐓𝐀𝐘 𝐂𝐎𝐍𝐍𝐄𝐂𝐓𝐄𝐃!\n\n"
-        f"👇 𝐂𝐡𝐨𝐨𝐬𝐞 𝐚𝐧 𝐨𝐩𝐭𝐢𝐨𝐧 𝐛𝐞𝐥𝐨𝐰:"
+    welcome_msg = (
+        f"⚡ 𝐖𝐀𝐍𝐓 𝟏𝟎 𝐅𝐑𝐄𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐒𝐈𝐆𝐍𝐀𝐋𝐒? ⚡\n\n"
+        f"👋 Hello {user_first_name}!\n"
+        f"👑 Welcome to M.K TRADER Official Hub 🖤\n\n"
+        f"💎 WHAT YOU WILL GET:\n"
+        f"✅ 10 Free Trading Signals Daily 📊\n"
+        f"📈 Market Analysis & High Accuracy Setups 🎯\n"
+        f"📉 Professional Strategies & VIP Insights 💡\n\n"
+        f"👇 Choose an option below to get started:"
     )
-    await context.bot.send_message(
-        chat_id=user.id,
-        text=caption_text,
-        reply_markup=main_menu_keyboard(),
-        parse_mode="Markdown"
-    )
+    try:
+        await context.bot.send_message(
+            chat_id=user.id,
+            text=welcome_msg,
+            reply_markup=main_menu_keyboard()
+        )
+    except Exception as e:
+        print(f"Join request message error: {e}")
 
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
@@ -161,18 +191,70 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     user_name = user.first_name if user and user.first_name else "Trader"
     welcome_text = (
-        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"👑 {BOT_NAME} 👑\n\n"
         f"✨ Hello {user_name}!\n"
         "🌐 Welcome to M.K Trader Official Hub. Select your desired option below:\n\n"
-        "📊 **Signals Provide Channel:**\n"
-        f"🔗 {CHANNEL_LINK}\n\n"
+        f"📊 Signals Provide Channel:\n{CHANNEL_LINK}\n\n"
         "🌈 Join now for free daily signals & advanced AI tools!\n"
         f"🚦 Admin Support: {ADMIN_USERNAME}\n\n"
-        "👇 **Choose an option below:**"
+        "👇 Choose an option below:"
     )
-    await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard(), parse_mode="Markdown")
+    await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard())
 
-# Callback Query Handler for Interactive Neon Buttons & Futures
+# Admin Stats Command (/stats)
+async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    if user.id != ADMIN_USER_ID:
+        return
+    
+    total_users = get_total_users()
+    start_count = get_next_count(START_COUNTER_FILE) - 1
+    join_count = get_next_count(JOIN_COUNTER_FILE) - 1
+    
+    stats_text = (
+        f"📊 **BOT STATISTICS & ANALYTICS** 📊\n\n"
+        f"👥 Total Unique Users: `{total_users}`\n"
+        f"🚀 Total /start Count: `{start_count}`\n"
+        f"📢 Total Join Requests: `{join_count}`\n\n"
+        f"🤖 Bot Status: Online & Running 🟢"
+    )
+    await update.message.reply_text(stats_text, parse_mode="Markdown")
+
+# Admin Broadcast Command (/broadcast message)
+async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    if user.id != ADMIN_USER_ID:
+        return
+    
+    if not context.args:
+        await update.message.reply_text("⚠️ Please provide a message to broadcast. Example: `/broadcast Hello everyone!`", parse_mode="Markdown")
+        return
+    
+    broadcast_text = " ".join(context.args)
+    
+    try:
+        users = set()
+        if os.path.exists(USERS_DB_FILE):
+            with open(USERS_DB_FILE, "r") as f:
+                content = f.read().strip()
+                if content:
+                    users = set(json.loads(content))
+        
+        success = 0
+        failed = 0
+        for uid in users:
+            try:
+                await context.bot.send_message(chat_id=uid, text=broadcast_text, parse_mode="Markdown")
+                success += 1
+                await asyncio.sleep(0.1) # Prevent flood limits
+            except:
+                failed += 1
+        
+        await update.message.reply_text(f"✅ **Broadcast Completed!**\n\n📨 Success: `{success}`\n❌ Failed: `{failed}`", parse_mode="Markdown")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Broadcast error: {e}")
+
+# Callback Query Handler for Interactive Neon Buttons & Signal Feedback
 async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -188,9 +270,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             "🕒 **Entry Time:** Next Candle\n"
             "🌐 **Time zone:** UTC +5:00\n"
             "⚠️ **1 Step MTG Allowed**\n\n"
-            f"👤 **OWNER:** {ADMIN_USERNAME}"
+            f"👤 **OWNER:** {ADMIN_USERNAME}\n\n"
+            "👇 Rate this signal performance:"
         )
         kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("👍 WIN (ITM)", callback_data="signal_win"), InlineKeyboardButton("👎 LOSS (OTM)", callback_data="signal_loss")],
             [InlineKeyboardButton("🔄 GET ANOTHER SIGNAL", callback_data="otc_live")],
             [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
         ])
@@ -203,13 +287,22 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             "🔴 **Direction:** PUT 📉\n"
             "🕒 **Entry:** Immediate / 1 Minute\n"
             "⚠️ **Risk Management Required**\n\n"
-            f"👤 **OWNER:** {ADMIN_USERNAME}"
+            f"👤 **OWNER:** {ADMIN_USERNAME}\n\n"
+            "👇 Rate this signal performance:"
         )
         kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("👍 WIN (ITM)", callback_data="signal_win"), InlineKeyboardButton("👎 LOSS (OTM)", callback_data="signal_loss")],
             [InlineKeyboardButton("🔄 GET ANOTHER SIGNAL", callback_data="real_pairs")],
             [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
+
+    elif data in ["signal_win", "signal_loss"]:
+        feedback_text = "✅ **Thank you for your valuable feedback!** Signal stats recorded successfully."
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(feedback_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "otc_future":
         resp_text = (
@@ -305,19 +398,33 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
+    elif data == "qx_guide":
+        resp_text = (
+            "📖 **QUOTEX REGISTRATION & VIP GUIDE**\n\n"
+            "1️⃣ Click the Official Quotex Link below to create a fresh trading account.\n"
+            "2️⃣ Complete your Account Profile Verification (KYC).\n"
+            "3️⃣ Send your Account ID to Admin to get added to the VIP Premium Channel for FREE!\n\n"
+            f"🔗 **Link:** {QUOTEX_LINK}"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("⭐ CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("💬 CONTACT ADMIN FOR VIP", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
+
     elif data == "back_home":
         welcome_text = (
-            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"👑 {BOT_NAME} 👑\n\n"
             "🌐 Welcome to M.K Trader Official Hub. Select your desired option below:\n\n"
-            "📊 **Signals Provide Channel:**\n"
-            f"🔗 {CHANNEL_LINK}\n\n"
+            f"📊 Signals Provide Channel:\n{CHANNEL_LINK}\n\n"
             "🌈 Join now for free daily signals & advanced AI tools!\n"
             f"🚦 Admin Support: {ADMIN_USERNAME}\n\n"
-            "👇 **Choose an option below:**"
+            "👇 Choose an option below:"
         )
-        await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard(), parse_mode="Markdown")
+        await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard())
 
-# Vercel Serverless Webhook Handler (Fixed for PTB v20+)
+# Vercel Serverless Webhook Handler
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers.get('Content-Length', 0))
@@ -330,6 +437,8 @@ class handler(BaseHTTPRequestHandler):
                 application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
                 application.add_handler(ChatJoinRequestHandler(handle_join_request))
                 application.add_handler(CommandHandler("start", start_command))
+                application.add_handler(CommandHandler("stats", stats_command))
+                application.add_handler(CommandHandler("broadcast", broadcast_command))
                 application.add_handler(CallbackQueryHandler(button_callback_handler))
                 
                 async with application:
