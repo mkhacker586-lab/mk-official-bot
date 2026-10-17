@@ -317,7 +317,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard(), parse_mode="Markdown")
 
-# Vercel Serverless Webhook Handler
+# Vercel Serverless Webhook Handler (Fixed for PTB v20+)
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
         content_length = int(self.headers.get('Content-Length', 0))
@@ -332,10 +332,10 @@ class handler(BaseHTTPRequestHandler):
                 application.add_handler(CommandHandler("start", start_command))
                 application.add_handler(CallbackQueryHandler(button_callback_handler))
                 
-                await application.initialize()
-                update = Update.de_json(json_data, application.bot)
-                await application.process_update(update)
-                await application.shutdown()
+                async with application:
+                    await application.process_update(
+                        Update.de_json(json_data, application.bot)
+                    )
 
             asyncio.run(process())
 
