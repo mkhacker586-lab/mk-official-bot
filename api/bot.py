@@ -5,7 +5,7 @@ import datetime
 import json
 from http.server import BaseHTTPRequestHandler
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
+from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler, ChatMemberHandler
 
 # Logging setup
 logging.basicConfig(
@@ -28,7 +28,6 @@ ADMIN_USERNAME = "t.me/MK_TRADER586"
 ADMIN_USER_ID = 7588675873
 # ==========================================
 
-# Conversation state for Trader ID verification
 WAITING_FOR_TRADER_ID = 1
 
 JOIN_COUNTER_FILE = "/tmp/join_counter_mk.txt"
@@ -88,7 +87,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         save_user_id(user_id)
         
         username = f"@{user.username}" if user.username else "No Username"
-        first_name = user.first_name or "N/A"
+        first_name = user.first_name or "Trader"
         last_name = user.last_name or ""
         full_name = f"{first_name} {last_name}".strip()
         
@@ -148,18 +147,18 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         print(f"Log error: {e}")
 
 # ==========================================
-# 📌 14 MAIN MENU BUTTONS (2 PER ROW GRID)
+# 📌 14 MAIN MENU BUTTONS (SERIF FONT STYLE)
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
-        [InlineKeyboardButton("📊 OTC Live Signals", callback_data="otc_live"), InlineKeyboardButton("📈 Analysis Signals", callback_data="analysis_signals")],
-        [InlineKeyboardButton("🔮 Future Signals", callback_data="future_signals"), InlineKeyboardButton("📋 Future List", callback_data="future_list")],
-        [InlineKeyboardButton("👤 Personal Sessions", callback_data="personal_sessions"), InlineKeyboardButton("💸 Loss Recovery Sessions", callback_data="loss_recovery")],
-        [InlineKeyboardButton("🎩 How To Create New Account", callback_data="how_to_create"), InlineKeyboardButton("💎 VIP Joining", callback_data="vip_joining")],
-        [InlineKeyboardButton("🗑️ Account Deleting Guidance", callback_data="acc_deleting"), InlineKeyboardButton("📖 Account Creation Guidance", callback_data="acc_creation_guidance")],
-        [InlineKeyboardButton("📚 Trading Guidance", callback_data="trading_guidance"), InlineKeyboardButton("🏆 Tournament Joining", callback_data="tournament_joining")],
-        [InlineKeyboardButton("📢 M.K PREMIUM CHANNEL", url=CHANNEL_LINK)],
-        [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586")]
+        [InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐋𝐢𝐯𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="otc_live"), InlineKeyboardButton("📈 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="analysis_signals")],
+        [InlineKeyboardButton("🔮 𝐅𝐮𝐭𝐮𝐫𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="future_signals"), InlineKeyboardButton("📋 𝐅𝐮𝐭𝐮𝐫𝐞 𝐋𝐢𝐬𝐭", callback_data="future_list")],
+        [InlineKeyboardButton("👤 𝐏𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="personal_sessions"), InlineKeyboardButton("💸 𝐋𝐨𝐬𝐬 𝐑𝐞𝐜𝐨𝐯𝐞𝐫𝐲 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="loss_recovery")],
+        [InlineKeyboardButton("🎩 𝐇𝐨𝐰 𝐓𝐨 𝐂𝐫𝐞𝐚𝐭𝐞 𝐍𝐞𝐰 𝐀𝐜𝐜𝐨𝐮𝐧𝐭", callback_data="how_to_create"), InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="vip_joining")],
+        [InlineKeyboardButton("🗑️ 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐃𝐞𝐥𝐞𝐭𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_deleting"), InlineKeyboardButton("📖 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐂𝐫𝐞𝐚𝐭𝐢𝐨𝐧 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_creation_guidance")],
+        [InlineKeyboardButton("📚 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="trading_guidance"), InlineKeyboardButton("🏆 𝐓𝐨𝐮𝐫𝐧𝐚𝐦𝐞𝐧𝐭 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="tournament_joining")],
+        [InlineKeyboardButton("📢 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")]
     ]
     return InlineKeyboardMarkup(keyboard)
 
@@ -168,22 +167,22 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     user = update.chat_join_request.from_user
     await send_data_to_log_channel(update, context, "Channel Join Request")
     
-    user_first_name = user.first_name or "Trader"
+    user_first_name = user.first_name if user and user.first_name else "Trader"
     pending_msg = (
         f"👑 **{BOT_NAME}** 👑\n\n"
-        f"👋 **HELLO {user_first_name.upper()}!**\n\n"
-        f"⏳ **YOUR JOIN REQUEST IS PENDING APPROVAL** ⏳\n\n"
-        f"🔥 **IMPORTANT INSTRUCTIONS:**\n"
+        f"✨ **𝐇𝐄𝐋𝐋𝐎 {user_first_name.upper()}!**\n\n"
+        f"⏳ **𝐘𝐎𝐔𝐑 𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐈𝐒 𝐏𝐄𝐍𝐃𝐈𝐍𝐆 𝐀𝐏𝐏𝐑𝐎𝐕𝐀𝐋** ⏳\n\n"
+        f"🔥 **𝐈𝐌𝐏𝐎𝐑𝐓𝐀𝐍𝐓 𝐈𝐍𝐒𝐓𝐑𝐔𝐂𝐓𝐈𝐎𝐍𝐒:**\n"
         f"• Your request has been received and will be approved soon by administration.\n"
         f"• **Follow Sessions Strictly:** Always manage your risk and follow exact trade entry timings.\n"
         f"• **Send Feedbacks:** After every trade result, submit your feedback inside the bot.\n\n"
-        f"👇 **EXPLORE OUR SERVICES BELOW:**"
+        f"👇 **𝐄𝐗𝐏𝐋𝐎𝐑𝐄 𝐎𝐔𝐑 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒 𝐁𝐄𝐋𝐎𝗪:**"
     )
     
     kb = InlineKeyboardMarkup([
-        [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-        [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-        [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("🚀 OPEN BOT DASHBOARD", callback_data="back_home")]
+        [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+        [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
     ])
     
     try:
@@ -203,23 +202,23 @@ async def handle_chat_join_request(update: Update, context: ContextTypes.DEFAULT
         chat_member = update.chat_member
         if chat_member and chat_member.new_chat_member.status in ['member', 'administrator', 'creator']:
             user = chat_member.from_user
-            user_name = user.first_name or "Trader"
+            user_name = user.first_name if user and user.first_name else "Trader"
             
             approved_msg = (
                 f"👑 **{BOT_NAME}** 👑\n\n"
-                f"🎉 **WELCOME TO VIP HUB, {user_name.upper()}!** 🎉\n\n"
-                f"✅ **YOUR JOIN REQUEST HAS BEEN APPROVED!**\n\n"
-                f"📌 **CRITICAL COMMUNITY RULES:**\n"
+                f"✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐕𝐈𝐏 𝐇𝐔𝐁, {user_name.upper()}!**\n\n"
+                f"🎉 **𝐘𝐎𝐔𝐑 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐈𝐒 𝐀𝐏𝐏𝐑𝐎𝐕𝐄𝐃!** 🎉\n\n"
+                f"📌 **𝐂𝐑𝐈𝐓𝐈𝐂𝐀𝐋 𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒:**\n"
                 f"1️⃣ **Follow Sessions Strictly:** Do not rush trades. Follow exact signal entries and risk management.\n"
                 f"2️⃣ **Send Trade Feedbacks:** Always submit your Win (ITM) or Loss (OTM) feedback after every session.\n"
                 f"3️⃣ **Compound Safely:** Use our VIP tools and AI signals to grow your capital step-by-step.\n\n"
-                f"👇 **ACCESS YOUR OPTIONS BELOW:**"
+                f"👇 **𝐀𝐂𝐂𝐄𝐒𝐒 𝐘𝐎𝐔𝐑 𝐎𝐏𝐓𝐈𝐎𝐍𝐒 𝐁𝐄𝐋𝐎𝗪:**"
             )
             
             kb = InlineKeyboardMarkup([
-                [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-                [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-                [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("🚀 OPEN BOT DASHBOARD", callback_data="back_home")]
+                [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+                [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+                [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
             ])
             
             await context.bot.send_message(
@@ -240,11 +239,11 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_name = user.first_name if user and user.first_name else "Trader"
     welcome_text = (
         f"👑 **{BOT_NAME}** 👑\n\n"
-        f"✨ **HELLO {user_name.upper()}!**\n\n"
-        f"🌐 **WELCOME TO M.K TRADER OFFICIAL HUB** 💎\n\n"
+        f"✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!**\n\n"
+        f"🌐 **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁** 💎\n\n"
         f"📊 Access high-accuracy digital options signals, account guides, VIP access, and professional tools from the menu below:\n\n"
-        f"🔗 **Official Premium Channel:** {CHANNEL_LINK}\n\n"
-        f"👇 **SELECT YOUR DESIRED OPTION:**"
+        f"🔗 **𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐏𝐫𝐞𝐦𝐢𝐮𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥:** {CHANNEL_LINK}\n\n"
+        f"👇 **𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍:**"
     )
     await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
 
@@ -259,7 +258,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     join_count = get_next_count(JOIN_COUNTER_FILE) - 1
     
     stats_text = (
-        f"📊 **BOT STATISTICS & ANALYTICS** 📊\n\n"
+        f"📊 **𝐁𝐎𝐓 𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒 & 𝐀𝐍𝐀𝐋𝐘𝐓𝐈𝐂𝐒** 📊\n\n"
         f"👥 Total Unique Users: `{total_users}`\n"
         f"🚀 Total /start Count: `{start_count}`\n"
         f"📢 Total Join Requests: `{join_count}`\n\n"
@@ -293,11 +292,11 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             try:
                 await context.bot.send_message(chat_id=uid, text=broadcast_text, parse_mode="Markdown", disable_web_page_preview=True)
                 success += 1
-                await asyncio.sleep(0.1)
+                await asyncio.sleep(0.02)
             except:
                 failed += 1
         
-        await update.message.reply_text(f"✅ **Broadcast Completed!**\n\n📨 Success: `{success}`\n❌ Failed: `{failed}`", parse_mode="Markdown")
+        await update.message.reply_text(f"✅ **𝐁𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝!**\n\n📨 Success: `{success}`\n❌ Failed: `{failed}`", parse_mode="Markdown")
     except Exception as e:
         await update.message.reply_text(f"❌ Broadcast error: {e}")
 
@@ -322,7 +321,7 @@ async def forward_channel_posts(update: Update, context: ContextTypes.DEFAULT_TY
                         from_chat_id=message.chat.id,
                         message_id=message.message_id
                     )
-                    await asyncio.sleep(0.05)
+                    await asyncio.sleep(0.01)
                 except Exception as ex:
                     print(f"Forward error to user {uid}: {ex}")
     except Exception as e:
@@ -336,11 +335,12 @@ async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_
     await query.answer()
     
     text = (
-        f"🔐 **VERIFY YOUR TRADER ID** 🔐\n\n"
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"🔐 **𝐕𝐄𝐑𝐈𝐅𝐘 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃** 🔐\n\n"
         f"Please reply to this message with your 8-digit Quotex Trader ID.\n\n"
         f"*(Example: `12345678`)*"
     )
-    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]])
+    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]])
     await context.bot.edit_message_text(text, chat_id=query.message.chat.id, message_id=query.message.message_id, reply_markup=kb, parse_mode="Markdown")
     return WAITING_FOR_TRADER_ID
 
@@ -348,9 +348,8 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     user = update.effective_user
     trader_id = update.message.text.strip()
     
-    # Forward to admin log channel
     admin_log_msg = (
-        f"🚨 **NEW TRADER ID SUBMITTED FOR VERIFICATION** 🚨\n\n"
+        f"🚨 **𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍** 🚨\n\n"
         f"👤 User: {user.full_name} (@{user.username if user.username else 'No Username'})\n"
         f"🆔 User ID: `{user.id}`\n"
         f"🔢 Submitted Trader ID: `{trader_id}`"
@@ -358,10 +357,11 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     await context.bot.send_message(chat_id=LOG_CHANNEL_ID, text=admin_log_msg, parse_mode="Markdown")
     
     success_text = (
-        f"✅ **TRADER ID RECEIVED SUCCESSFULLY!**\n\n"
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"✅ **𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐑𝐄𝐂𝐄𝐈𝐕𝐄𝐃 𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋𝐘!**\n\n"
         f"Your Trader ID (`{trader_id}`) has been sent to M.K Trader admin for verification. You will be granted VIP access shortly upon review!"
     )
-    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🚀 OPEN BOT DASHBOARD", callback_data="back_home")]])
+    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]])
     await update.message.reply_text(success_text, reply_markup=kb, parse_mode="Markdown")
     return ConversationHandler.END
 
@@ -387,7 +387,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"📊 **OTC LIVE SIGNALS ENGINE** 📊\n\n"
+            f"📊 **𝐎𝐓𝐂 𝐋𝐈𝐕𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐄𝐍𝐆𝐈𝐍𝐄** 📊\n\n"
             f"✨ Welcome to the professional OTC live trading hub. Here you receive high-accuracy real-time signals optimized for weekend and weekday sessions.\n\n"
             f"💎 **Asset:** USD/PHP (OTC)\n"
             f"🟢 **Direction:** CALL (BUY) 📈\n"
@@ -398,9 +398,9 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👇 **Rate your trade performance below:**"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("👍 WIN (ITM)", callback_data="signal_win"), InlineKeyboardButton("👎 LOSS (OTM)", callback_data="signal_loss")],
-            [InlineKeyboardButton("🔄 GENERATE NEW SIGNAL", callback_data="otc_live")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("👍 𝐖𝐈𝐍 (𝐈𝐓𝐌)", callback_data="signal_win"), InlineKeyboardButton("👎 𝐋𝐎𝐒𝐒 (𝐎𝐓𝐌)", callback_data="signal_loss")],
+            [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="otc_live")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
@@ -410,7 +410,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"📈 **ANALYSIS SIGNALS HUB** 📈\n\n"
+            f"📈 **𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐇𝐔𝐁** 📈\n\n"
             f"✨ Detailed technical and price action market analysis signals for digital options trading.\n\n"
             f"💎 **Asset:** EUR/USD (Live Market)\n"
             f"🔴 **Direction:** PUT (SELL) 📉\n"
@@ -420,9 +420,9 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👇 **Rate your trade performance below:**"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("👍 WIN (ITM)", callback_data="signal_win"), InlineKeyboardButton("👎 LOSS (OTM)", callback_data="signal_loss")],
-            [InlineKeyboardButton("🔄 GENERATE NEW SIGNAL", callback_data="analysis_signals")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("👍 𝐖𝐈𝐍 (𝐈𝐓𝐌)", callback_data="signal_win"), InlineKeyboardButton("👎 𝐋𝐎𝐒𝐒 (𝐎𝐓𝐌)", callback_data="signal_loss")],
+            [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="analysis_signals")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
@@ -432,7 +432,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"🔮 **FUTURE SIGNALS SCHEDULE** 🔮\n\n"
+            f"🔮 **𝐅𝐔𝐓𝐔𝐑𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄** 🔮\n\n"
             f"📅 **Date:** Today's Active Session Schedule\n"
             f"🌐 **Timezone:** UTC +5:00\n\n"
             f"1. 🕒 **Time:** 03:00 PM | 💎 **Pair:** GBP/USD (OTC) | 📈 **Direction:** UP (CALL)\n"
@@ -443,15 +443,15 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"⚠️ **Note:** Follow strict risk management and prepare your entries ahead of time."
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔄 REFRESH SCHEDULE", callback_data="future_signals")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("🔄 𝐑𝐄𝐅𝐑𝐄𝐒𝐇 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄", callback_data="future_signals")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "future_list":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"📋 **TRADING INFORMATION & FUTURE LIST** 📋\n\n"
+            f"📋 **𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍 & 𝐅𝐔𝐓𝐔𝐑𝐄 𝐋𝐈𝐒𝐓** 📋\n\n"
             f"✨ Essential market information, session timings, and terminology to enhance your digital options career.\n\n"
             f"• **Available Assets:** Major currency pairs & high-payout OTC assets.\n"
             f"• **Market Sessions:** London, New York, and Asian overlap hours for maximum liquidity.\n"
@@ -460,15 +460,15 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👇 Access other helpful sections below:"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("📚 TRADING GUIDANCE", callback_data="trading_guidance")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("📚 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄", callback_data="trading_guidance")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "personal_sessions":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"👤 **PERSONAL TRADING SESSIONS & GUIDANCE** 👤\n\n"
+            f"👤 **𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 & 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 👤\n\n"
             f"✨ Get one-to-one custom trading guidance, direct mentorship, and live strategy breakdown sessions directly with M.K Trader.\n\n"
             f"• Direct interactive sessions tailored to your schedule and capital size.\n"
             f"• Professional account auditing and psychological control training.\n"
@@ -476,17 +476,17 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👇 Click below to unlock VIP or contact for personal session:"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-            [InlineKeyboardButton("💬 CONTACT FOR PERSONAL SESSION", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐅𝐎𝐑 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "loss_recovery":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"💸 **LOSS RECOVERY SESSIONS & STRATEGY** 💸\n\n"
+            f"💸 **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 & 𝐒𝐓𝐑𝐀𝐓𝐄𝐆𝐘** 💸\n\n"
             f"✨ Experiencing a drawdown or previous trading losses? Learn professional recovery strategies, trade reviews, and emotional discipline to bounce back safely.\n\n"
             f"• Deep analysis of previous market mistakes and emotional triggers.\n"
             f"• Step-by-step capital recovery planning with safe risk parameters.\n"
@@ -494,17 +494,17 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👇 Click below to register via VIP link or contact owner:"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-            [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "how_to_create":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"🎩 **HOW TO CREATE NEW TRADING ACCOUNT** 🎩\n\n"
+            f"🎩 **𝐇𝐎𝐖 𝐓𝐎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐀𝐂𝐂𝐎Ւ𝐍𝐓** 🎩\n\n"
             f"Follow these steps:\n\n"
             f"1️⃣ Create your Quotex account using the M.K Trader referral link below.\n"
             f"2️⃣ Complete your account setup and KYC verification.\n"
@@ -513,20 +513,20 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"5️⃣ Press **VERIFY TRADER ID** and submit your 8-digit Trader ID.\n"
             f"6️⃣ Your request will be sent to the Admin for manual review.\n"
             f"7️⃣ After approval, you will receive your VIP access.\n\n"
-            f"🔗 **CREATE YOUR ACCOUNT:**\n{QUOTEX_LINK}"
+            f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-            [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "vip_joining":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"💎 **VIP JOINING & ELIGIBILITY GUIDANCE** 💎\n\n"
+            f"💎 **𝐕𝐈𝐏 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 & 𝐄𝐋𝐈𝐆𝐈𝐁𝐈𝐋𝐈𝐓𝐘 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 💎\n\n"
             f"✨ Unlock elite benefits with M.K VIP Membership:\n"
             f"• 24/7 Private High-Accuracy Signals Feed\n"
             f"• Automated AI Trading Bot Full Access\n"
@@ -535,20 +535,20 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"1️⃣ Create your account using our official link below.\n"
             f"2️⃣ Verify your profile and submit your Trader ID via the verify button.\n"
             f"3️⃣ Get instant approval and VIP access.\n\n"
-            f"🔗 **CREATE YOUR ACCOUNT:**\n{QUOTEX_LINK}"
+            f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-            [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "acc_deleting":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"🗑️ **ACCOUNT DELETING & RESET GUIDANCE** 🗑️\n\n"
+            f"🗑️ **𝐀𝐂𝐂𝐎𝐔𝐍𝐓 𝐃𝐄𝐋𝐄𝐓𝐈𝐍𝐆 & 𝐑𝐄𝐒𝐄𝐓 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 🗑️\n\n"
             f"✨ Follow these secure steps to close or reset your platform account:\n\n"
             f"• Check your active balance and clear any pending financial transactions.\n"
             f"• Review the impact of closing your historical trading data.\n"
@@ -557,37 +557,37 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👇 Access VIP link, support, or VIP joining guide below:"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-            [InlineKeyboardButton("💎 HOW TO JOIN VIP", callback_data="vip_joining")],
-            [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("💎 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍 𝐕𝐈𝐏", callback_data="vip_joining")],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "acc_creation_guidance":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"📖 **ACCOUNT CREATION WALKTHROUGH GUIDANCE** 📖\n\n"
+            f"📖 **𝐀𝐂𝐂𝐎𝐔𝐍𝐓 𝐂𝐑𝐄𝐀𝐓𝐈𝐎𝐍 𝐖𝐀𝐋𝐊𝐓𝐇𝐑𝐎𝐔𝐆𝐇 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 📖\n\n"
             f"✨ Detailed registration walkthrough to ensure seamless verification:\n\n"
             f"1️⃣ Access the official registration page via our secure link.\n"
             f"2️⃣ Input accurate personal details matching your legal ID to avoid verification failures.\n"
             f"3️⃣ Complete identity confirmation and save your unique Trader ID securely.\n"
             f"4️⃣ Press **VERIFY TRADER ID** to submit your ID for community setup.\n\n"
-            f"🔗 **CREATE YOUR ACCOUNT:**\n{QUOTEX_LINK}"
+            f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-            [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "trading_guidance":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"📚 **TRADING EDUCATION & GUIDANCE HUB** 📚\n\n"
+            f"📚 **𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐄𝐃𝐔𝐂𝐀𝐓𝐈𝐎𝐍 & 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 𝐇𝐔𝐁** 📚\n\n"
             f"✨ Master the fundamentals of digital options trading with professional insights:\n\n"
             f"• Candlestick patterns, market trends, and support/resistance zones.\n"
             f"• Strict risk management and emotional discipline control.\n"
@@ -596,17 +596,17 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👇 Quick navigation to other vital sections:"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 VIP JOINING", callback_data="vip_joining"), InlineKeyboardButton("👤 PERSONAL SESSIONS", callback_data="personal_sessions")],
-            [InlineKeyboardButton("💸 LOSS RECOVERY", callback_data="loss_recovery"), InlineKeyboardButton("📊 OTC SIGNALS", callback_data="otc_live")],
-            [InlineKeyboardButton("📈 ANALYSIS", callback_data="analysis_signals"), InlineKeyboardButton("🔮 FUTURE", callback_data="future_signals")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐎𝐈𝐍𝐈𝐍𝐆", callback_data="vip_joining"), InlineKeyboardButton("👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒", callback_data="personal_sessions")],
+            [InlineKeyboardButton("💸 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘", callback_data="loss_recovery"), InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐒𝐈𝐆𝐍𝐀𝐋𝐒", callback_data="otc_live")],
+            [InlineKeyboardButton("📈 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒", callback_data="analysis_signals"), InlineKeyboardButton("🔮 𝐅𝐔𝐓𝐔𝐑𝐄", callback_data="future_signals")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "tournament_joining":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"🏆 **TOURNAMENT JOINING & PRIZES GUIDANCE** 🏆\n\n"
+            f"🏆 **𝐓𝐎𝐔𝐑𝐍𝐀𝐌𝐄𝐍𝐓 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 & 𝐏𝐑𝐈𝐙𝐄𝐒 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 🏆\n\n"
             f"✨ Participate in official platform trading tournaments to win cash prizes up to $10,000!\n\n"
             f"• Check eligibility requirements and register via our official affiliate portal.\n"
             f"• Contact admin for special tournament strategy support and competition tips.\n"
@@ -614,34 +614,35 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👇 Register via VIP link or contact owner below:"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 CREATE QUOTEX ACCOUNT", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 VERIFY TRADER ID", callback_data="verify_id_start")],
-            [InlineKeyboardButton("💬 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data in ["signal_win", "signal_loss"]:
-        result_title = "🎉 **CONGRATULATIONS! PROFIT RECORDED (WIN)**" if data == "signal_win" else "⚠️ **LOSS RECORDED - RECOVER IN NEXT SESSION**"
+        result_title = "🎉 **𝐂𝐎𝐍𝐆𝐑𝐀𝐓𝐔𝐋𝐀𝐓𝐈𝐎𝐍𝐒! 𝐏𝐑𝐎𝐅𝐈𝐓 𝐑𝐄𝐂𝐎𝐑𝐃𝐄𝐃 (𝐖𝐈𝐍)**" if data == "signal_win" else "⚠️ **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐑𝐃𝐄𝐃 - 𝐑𝐄𝐂𝐎𝐕𝐄𝐑 𝐈𝐍 𝐍𝐄𝐗𝐓 𝐒𝐄𝐒𝐒𝐈𝐎𝐍**"
         feedback_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"{result_title}\n\n"
-            f"✅ **Feedback Received Successfully!**\n"
+            f"✅ **𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊 𝐑𝐄𝐂𝐄𝐈𝐕𝐄𝐃 𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋𝐘!**\n"
             f"Thank you for helping us track signal accuracy and improve community performance."
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔙 MAIN MENU", callback_data="back_home")]
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(feedback_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "back_home":
+        user_name = query.from_user.first_name if query.from_user and query.from_user.first_name else "Trader"
         welcome_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"✨ **WELCOME BACK, TRADER!**\n\n"
-            f"🌐 **WELCOME TO M.K TRADER OFFICIAL HUB** 💎\n\n"
+            f"✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!**\n\n"
+            f"🌐 **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁** 💎\n\n"
             f"📊 Access high-accuracy digital options signals, account guides, VIP access, and professional tools from the menu below:\n\n"
-            f"🔗 **Official Premium Channel:** {CHANNEL_LINK}\n\n"
-            f"👇 **SELECT YOUR DESIRED OPTION:**"
+            f"🔗 **𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐏𝐫𝐞𝐦𝐢𝐮𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥:** {CHANNEL_LINK}\n\n"
+            f"👇 **𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍:**"
         )
         await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
 
@@ -657,7 +658,6 @@ class handler(BaseHTTPRequestHandler):
             async def process():
                 application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
                 
-                # Conversation handler for Trader ID verification
                 conv_handler = ConversationHandler(
                     entry_points=[CallbackQueryHandler(verify_id_start_handler, pattern="^verify_id_start$")],
                     states={
@@ -673,8 +673,6 @@ class handler(BaseHTTPRequestHandler):
                 application.add_handler(CommandHandler("broadcast", broadcast_command))
                 application.add_handler(CallbackQueryHandler(button_callback_handler))
                 application.add_handler(MessageHandler(filters.UpdateType.CHANNEL_POST | filters.UpdateType.EDITED_CHANNEL_POST, forward_channel_posts))
-                
-                from telegram.ext import ChatMemberHandler
                 application.add_handler(ChatMemberHandler(handle_chat_join_request, ChatMemberHandler.CHAT_MEMBER))
                 
                 async with application:
