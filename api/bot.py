@@ -181,8 +181,8 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-        [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
-        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
+        [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
+        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
     ])
     
     try:
@@ -217,8 +217,8 @@ async def handle_chat_join_request(update: Update, context: ContextTypes.DEFAULT
             
             kb = InlineKeyboardMarkup([
                 [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-                [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
-                [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
+                [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
+                [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
             ])
             
             await context.bot.send_message(
@@ -340,7 +340,10 @@ async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_
         f"Please reply to this message with your 8-digit Quotex Trader ID.\n\n"
         f"*(Example: `12345678`)*"
     )
-    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]])
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+    ])
     await context.bot.edit_message_text(text, chat_id=query.message.chat.id, message_id=query.message.message_id, reply_markup=kb, parse_mode="Markdown")
     return WAITING_FOR_TRADER_ID
 
@@ -361,7 +364,10 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         f"✅ **𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐑𝐄𝐂𝐄𝐈𝐕𝐄𝐃 𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋𝐘!**\n\n"
         f"Your Trader ID (`{trader_id}`) has been sent to M.K Trader admin for verification. You will be granted VIP access shortly upon review!"
     )
-    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]])
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
+    ])
     await update.message.reply_text(success_text, reply_markup=kb, parse_mode="Markdown")
     return ConversationHandler.END
 
@@ -382,9 +388,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     data = query.data
 
     if data == "otc_live":
-        await context.bot.edit_message_text("🔄 **Analyzing OTC Market Trends & Price Action...** Please wait ⏳", chat_id=chat_id, message_id=message_id, parse_mode="Markdown")
-        await asyncio.sleep(1)
-        
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"📊 **𝐎𝐓𝐂 𝐋𝐈𝐕𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐄𝐍𝐆𝐈𝐍𝐄** 📊\n\n"
@@ -405,9 +408,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "analysis_signals":
-        await context.bot.edit_message_text("🔄 **Scanning Market Volatility & Technical Indicators...** Please wait ⏳", chat_id=chat_id, message_id=message_id, parse_mode="Markdown")
-        await asyncio.sleep(1)
-        
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"📈 **𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐇𝐔𝐁** 📈\n\n"
@@ -427,9 +427,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "future_signals":
-        await context.bot.edit_message_text("🔄 **Compiling Scheduled Future Market Predictions...** Please wait ⏳", chat_id=chat_id, message_id=message_id, parse_mode="Markdown")
-        await asyncio.sleep(1)
-        
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"🔮 **𝐅𝐔𝐓𝐔𝐑𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄** 🔮\n\n"
@@ -477,7 +474,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐅𝐎𝐑 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
@@ -495,7 +492,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
@@ -504,20 +501,20 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     elif data == "how_to_create":
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
-            f"🎩 **𝐇𝐎𝐖 𝐓𝐎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐀𝐂𝐂𝐎Ւ𝐍𝐓** 🎩\n\n"
+            f"🎩 **𝐇𝐎𝐖 𝐓𝐎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐀𝐂𝐂𝐎𝐔𝐍𝐓** 🎩\n\n"
             f"Follow these steps:\n\n"
             f"1️⃣ Create your Quotex account using the M.K Trader referral link below.\n"
             f"2️⃣ Complete your account setup and KYC verification.\n"
             f"3️⃣ Copy your 8-digit Quotex Trader ID.\n"
             f"4️⃣ Return to this bot.\n"
-            f"5️⃣ Press **VERIFY TRADER ID** and submit your 8-digit Trader ID.\n"
+            f"5️⃣ Press **VERIFY TRADER ID** or send your ID directly to owner.\n"
             f"6️⃣ Your request will be sent to the Admin for manual review.\n"
             f"7️⃣ After approval, you will receive your VIP access.\n\n"
             f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
@@ -533,13 +530,13 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"• Exclusive Compound Sessions & Direct Mentorship\n\n"
             f"📌 **How to Join:**\n"
             f"1️⃣ Create your account using our official link below.\n"
-            f"2️⃣ Verify your profile and submit your Trader ID via the verify button.\n"
+            f"2️⃣ Verify your profile and submit your Trader ID via the verify button or send directly.\n"
             f"3️⃣ Get instant approval and VIP access.\n\n"
             f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
@@ -558,7 +555,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("💎 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍 𝐕𝐈𝐏", callback_data="vip_joining")],
             [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
@@ -573,12 +570,12 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"1️⃣ Access the official registration page via our secure link.\n"
             f"2️⃣ Input accurate personal details matching your legal ID to avoid verification failures.\n"
             f"3️⃣ Complete identity confirmation and save your unique Trader ID securely.\n"
-            f"4️⃣ Press **VERIFY TRADER ID** to submit your ID for community setup.\n\n"
+            f"4️⃣ Press **VERIFY TRADER ID** or send directly to owner.\n\n"
             f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
@@ -615,7 +612,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
