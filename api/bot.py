@@ -147,17 +147,18 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         print(f"Log error: {e}")
 
 # ==========================================
-# 📌 MAIN MENU BUTTONS (SERIF FONT STYLE)
+# 📌 MAIN MENU BUTTONS (EXACT SINGLE LINE LAYOUT FOR AI PRO, CHANNEL & OWNER)
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
         [InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐋𝐢𝐯𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="otc_live"), InlineKeyboardButton("📈 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="analysis_signals")],
-        [InlineKeyboardButton("🤖 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎", callback_data="ai_signals_pro"), InlineKeyboardButton("🔮 𝐅𝐮𝐭𝐮𝐫𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="future_signals")],
-        [InlineKeyboardButton("📋 𝐅𝐮𝐭𝐮𝐫𝐞 𝐋𝐢𝐬𝐭", callback_data="future_list"), InlineKeyboardButton("👤 𝐏𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="personal_sessions")],
-        [InlineKeyboardButton("💸 𝐋𝐨𝐬𝐬 𝐑𝐞𝐜𝐨𝐯𝐞𝐫𝐲 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="loss_recovery"), InlineKeyboardButton("🎩 𝐇𝐨𝐰 𝐓𝐨 𝐂𝐫𝐞𝐚𝐭𝐞 𝐍𝐞𝐰 𝐀𝐜𝐜𝐨𝐮𝐧𝐭", callback_data="how_to_create")],
-        [InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="vip_joining"), InlineKeyboardButton("🗑️ 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐃𝐞𝐥𝐞𝐭𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_deleting")],
-        [InlineKeyboardButton("📖 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐂𝐫𝐞𝐚𝐭𝐢𝐨𝐧 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_creation_guidance"), InlineKeyboardButton("📚 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="trading_guidance")],
-        [InlineKeyboardButton("🏆 𝐓𝐨𝐮𝐫𝐧𝐚𝐦𝐞𝐧𝐭 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="tournament_joining"), InlineKeyboardButton("📢 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("🔮 𝐅𝐮𝐭𝐮𝐫𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="future_signals"), InlineKeyboardButton("📋 𝐅𝐮𝐭𝐮𝐫𝐞 𝐋𝐢𝐬𝐭", callback_data="future_list")],
+        [InlineKeyboardButton("👤 𝐏𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="personal_sessions"), InlineKeyboardButton("💸 𝐋𝐨𝐬𝐬 𝐑𝐞𝐜𝐨𝐯𝐞𝐫𝐲 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="loss_recovery")],
+        [InlineKeyboardButton("🎩 𝐇𝐨𝐰 𝐓𝐨 𝐂𝐫𝐞𝐚𝐭𝐞 𝐍𝐞𝐰 𝐀𝐜𝐜𝐨𝐮𝐧𝐭", callback_data="how_to_create"), InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="vip_joining")],
+        [InlineKeyboardButton("🗑️ 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐃𝐞𝐥𝐞𝐭𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_deleting"), InlineKeyboardButton("📖 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐂𝐫𝐞𝐚𝐭𝐢𝐨𝐧 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_creation_guidance")],
+        [InlineKeyboardButton("📚 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="trading_guidance"), InlineKeyboardButton("🏆 𝐓𝐨𝐮𝐫𝐧𝐚𝐦𝐞𝐧𝐭 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="tournament_joining")],
+        [InlineKeyboardButton("🤖 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎", callback_data="ai_signals_pro")],
+        [InlineKeyboardButton("📢 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")]
     ]
     return InlineKeyboardMarkup(keyboard)
@@ -378,7 +379,7 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
     return ConversationHandler.END
 
 # ==========================================
-# 📄 DETAILED BUTTON HANDLERS & LIVE SIGNALS
+# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE
 # ==========================================
 async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -439,20 +440,16 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "ai_signals_pro":
-        await context.bot.edit_message_text(
-            "🤖 **Connecting to M.K AI Neural Network Server...** Please wait ⏳",
-            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
-        )
-        await asyncio.sleep(1)
-        
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"🤖 **𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎** 🤖\n\n"
-            f"✨ Automated high-frequency AI prediction engine configured for elite traders.\n\n"
-            f"💎 **Status:** Active & Ready for Execution\n"
-            f"📊 **Accuracy Rate:** 94.8% (Optimized)\n"
-            f"🔗 **Create Account / Deposit Portal:**\n{QUOTEX_LINK}\n\n"
-            f"👇 **Choose your option below:**"
+            f"✨ Yeh bot bohot hi achi 99% accuracy ke sath signals deta hai! Elite traders ke liye specially designed automated AI prediction engine.\n\n"
+            f"💵 **Subscription Fee:** $20 Only\n"
+            f"📌 **Payment & Access Instructions:**\n"
+            f"1️⃣ Pehle payment ($20) complete karein.\n"
+            f"2️⃣ Payment ka screenshot ya receipt direct owner ko send karein.\n"
+            f"3️⃣ Verification ke baad aap ko AI Signals Bot ka full access mil jayega!\n\n"
+            f"👇 **Pehlay payment karein ya owner se rabta karein:**"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
@@ -468,7 +465,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         await asyncio.sleep(1)
         
-        # Calculate real-time dynamic slots based on current PKT time
         now_pkt = datetime.datetime.utcnow() + datetime.timedelta(hours=5)
         t1 = (now_pkt + datetime.timedelta(minutes=5)).strftime("%I:%M %p")
         t2 = (now_pkt + datetime.timedelta(minutes=20)).strftime("%I:%M %p")
@@ -480,7 +476,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"🔮 **𝐅𝐔𝐓𝐔𝐑𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄** 🔮\n\n"
             f"📅 **Date:** Today's Live Active Session\n"
-            f"🌐 **Timezone:** Pakistan Standard Time (PKats / PKT)\n\n"
+            f"🌐 **Timezone:** Pakistan Standard Time (PKT)\n\n"
             f"1. 🕒 **Time:** {t1} | 💎 **Pair:** GBP/USD (OTC) | 📈 **Direction:** UP (CALL)\n"
             f"2. 🕒 **Time:** {t2} | 💎 **Pair:** EUR/JPY | 📈 **Direction:** DOWN (PUT)\n"
             f"3. 🕒 **Time:** {t3} | 💎 **Pair:** AUD/CAD (OTC) | 📈 **Direction:** UP (CALL)\n"
