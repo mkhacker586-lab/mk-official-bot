@@ -457,7 +457,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐕𝐈𝐏 𝐋𝐈𝐍𝐊", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("💳 PAYMENT", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("👤 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("💳 𝐏𝐀𝐘𝐌𝐄𝐍𝐓", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
