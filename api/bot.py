@@ -164,7 +164,7 @@ def main_menu_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 # ==========================================
-# 🎯 JOIN REQUEST PENDING HANDLER (CLEAN & PROFESSIONAL)
+# 🎯 JOIN REQUEST PENDING HANDLER (EXACT USER TEXT)
 # ==========================================
 async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
     req = update.chat_join_request
@@ -179,21 +179,31 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     pending_msg = (
         f"👑✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓** ✨👑\n\n"
         f"💎 **𝐇𝐞𝐥𝐥𝐨, {first_name}!** ❤️‍🔥\n\n"
+        f"🔥 Welcome to M.K TRADER OFFICIAL — your destination for trading signals, market analysis, and premium trading services! 📊🚀\n\n"
         f"⏳ **𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐏𝐄𝐍𝐃𝐈𝐍𝐆** ⏳\n\n"
-        f"💌 Your request to join our premium community has been received and is waiting for approval. Please explore our services below:\n\n"
-        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐆𝐔𝐈𝐃𝐄𝐋𝐈𝐍𝐄𝐒**\n\n"
+        f"💌 Your join request has been received and is waiting for admin approval. Explore our services while you wait! 💎\n\n"
+        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒**\n\n"
         f"🎯 **𝐅𝐎𝐋𝐋𝐎𝐖 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
-        f"⏰ Follow session timings carefully and manage your trading risk.\n\n"
-        f"📝 **𝐒𝐄𝐍𝐃 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊**\n"
-        f"✅ Submit your WIN (ITM) or LOSS (OTM) feedback after every session.\n\n"
+        f"⏰ Follow session timings carefully, stay disciplined, and always manage your trading risk.\n\n"
+        f"📝 **𝐒𝐄𝐍𝐃 𝐘𝐎𝐔𝐑 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊**\n"
+        f"✅ Submit your WIN (ITM) or LOSS (OTM) feedback after every session to help maintain accurate records.\n\n"
         f"👤 **𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
-        f"🎯 Get direct mentorship and custom strategy guidance.\n\n"
+        f"🎯 Looking for individual guidance? Contact the owner to ask about personal sessions and available support.\n\n"
         f"💸 **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘**\n"
-        f"🧠 Professional recovery plans to bounce back safely.\n\n"
+        f"🧠 Review your trades, learn from mistakes, and focus on disciplined risk management.\n\n"
         f"💎 **𝐕𝐈𝐏 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒**\n"
-        f"👑 Unlock high-accuracy daily VIP signals and tools.\n\n"
-        f"👑 **𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋**\n"
-        f"💎 **𝐒𝐓𝐀𝐘 𝐃𝐈𝐒𝐂𝐈𝐏𝐋𝐈𝐍𝐄𝐃 • 𝐒𝐓𝐀𝐘 𝐅𝐎𝐂𝐔𝐒𝐄𝐃**"
+        f"👑 Explore VIP membership for available premium signals, trading guidance, and access details.\n\n"
+        f"🚀 **𝐄𝐗𝐏𝐋𝐎𝐑𝐄 𝐎𝐔𝐑 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒**\n\n"
+        f"📊 OTC Live Signals\n"
+        f"📈 Analysis Signals\n"
+        f"🔮 Future Signals & Future List\n"
+        f"👤 Personal Sessions\n"
+        f"💸 Loss Recovery Sessions\n"
+        f"💎 VIP Membership\n"
+        f"📚 Trading & Account Guidance\n"
+        f"🏆 Tournament Joining\n\n"
+        f"❤️‍🔥 Thank you for choosing M.K TRADER OFFICIAL!\n\n"
+        f"👑 **𝐒𝐓𝐀𝐘 𝐅𝐎𝐂𝐔𝐒𝐄𝐃 • 𝐒𝐓𝐀𝐘 𝐃𝐈𝐒𝐂𝐈𝐏𝐋𝐈𝐍𝐄𝐃** 💎"
     )
     
     kb = InlineKeyboardMarkup([
@@ -702,7 +712,6 @@ class handler(BaseHTTPRequestHandler):
                 )
                 application.add_handler(conv_handler)
                 
-                # Sirf pending request wala message jayega, auto accept nahi hoga!
                 application.add_handler(ChatJoinRequestHandler(handle_join_request))
                 application.add_handler(CommandHandler("start", start_command))
                 application.add_handler(CommandHandler("stats", stats_command))
