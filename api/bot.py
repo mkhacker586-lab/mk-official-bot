@@ -147,7 +147,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         print(f"Log error: {e}")
 
 # ==========================================
-# 📌 MAIN MENU BUTTONS (EXACT LAYOUT)
+# 📌 MAIN MENU BUTTONS (SERIF FONT STYLE)
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
@@ -174,9 +174,9 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
         f"✨ **𝐇𝐄𝐋𝐋𝐎 {user_first_name.upper()}!**\n\n"
         f"⏳ **𝐘𝐎𝐔𝐑 𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐈𝐒 𝐏𝐄𝐍𝐃𝐈𝐍𝐆 𝐀𝐏𝐏𝐑𝐎𝐕𝐀𝐋** ⏳\n\n"
         f"🔥 **𝐂𝐑𝐈𝐓𝐈𝐂𝐀𝐋 𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒:**\n"
-        f"1️⃣ **Follow Sessions Strictly:** Always manage your risk and follow exact signal entries.\n"
+        f"1️⃣ **Follow Sessions Strictly:** Always manage your risk and follow exact trade entry timings.\n"
         f"2️⃣ **Send Trade Feedbacks:** Always submit your Win (ITM) or Loss (OTM) feedback after every session.\n"
-        f"3️⃣ **Loss Recovery & VIP:** Use our professional tools and compound plans safely.\n\n"
+        f"3️⃣ **Loss Recovery & VIP:** Utilize our professional AI tools and compound plans safely.\n\n"
         f"👇 **𝐄𝐗𝐏𝐋𝐎𝐑𝐄 𝐎𝐔𝐑 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒 𝐁𝐄𝐋𝐎𝗪:**"
     )
     
@@ -456,6 +456,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"✨ **𝐒𝐌𝐀𝐑𝐓 𝐈𝐍𝐒𝐈𝐆𝐇𝐓𝐒 • 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒** ✨"
         )
         kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐕𝐈𝐏 𝐋𝐈𝐍𝐊", url=QUOTEX_LINK)],
             [InlineKeyboardButton("💳 PAYMENT", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("👤 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
