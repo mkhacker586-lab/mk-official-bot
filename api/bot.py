@@ -5,7 +5,7 @@ import datetime
 import json
 from http.server import BaseHTTPRequestHandler
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
-from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
+from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler, ChatMemberHandler
 
 # Logging setup
 logging.basicConfig(
@@ -164,7 +164,7 @@ def main_menu_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 # ==========================================
-# 🎯 JOIN REQUEST ACCEPTANCE HANDLER (WELCOME DM)
+# 1️⃣ PENDING JOIN REQUEST HANDLER (SENT ON REQUEST)
 # ==========================================
 async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
     req = update.chat_join_request
@@ -172,46 +172,91 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
         return
 
     user = req.from_user
-    await send_data_to_log_channel(update, context, "Channel Join Request Accepted")
-
-    welcome_text = (
-        f"╭━━━〔 👑 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 👑 〕━━━╮\n\n"
-        f"       𝐇𝐞𝐥𝐥𝐨, {user.first_name} 🖤\n\n"
-        f"✨ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 ✨\n\n"
-        f"🎯 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 𝐅𝐎𝐋𝐋𝐎𝐖\n"
-        f"💎 𝐕𝐈𝐏 𝐒𝐈𝐆𝐍𝐀𝐋𝐒\n"
-        f"👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒\n"
-        f"♻️ 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘\n"
-        f"💬 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊𝐒 & 𝐑𝐄𝐕𝐈𝐄𝐖𝐒\n\n"
-        f"━━━━━━━━━━━━━━━━━━\n"
-        f"🛡️ 𝐒𝐓𝐀𝐘 𝐀𝐂𝐓𝐈𝐕𝐄 • 𝐒𝐓𝐀𝐘 𝐂𝐎𝐍𝐍𝐄𝐂𝐓𝐄𝐃\n"
-        f"❤️ 𝐓𝐇𝐀𝐍𝐊𝐒 𝐅𝐎𝐑 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 𝐔𝐒\n\n"
-        f"╰━━━〔 👑 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 👑 〕━━━╯"
+    await send_data_to_log_channel(update, context, "Channel Join Request")
+    
+    user_first_name = user.first_name if user and user.first_name else "Trader"
+    pending_msg = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"✨ **𝐇𝐄𝐋𝐋𝐎 {user_first_name.upper()}!**\n\n"
+        f"⏳ **𝐘𝐎𝐔𝐑 𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐈𝐒 𝐏𝐄𝐍𝐃𝐈𝐍𝐆 𝐀𝐏𝐏𝐑𝐎𝐕𝐀𝐋** ⏳\n\n"
+        f"🔥 **𝐂𝐑𝐈𝐓𝐈𝐂𝐀𝐋 𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒:**\n"
+        f"1️⃣ **Follow Sessions Strictly:** Always manage your risk and follow exact trade entry timings.\n"
+        f"2️⃣ **Send Trade Feedbacks:** Always submit your Win (ITM) or Loss (OTM) feedback after every session.\n"
+        f"3️⃣ **Loss Recovery & VIP:** Utilize our professional AI tools and compound plans safely.\n\n"
+        f"👇 **𝐄𝐗𝐏𝐋𝐎𝐑𝐄 𝐎𝐔𝐑 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒 𝐁𝐄𝐋𝐎𝐖:**"
     )
-
-    keyboard = InlineKeyboardMarkup([
-        [
-            InlineKeyboardButton("💎 𝐕𝐈𝐏", callback_data="vip_joining"),
-            InlineKeyboardButton("🎯 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 𝐅𝐎𝐋𝐋𝐎𝐖", callback_data="future_signals"),
-        ],
-        [
-            InlineKeyboardButton("👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒", callback_data="personal_sessions"),
-        ],
-        [
-            InlineKeyboardButton("♻️ 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘", callback_data="loss_recovery"),
-            InlineKeyboardButton("💬 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊𝐒", callback_data="trading_guidance"),
-        ],
-        [
-            InlineKeyboardButton("👀 𝐕𝐈𝐄𝐖 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)
-        ]
+    
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+        [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
     ])
-
+    
     try:
-        await context.bot.approve_chat_join_request(chat_id=req.chat.id, user_id=user.id)
+        await context.bot.send_message(
+            chat_id=user.id,
+            text=pending_msg,
+            reply_markup=kb,
+            parse_mode="Markdown",
+            disable_web_page_preview=True
+        )
     except Exception as e:
-        print(f"Auto-approve error: {e}")
+        print(f"Join request message error: {e}")
 
+# ==========================================
+# 2️⃣ REQUEST ACCEPTED HANDLER (WELCOME DM)
+# ==========================================
+async def handle_chat_member_update(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
+        chat_member = update.chat_member
+        if not chat_member:
+            return
+
+        old_status = chat_member.old_chat_member.status
+        new_status = chat_member.new_chat_member.status
+        user = chat_member.new_chat_member.user
+
+        joined_statuses = {'member', 'administrator', 'creator'}
+
+        # Sirf tab chale jab user ki request accept ho kar woh member ban jaye
+        if old_status in joined_statuses or new_status not in joined_statuses:
+            return
+
+        if user.is_bot:
+            return
+
+        welcome_text = (
+            f"╭━━━〔 👑 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 👑 〕━━━╮\n\n"
+            f"       𝐇𝐞𝐥𝐥𝐨, {user.first_name} 🖤\n\n"
+            f"✨ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 ✨\n\n"
+            f"🎯 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 𝐅𝐎𝐋𝐋𝐎𝐖 : Properly follow all live & future trading sessions with strict risk management.\n"
+            f"💎 𝐕𝐈𝐏 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 : Access high-accuracy daily VIP signals and premium setups.\n"
+            f"👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 : Get direct 1-to-1 mentorship and custom strategy guidance.\n"
+            f"♻️ 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 : Professional recovery plans and compound strategies to bounce back safely.\n"
+            f"💬 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊𝐒 & 𝐑𝐄𝐕𝐈𝐄𝐖𝐒 : Always send your Win/Loss feedback after every session.\n\n"
+            f"━━━━━━━━━━━━━━━━━━\n"
+            f"🛡️ 𝐒𝐓𝐀𝐘 𝐀𝐂𝐓𝐈𝐕𝐄 • 𝐒𝐓𝐀𝐘 𝐂𝐎𝐍𝐍𝐄𝐂𝐓𝐄𝐃\n"
+            f"❤️ 𝐓𝐇𝐀𝐍𝐊𝐒 𝐅𝐎𝐑 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 𝐔𝐒\n\n"
+            f"╰━━━〔 👑 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 👑 〕━━━╯"
+        )
+
+        keyboard = InlineKeyboardMarkup([
+            [
+                InlineKeyboardButton("💎 𝐕𝐈𝐏", url="https://t.me/MK_TRADER586"),
+                InlineKeyboardButton("🎯 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 𝐅𝐎𝐋𝐋𝐎𝐖", url="https://t.me/MK_TRADER586"),
+            ],
+            [
+                InlineKeyboardButton("👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒", url="https://t.me/MK_TRADER586"),
+            ],
+            [
+                InlineKeyboardButton("♻️ 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘", url="https://t.me/MK_TRADER586"),
+                InlineKeyboardButton("💬 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊𝐒", url="https://t.me/MK_TRADER586"),
+            ],
+            [
+                InlineKeyboardButton("👀 𝐕𝐈𝐄𝐖 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)
+            ]
+        ])
+
         await context.bot.send_message(
             chat_id=user.id,
             text=welcome_text,
@@ -219,7 +264,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
             parse_mode="Markdown"
         )
     except Exception as e:
-        print(f"Welcome DM failed for {user.id}: {e}")
+        print(f"Chat member update error: {e}")
 
 # 3. Start Command Handler (Main Dashboard)
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -657,7 +702,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data in ["signal_win", "signal_loss"]:
-        result_title = "🎉 **𝐂𝐎𝐍𝐆𝐑𝐀𝐓𝐔𝐋𝐀𝐓𝐈𝐎𝐍𝐒! 𝐏𝐑𝐎𝐅𝐈𝐓 𝐑𝐄𝐂𝐎𝐑𝐃𝐄𝐃 (𝐖𝐈𝐍)**" if data == "signal_win" else "⚠️ **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐑𝐃𝐄𝐃 - 𝐑𝐄𝐂𝐎𝐕𝐄𝐑 𝐈𝐍 𝐍𝐄𝐗𝐓 𝐒𝐄𝐒𝐒𝐈𝐎𝐍**"
+        result_title = "🎉 **𝐂𝐎𝐍𝐆𝐑𝐀𝐓𝐔𝐋𝐀𝐓𝐈𝐎𝐍𝐒! 𝐏𝐑𝐎𝐅𝐈𝐓 𝐑𝐄𝐂𝐎𝐑𝐃𝐄𝐃 (𝐖𝐈𝐍)**" if data == "signal_win" else "⚠️ **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 𝐍𝐄𝐄𝐃𝐄𝐃 - 𝐑𝐄𝐂𝐎𝐕𝐄𝐑 𝐈𝐍 𝐍𝐄𝐗𝐓 𝐒𝐄𝐒𝐒𝐈𝐎𝐍**"
         feedback_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"{result_title}\n\n"
@@ -708,6 +753,7 @@ class handler(BaseHTTPRequestHandler):
                 application.add_handler(CommandHandler("broadcast", broadcast_command))
                 application.add_handler(CallbackQueryHandler(button_callback_handler))
                 application.add_handler(MessageHandler(filters.UpdateType.CHANNEL_POST | filters.UpdateType.EDITED_CHANNEL_POST, forward_channel_posts))
+                application.add_handler(ChatMemberHandler(handle_chat_member_update, ChatMemberHandler.CHAT_MEMBER))
                 
                 async with application:
                     await application.process_update(
