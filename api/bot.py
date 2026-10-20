@@ -151,11 +151,11 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
-        [InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐋𝐢𝐯𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="otc_live"), InlineKeyboardButton("📈 𝐀𝐧𝐚𝐥ysis 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="analysis_signals")],
+        [InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐋𝐢𝐯𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="otc_live"), InlineKeyboardButton("📈 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="analysis_signals")],
         [InlineKeyboardButton("🔮 𝐅𝐮𝐭𝐮𝐫𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="future_signals"), InlineKeyboardButton("📋 𝐅𝐮𝐭𝐮𝐫𝐞 𝐋𝐢𝐬𝐭", callback_data="future_list")],
         [InlineKeyboardButton("👤 𝐏𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="personal_sessions"), InlineKeyboardButton("💸 𝐋𝐨𝐬𝐬 𝐑𝐞𝐜𝐨𝐯𝐞𝐫𝐲 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="loss_recovery")],
         [InlineKeyboardButton("🎩 𝐇𝐨𝐰 𝐓𝐨 𝐂𝐫𝐞𝐚𝐭𝐞 𝐍𝐞𝐰 𝐀𝐜𝐜𝐨𝐮𝐧𝐭", callback_data="how_to_create"), InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="vip_joining")],
-        [InlineKeyboardButton("🗑️ 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐃𝐞𝐥𝐞𝐭𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_deleting"), InlineKeyboardButton("📖 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐂𝐫𝐞𝐚ْت𝐢𝐨𝐧 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_creation_guidance")],
+        [InlineKeyboardButton("🗑️ 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐃𝐞𝐥𝐞𝐭𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_deleting"), InlineKeyboardButton("📖 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐂𝐫𝐞𝐚𝐭𝐢𝐨𝐧 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_creation_guidance")],
         [InlineKeyboardButton("📚 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="trading_guidance"), InlineKeyboardButton("🏆 𝐓𝐨𝐮𝐫𝐧𝐚𝐦𝐞𝐧𝐭 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="tournament_joining")],
         [InlineKeyboardButton("🤖 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎", callback_data="ai_signals_pro")],
         [InlineKeyboardButton("📢 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
@@ -164,7 +164,7 @@ def main_menu_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 # ==========================================
-# 🎯 JOIN REQUEST PENDING HANDLER (EXACT FORMAT & BUTTONS)
+# 🎯 JOIN REQUEST PENDING HANDLER (CLEAN & PROFESSIONAL)
 # ==========================================
 async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
     req = update.chat_join_request
@@ -179,29 +179,19 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     pending_msg = (
         f"👑✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓** ✨👑\n\n"
         f"💎 **𝐇𝐞𝐥𝐥𝐨, {first_name}!** ❤️‍🔥\n\n"
-        f"🔥 Welcome to the M.K TRADER OFFICIAL community — your journey toward smarter trading starts here! 📊🚀\n\n"
         f"⏳ **𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐏𝐄𝐍𝐃𝐈𝐍𝐆** ⏳\n\n"
-        f"💌 Your request to join our premium community has been received and is waiting for approval. Please explore our services while you wait! 💎\n\n"
-        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒**\n\n"
-        f"🎯 **𝟏. 𝐅𝐎𝐋𝐋𝐎𝐖 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
-        f"⏰ Follow the provided session timings carefully, stay disciplined, and always manage your trading risk.\n\n"
-        f"📝 **𝟐. 𝐒𝐄𝐍𝐃 𝐘𝐎𝐔𝐑 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊**\n"
-        f"✅ After each session, submit your correct WIN (ITM) or LOSS (OTM) feedback to help us track results and improve.\n\n"
-        f"👤 **𝟑. 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
-        f"🎯 Need individual guidance? Get in touch with the owner to ask about personal sessions and available support.\n\n"
-        f"💸 **𝟒. 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘**\n"
-        f"🧠 Review your trades, learn from mistakes, and focus on disciplined risk management. Recovery is never guaranteed.\n\n"
-        f"💎 **𝟓. 𝐕𝐈𝐏 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒**\n"
-        f"👑 Explore our VIP membership for available premium signals, trading guidance, and membership details.\n\n"
-        f"🚀 **𝐄𝐗𝐏𝐋𝐎𝐑𝐄 𝐎𝐔𝐑 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒**\n\n"
-        f"📊 OTC Live Signals\n"
-        f"📈 Analysis Signals\n"
-        f"🔮 Future Signals\n"
-        f"👤 Personal Sessions\n"
-        f"💸 Loss Recovery Sessions\n"
-        f"💎 VIP Membership\n\n"
-        f"❤️‍🔥 Thank you for choosing M.K TRADER OFFICIAL!\n\n"
-        f"⚠️ Trading involves risk. Signals are not guaranteed to win. Always trade responsibly and never risk more than you can afford to lose.\n\n"
+        f"💌 Your request to join our premium community has been received and is waiting for approval. Please explore our services below:\n\n"
+        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐆𝐔𝐈𝐃𝐄𝐋𝐈𝐍𝐄𝐒**\n\n"
+        f"🎯 **𝐅𝐎𝐋𝐋𝐎𝐖 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
+        f"⏰ Follow session timings carefully and manage your trading risk.\n\n"
+        f"📝 **𝐒𝐄𝐍𝐃 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊**\n"
+        f"✅ Submit your WIN (ITM) or LOSS (OTM) feedback after every session.\n\n"
+        f"👤 **𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
+        f"🎯 Get direct mentorship and custom strategy guidance.\n\n"
+        f"💸 **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘**\n"
+        f"🧠 Professional recovery plans to bounce back safely.\n\n"
+        f"💎 **𝐕𝐈𝐏 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒**\n"
+        f"👑 Unlock high-accuracy daily VIP signals and tools.\n\n"
         f"👑 **𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋**\n"
         f"💎 **𝐒𝐓𝐀𝐘 𝐃𝐈𝐒𝐂𝐈𝐏𝐋𝐈𝐍𝐄𝐃 • 𝐒𝐓𝐀𝐘 𝐅𝐎𝐂𝐔𝐒𝐄𝐃**"
     )
