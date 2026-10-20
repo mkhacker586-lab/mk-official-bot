@@ -147,7 +147,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         print(f"Log error: {e}")
 
 # ==========================================
-# 📌 MAIN MENU BUTTONS (EXACT SINGLE LINE LAYOUT FOR AI PRO, CHANNEL & OWNER)
+# 📌 MAIN MENU BUTTONS (EXACT LAYOUT)
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
@@ -173,10 +173,10 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
         f"👑 **{BOT_NAME}** 👑\n\n"
         f"✨ **𝐇𝐄𝐋𝐋𝐎 {user_first_name.upper()}!**\n\n"
         f"⏳ **𝐘𝐎𝐔𝐑 𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐈𝐒 𝐏𝐄𝐍𝐃𝐈𝐍𝐆 𝐀𝐏𝐏𝐑𝐎𝐕𝐀𝐋** ⏳\n\n"
-        f"🔥 **𝐈𝐌𝐏𝐎𝐑𝐓𝐀𝐍𝐓 𝐈𝐍𝐒𝐓𝐑𝐔𝐂𝐓𝐈𝐎𝐍𝐒:**\n"
-        f"• Your request has been received and will be approved soon by administration.\n"
-        f"• **Follow Sessions Strictly:** Always manage your risk and follow exact trade entry timings.\n"
-        f"• **Send Feedbacks:** After every trade result, submit your feedback inside the bot.\n\n"
+        f"🔥 **𝐂𝐑𝐈𝐓𝐈𝐂𝐀𝐋 𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒:**\n"
+        f"1️⃣ **Follow Sessions Strictly:** Always manage your risk and follow exact signal entries.\n"
+        f"2️⃣ **Send Trade Feedbacks:** Always submit your Win (ITM) or Loss (OTM) feedback after every session.\n"
+        f"3️⃣ **Loss Recovery & VIP:** Use our professional tools and compound plans safely.\n\n"
         f"👇 **𝐄𝐗𝐏𝐋𝐎𝐑𝐄 𝐎𝐔𝐑 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒 𝐁𝐄𝐋𝐎𝗪:**"
     )
     
@@ -212,7 +212,7 @@ async def handle_chat_join_request(update: Update, context: ContextTypes.DEFAULT
                 f"📌 **𝐂𝐑𝐈𝐓𝐈𝐂𝐀𝐋 𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒:**\n"
                 f"1️⃣ **Follow Sessions Strictly:** Do not rush trades. Follow exact signal entries and risk management.\n"
                 f"2️⃣ **Send Trade Feedbacks:** Always submit your Win (ITM) or Loss (OTM) feedback after every session.\n"
-                f"3️⃣ **Compound Safely:** Use our VIP tools and AI signals to grow your capital step-by-step.\n\n"
+                f"3️⃣ **Loss Recovery & VIP:** Utilize our AI signals and VIP tools to recover and compound capital safely.\n\n"
                 f"👇 **𝐀𝐂𝐂𝐄𝐒𝐒 𝐘𝐎𝐔𝐑 𝐎𝐏𝐓𝐈𝐎𝐍𝐒 𝐁𝐄𝐋𝐎𝗪:**"
             )
             
@@ -443,17 +443,20 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"🤖 **𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎** 🤖\n\n"
-            f"✨ Yeh bot bohot hi achi 99% accuracy ke sath signals deta hai! Elite traders ke liye specially designed automated AI prediction engine.\n\n"
-            f"💵 **Subscription Fee:** $20 Only\n"
-            f"📌 **Payment & Access Instructions:**\n"
-            f"1️⃣ Pehle payment ($20) complete karein.\n"
-            f"2️⃣ Payment ka screenshot ya receipt direct owner ko send karein.\n"
-            f"3️⃣ Verification ke baad aap ko AI Signals Bot ka full access mil jayega!\n\n"
-            f"👇 **Pehlay payment karein ya owner se rabta karein:**"
+            f"🚀 **𝐄𝐋𝐄𝐕𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐆𝐀𝐌𝐄!**\n\n"
+            f"📊 Explore AI-assisted trading signals and market insights with our premium signals bot, designed for traders who want a smarter trading experience. ⚡🎯\n\n"
+            f"💎 **𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒**\n"
+            f"💵 Subscription Fee: $20 ONLY\n\n"
+            f"📌 **𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍**\n"
+            f"1️⃣ 💳 Complete your $20 subscription payment.\n"
+            f"2️⃣ 🧾 Send your payment receipt to the owner.\n"
+            f"3️⃣ ✅ Wait for payment verification.\n"
+            f"4️⃣ 🔓 Receive instructions to access the bot!\n\n"
+            f"👑 **𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎**\n"
+            f"✨ **𝐒𝐌𝐀𝐑𝐓 𝐈𝐍𝐒𝐈𝐆𝐇𝐓𝐒 • 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒** ✨"
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url="https://t.me/MK_TRADER586")],
+            [InlineKeyboardButton("💳 PAYMENT", url="https://t.me/MK_TRADER586"), InlineKeyboardButton("👤 CONTACT OWNER", url="https://t.me/MK_TRADER586")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
