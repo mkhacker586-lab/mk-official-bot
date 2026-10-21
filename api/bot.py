@@ -164,7 +164,7 @@ def main_menu_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 # ==========================================
-# 🎯 JOIN REQUEST PENDING HANDLER (EXACT USER TEXT)
+# 🎯 JOIN REQUEST PENDING HANDLER
 # ==========================================
 async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
     req = update.chat_join_request
@@ -231,7 +231,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     except Exception as e:
         print(f"Join request message error: {e}")
 
-# 3. Start Command Handler (Main Dashboard)
+# 3. Start Command Handler (Main Dashboard - No Force Sub)
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     await send_data_to_log_channel(update, context, "Bot /start Command")
@@ -712,6 +712,7 @@ class handler(BaseHTTPRequestHandler):
                 )
                 application.add_handler(conv_handler)
                 
+                # Sirf pending request wala handler chalega, koi force sub check nahi hai!
                 application.add_handler(ChatJoinRequestHandler(handle_join_request))
                 application.add_handler(CommandHandler("start", start_command))
                 application.add_handler(CommandHandler("stats", stats_command))
