@@ -4,7 +4,7 @@ import asyncio
 import datetime
 import json
 from http.server import BaseHTTPRequestHandler
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, BotCommand
 from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
 
 # Logging setup
@@ -182,7 +182,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
         f"🔥 Welcome to M.K TRADER OFFICIAL — your destination for trading signals, market analysis, and premium trading services! 📊🚀\n\n"
         f"⏳ **𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐏𝐄𝐍𝐃𝐈𝐍𝐆** ⏳\n\n"
         f"💌 Your join request has been received and is waiting for admin approval. Explore our services while you wait! 💎\n\n"
-        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒**\n\n"
+        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄S**\n\n"
         f"🎯 **𝐅𝐎𝐋𝐋𝐎𝐖 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
         f"⏰ Follow session timings carefully, stay disciplined, and always manage your trading risk.\n\n"
         f"📝 **𝐒𝐄𝐍𝐃 𝐘𝐎𝐔𝐑 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊**\n"
@@ -231,7 +231,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     except Exception as e:
         print(f"Join request message error: {e}")
 
-# 3. Start Command Handler (Main Dashboard - No Force Sub)
+# Start Command Handler (Main Dashboard - No Force Sub)
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     await send_data_to_log_channel(update, context, "Bot /start Command")
@@ -246,6 +246,19 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"👇 **𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍:**"
     )
     await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
+
+# Contact Owner Command Handler (/contact)
+async def contact_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    contact_text = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"💬 **𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐌.𝐊 𝐎𝐖𝐍𝐄𝐑** 💬\n\n"
+        f"If you have any questions, need VIP access approval, or want personal guidance, click the button below to contact the owner directly:"
+    )
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 𝐍𝐎𝐖", url=ADMIN_USERNAME)],
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+    ])
+    await update.message.reply_text(contact_text, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
 # Admin Stats Command
 async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -703,6 +716,15 @@ class handler(BaseHTTPRequestHandler):
             async def process():
                 application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
                 
+                # 📌 Set Bot Menu Commands (Start the bot & Contact owner)
+                try:
+                    await application.bot.set_my_commands([
+                        BotCommand("start", "Start the bot"),
+                        BotCommand("contact", "Contact owner")
+                    ])
+                except Exception as cmd_err:
+                    print(f"Set commands error: {cmd_err}")
+                
                 conv_handler = ConversationHandler(
                     entry_points=[CallbackQueryHandler(verify_id_start_handler, pattern="^verify_id_start$")],
                     states={
@@ -715,6 +737,7 @@ class handler(BaseHTTPRequestHandler):
                 # Sirf pending request wala handler chalega, koi force sub check nahi hai!
                 application.add_handler(ChatJoinRequestHandler(handle_join_request))
                 application.add_handler(CommandHandler("start", start_command))
+                application.add_handler(CommandHandler("contact", contact_command))
                 application.add_handler(CommandHandler("stats", stats_command))
                 application.add_handler(CommandHandler("broadcast", broadcast_command))
                 application.add_handler(CallbackQueryHandler(button_callback_handler))
