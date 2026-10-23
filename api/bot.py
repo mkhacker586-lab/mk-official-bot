@@ -1,393 +1,765 @@
 import os
-import requests
-from flask import Flask, render_template_string, request, jsonify
+import logging
+import asyncio
+import datetime
+import json
+from http.server import BaseHTTPRequestHandler
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, BotCommand
+from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
 
-app = Flask(__name__)
+# Logging setup
+logging.basicConfig(
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    level=logging.INFO
+)
 
-TELEGRAM_BOT_TOKEN = "8709739986:AAFmN9R8yQp3pYvNz6ZqJmK4sX8uYt9r9b0"
-TELEGRAM_CHAT_ID = "7206856210"
+# ==========================================
+# ⚙ ADMIN & BOT SETTINGS:
+# ==========================================
+TELEGRAM_BOT_TOKEN = "8744737316:AAEs_NK4ZjS4tRKiwkJGdpHf297tsFCjK1E"
+BOT_NAME = "𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓"
+BOT_USERNAME = "@MK_TRADER_OFFICIAL_BOT"
+LOG_CHANNEL_ID = -1003724080321
+BROADCAST_CHANNEL_ID = -1004470268041  # M.K UPCOMING POSTINGS Channel ID
 
-def send_telegram_alert(msg):
-    url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+CHANNEL_LINK = "https://t.me/+FdbFgVgsoT41ZGU8"
+QUOTEX_LINK = "https://broker-qx.pro/?lid=1614511"
+ADMIN_USERNAME = "https://t.me/MK_TRADER586"
+ADMIN_USER_ID = 7588675873
+# ==========================================
+
+WAITING_FOR_TRADER_ID = 1
+
+JOIN_COUNTER_FILE = "/tmp/join_counter_mk.txt"
+START_COUNTER_FILE = "/tmp/start_counter_mk.txt"
+USERS_DB_FILE = "/tmp/users_db_mk.json"
+
+def get_next_count(file_path):
     try:
-        requests.post(url, json={
-            "chat_id": TELEGRAM_CHAT_ID, 
-            "text": msg, 
-            "parse_mode": "Markdown"
-        }, timeout=5)
+        count = 1
+        if os.path.exists(file_path):
+            with open(file_path, "r") as f:
+                content = f.read().strip()
+                if content.isdigit():
+                    count = int(content) + 1
+        with open(file_path, "w") as f:
+            f.write(str(count))
+        return count
     except Exception as e:
-        print("Telegram Alert Error:", e)
+        print(f"Counter error: {e}")
+        return 1
 
-HTML_PAGE = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🚀 𝗠.𝗞 𝗔𝗜 𝗦𝗜𝗚𝗡𝗔𝗟𝗦 𝗣𝗥𝗢 🚀</title>
-    <style>
-        body, html { background: transparent !important; margin: 0; padding: 0; overflow: hidden; font-family: sans-serif; }
-        #mk-master-panel {
-            position: fixed; top: 12%; left: 25px; width: 315px; height: auto;
-            background: #090c10 !important; border-radius: 16px;
-            z-index: 2147483647 !important; color: #fff; font-family: sans-serif;
-            box-sizing: border-box; border: 3px solid #00f0ff; overflow: hidden;
-            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5); touch-action: none;
-            animation: mkGlowPulse 3s infinite alternate;
-        }
-        @keyframes mkGlowPulse {
-            0% { box-shadow: 0 0 20px rgba(0, 240, 255, 0.4); }
-            100% { box-shadow: 0 0 35px rgba(0, 240, 255, 0.8); }
-        }
-        #mk-panel-header {
-            background: linear-gradient(90deg, #ff0055, #7000ff, #00f0ff);
-            padding: 10px 12px; font-weight: bold; font-size: 12px;
-            text-align: center; cursor: move; display: flex; justify-content: space-between; align-items: center;
-            user-select: none; -webkit-user-select: none;
-        }
-        .mk-screen { padding: 14px; box-sizing: border-box; display: flex; flex-direction: column; gap: 10px; width: 100%; }
-        .mk-sec-title { font-size: 13px; font-weight: bold; color: #ff0055; text-align: center; text-shadow: 0 0 8px rgba(255,0,85,0.6); }
-        .mk-sec-subtitle { font-size: 10.5px; color: #8a99ad; text-align: center; line-height: 1.3; }
-        #mk-key-input { width: 100%; padding: 10px; background: #000; border: 2px solid #1f2937; border-radius: 6px; color: #fff; text-align: center; font-weight: bold; outline: none; box-sizing: border-box; }
-        .mk-link-btn { width: 100%; padding: 10px; background: #1e1b4b; color: #a855f7; border: 1px solid #4c1d95; font-weight: bold; border-radius: 6px; text-align: center; text-decoration: none; display: block; box-sizing: border-box; font-size: 11px; }
-        #mk-radar-status { text-align: center; color: #eab308; font-size: 11px; font-weight: bold; letter-spacing: 0.5px; }
-        #mk-signal-box { background: #111827; padding: 16px; border-radius: 10px; text-align: center; border: 1px solid #1f2937; box-sizing: border-box; min-height: 85px; display: flex; flex-direction: column; justify-content: center; transition: all 0.3s ease; }
-        #mk-main-signal { font-size: 20px; font-weight: 900; color: #fff; width: 100%; padding: 6px 0; border-radius: 6px; letter-spacing: 1px; }
-        #mk-timer-countdown { font-size: 11px; color: #9ca3af; margin-top: 5px; font-weight: bold; }
-        #mk-filter-text { text-align: center; color: #10b981; font-size: 11px; font-weight: bold; }
-        #mk-accuracy-wrapper { text-align: center; color: #cbd5e1; font-size: 12px; font-weight: bold; }
-        #mk-accuracy-value { color: #06b6d4; font-weight: 900; text-shadow: 0 0 8px #06b6d4; }
-        .mk-control-row { display: flex; justify-content: space-between; align-items: center; font-size: 11.5px; color: #9ca3af; }
-        .mk-control-row select { background: #000; color: #fff; border: 1px solid #374151; border-radius: 6px; padding: 5px; width: 130px; outline: none; font-weight: bold; }
-        .mk-control-row input[type="color"] { border: none; background: transparent; width: 24px; height: 24px; cursor: pointer; }
-        .mk-theme-btn { background: #161e2e; color: #fff; border: 1px solid #2d3748; border-radius: 6px; padding: 6px; font-size: 9.5px; cursor: pointer; text-align: center; font-weight: bold; transition: 0.2s; }
-        .mk-theme-btn:hover { background: #00f0ff; color: #000; border-color: #00f0ff; }
-        #mk-minimize-btn { width: 100%; background: transparent; border: 1px dashed #374151; color: #9ca3af; font-size: 10px; font-weight: bold; padding: 7px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-        #mk-minimize-btn:hover { border-color: #00f0ff; color: #00f0ff; }
-        #mk-resize-handle { position: absolute; right: 0; bottom: 0; width: 18px; height: 18px; color: #00f0ff; cursor: se-resize; font-size: 11px; text-align: right; line-height: 18px; z-index: 2147483647; font-weight: bold; user-select: none; }
-        #mk-floating-mini-icon { position: fixed; top: 20%; left: 15px; padding: 10px 14px; background: #090c10; border: 2px solid #00f0ff; border-radius: 10px; color: #00f0ff; font-size: 11px; font-weight: bold; cursor: pointer; z-index: 2147483647 !important; display: none; text-shadow: 0 0 6px #00f0ff; box-shadow: 0 0 20px rgba(0,240,255,0.6); touch-action: none; }
+def save_user_id(user_id):
+    try:
+        users = set()
+        if os.path.exists(USERS_DB_FILE):
+            with open(USERS_DB_FILE, "r") as f:
+                content = f.read().strip()
+                if content:
+                    users = set(json.loads(content))
+        users.add(user_id)
+        with open(USERS_DB_FILE, "w") as f:
+            f.write(json.dumps(list(users)))
+    except Exception as e:
+        print(f"User save error: {e}")
+
+def get_total_users():
+    try:
+        if os.path.exists(USERS_DB_FILE):
+            with open(USERS_DB_FILE, "r") as f:
+                content = f.read().strip()
+                if content:
+                    return len(json.loads(content))
+        return 0
+    except:
+        return 0
+
+# ==========================================
+# 🌟 ORIGINAL DATA LOG FUNCTION (UNTOUCHED)
+# ==========================================
+async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT_TYPE, source_action: str):
+    try:
+        user = update.effective_user if update.effective_user else getattr(update.chat_join_request, 'from_user', None)
+        if not user:
+            return
+
+        user_id = user.id
+        save_user_id(user_id)
         
-        /* VIP Animations & Frames */
-        .mk-signal-up-active { background: linear-gradient(135deg, #00ff66, #00b347) !important; color: #000 !important; box-shadow: 0 0 25px #00ff66 !important; font-size: 24px !important; font-weight: 900 !important; animation: mkPulseUp 0.8s infinite alternate; }
-        .mk-signal-down-active { background: linear-gradient(135deg, #ff0055, #b3003b) !important; color: #fff !important; box-shadow: 0 0 25px #ff0055 !important; font-size: 24px !important; font-weight: 900 !important; animation: mkPulseDown 0.8s infinite alternate; }
-        .mk-signal-win-frame { background: rgba(0, 255, 102, 0.2) !important; color: #00ff66 !important; border: 2px dashed #00ff66 !important; font-size: 22px !important; font-weight: 900 !important; text-shadow: 0 0 12px #00ff66 !important; animation: mkWinBounce 0.5s ease; }
-        .mk-signal-loss-frame { background: rgba(255, 0, 85, 0.2) !important; color: #ff0055 !important; border: 2px dashed #ff0055 !important; font-size: 22px !important; font-weight: 900 !important; text-shadow: 0 0 12px #ff0055 !important; animation: mkLossShake 0.4s ease; }
+        username = f"@{user.username}" if user.username else "No Username"
+        first_name = user.first_name or "Trader"
+        last_name = user.last_name or ""
+        full_name = f"{first_name} {last_name}".strip()
+        
+        channel_name = "N/A"
+        if update.chat_join_request:
+            channel_name = update.chat_join_request.chat.title or "Unknown Channel"
+        elif update.effective_chat and update.effective_chat.type in ['group', 'supergroup', 'channel']:
+            channel_name = update.effective_chat.title
+        
+        if "Join Request" in source_action:
+            count_val = get_next_count(JOIN_COUNTER_FILE)
+            count_label = "📊 𝐑𝐞𝐪𝐮𝐞𝐬𝐭𝐬"
+        else:
+            count_val = get_next_count(START_COUNTER_FILE)
+            count_label = "📊 𝐒𝐭𝐚𝐫𝐭𝐬"
+        
+        pkt_time = datetime.datetime.utcnow() + datetime.timedelta(hours=5)
+        current_time = pkt_time.strftime("%d %b %Y, %I:%M %p")
+        
+        log_msg = (
+            f"⭐ 𝐍𝐄𝐖 𝐔𝐒𝐄𝐑 𝐃𝐀𝐓𝐀 𝐂𝐀𝐏𝐓𝐔𝐑𝐄𝐃 ⭐\n"
+            f"━━━━━━•❅•°•❈•°•❅•━━━━━━\n"
+            f"🤖 𝐁𝐨𝐭 𝐍𝐚𝐦𝐞: {BOT_NAME}\n"
+            f"👑 𝐁𝐫𝐚𝐧𝐝: 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑\n"
+            f"🆔 𝐔𝐬𝐞𝐫 𝐈𝐃: {user_id}\n"
+            f"🕵🏻‍♂️ 𝐔𝐬𝐞𝐫𝐧𝐚𝐦𝐞: {username}\n"
+            f"📛 𝐍𝐚𝐦𝐞: {full_name}\n"
+            f"📢 𝐂𝐡𝐚𝐧𝐧𝐞𝐥: {channel_name}\n"
+            f"{count_label}: #{count_val}\n"
+            f"🕐 𝐓𝐢𝐦𝐞: {current_time}\n"
+            f"📱 𝐒𝐨𝐮𝐫𝐜𝐞: {source_action}\n"
+            f"━━━━━━•❅•°•❈•°•❅•━━━━━━\n"
+            f"🔥 𝐁𝐨𝐭: {BOT_USERNAME} ❤️"
+        )
+        
+        try:
+            photos = await context.bot.get_user_profile_photos(user_id=user_id, limit=1)
+            if photos.total_count > 0:
+                file_id = photos.photos[0][-1].file_id
+                await context.bot.send_photo(
+                    chat_id=LOG_CHANNEL_ID,
+                    photo=file_id,
+                    caption=log_msg
+                )
+            else:
+                await context.bot.send_message(
+                    chat_id=LOG_CHANNEL_ID,
+                    text=log_msg + "\n\n*(⚠️ User has no Profile Picture)*"
+                )
+        except Exception as inner_e:
+            print(f"Photo sending error: {inner_e}")
+            await context.bot.send_message(
+                chat_id=LOG_CHANNEL_ID,
+                text=log_msg
+            )
+    except Exception as e:
+        print(f"Log error: {e}")
 
-        @keyframes mkPulseUp { 0% { transform: scale(1); } 100% { transform: scale(1.03); box-shadow: 0 0 35px #00ff66; } }
-        @keyframes mkPulseDown { 0% { transform: scale(1); } 100% { transform: scale(1.03); box-shadow: 0 0 35px #ff0055; } }
-        @keyframes mkWinBounce { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.06); } }
-        @keyframes mkLossShake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-    </style>
-</head>
-<body>
+# ==========================================
+# 📌 MAIN MENU BUTTONS (SERIF FONT STYLE)
+# ==========================================
+def main_menu_keyboard():
+    keyboard = [
+        [InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐋𝐢𝐯𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="otc_live"), InlineKeyboardButton("📈 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="analysis_signals")],
+        [InlineKeyboardButton("🔮 𝐅𝐮𝐭𝐮𝐫𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="future_signals"), InlineKeyboardButton("📋 𝐅𝐮𝐭𝐮𝐫𝐞 𝐋𝐢𝐬𝐭", callback_data="future_list")],
+        [InlineKeyboardButton("👤 𝐏𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="personal_sessions"), InlineKeyboardButton("💸 𝐋𝐨𝐬𝐬 𝐑𝐞𝐜𝐨𝐯𝐞𝐫𝐲 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="loss_recovery")],
+        [InlineKeyboardButton("🎩 𝐇𝐨𝐰 𝐓𝐨 𝐂𝐫𝐞𝐚𝐭𝐞 𝐍𝐞𝐰 𝐀𝐜𝐜𝐨𝐮𝐧𝐭", callback_data="how_to_create"), InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="vip_joining")],
+        [InlineKeyboardButton("🗑️ 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐃𝐞𝐥𝐞𝐭𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_deleting"), InlineKeyboardButton("📖 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐂𝐫𝐞𝐚𝐭𝐢𝐨𝐧 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_creation_guidance")],
+        [InlineKeyboardButton("📚 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="trading_guidance"), InlineKeyboardButton("🏆 𝐓𝐨𝐮𝐫𝐧𝐚𝐦𝐞𝐧𝐭 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="tournament_joining")],
+        [InlineKeyboardButton("🤖 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎", callback_data="ai_signals_pro")],
+        [InlineKeyboardButton("📢 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)]
+    ]
+    return InlineKeyboardMarkup(keyboard)
 
-<div id="mk-master-panel">
-    <div id="mk-panel-header">
-        <span>🚀 𝗠.𝗞 𝗔𝗜 𝗦𝗜𝗚𝗡𝗔𝗟𝗦 𝗣𝗥𝗢 🚀</span>
-        <div style="display:flex; gap:6px; align-items:center;">
-            <span id="mk-toggle-themes-btn" style="cursor:pointer; font-size:10px; background:rgba(0,0,0,0.6); padding:3px 6px; border-radius:4px; font-weight:bold;">🎨 LOOKS</span>
-            <span id="mk-close-btn" style="cursor:pointer; font-weight:bold; margin-left:4px; font-size:13px;">✕</span>
-        </div>
-    </div>
+# ==========================================
+# 🎯 JOIN REQUEST PENDING HANDLER
+# ==========================================
+async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    req = update.chat_join_request
+    if not req:
+        return
+
+    user = req.from_user
+    await send_data_to_log_channel(update, context, "Channel Join Request")
     
-    <div id="mk-theme-drawer" style="display:none; background:rgba(0,0,0,0.95); padding:8px; border-bottom:1px solid #222; max-height:130px; overflow-y:auto;">
-        <div id="mk-theme-grid" style="display:grid; grid-template-columns:repeat(2, 1fr); gap:5px;"></div>
-    </div>
-
-    <div id="mk-github-screen" class="mk-screen" style="display:none;">
-        <div class="mk-sec-title">🔒 SERVER APPROVAL REQUIRED</div>
-        <div class="mk-sec-subtitle">Aapka device registered nahi hai. M.K TRADER se online approval allow karwayein.</div>
-        <div style="font-size:10px; color:#8a99ad; text-align:center; font-weight:bold; margin-top:4px;">YOUR UNIQUE DEVICE ID:</div>
-        <div id="mk-dev-id-box" style="background:#000; color:#00f0ff; padding:9px; text-align:center; border-radius:6px; font-weight:bold; border:1px dashed #00f0ff; user-select:all;"></div>
-        <button id="mk-check-github-btn" style="width:100%; padding:11px; background:#00f0ff; color:#000; border:none; font-weight:bold; border-radius:6px; cursor:pointer; margin-top:4px;">VERIFY MY APPROVAL</button>
-        <a href="https://t.me/MK_TRADER586" target="_blank" class="mk-link-btn">📞 CONTACT M.K TRADER</a>
-    </div>
-
-    <div id="mk-auth-screen" class="mk-screen" style="display:none;">
-        <div class="mk-sec-title">🔑 ENTER PASS KEY</div>
-        <div class="mk-sec-subtitle">Device verified online. Enter master console key to unlock matching engine.</div>
-        <input type="text" id="mk-key-input" placeholder="ENTER ACCESS KEY..." autocomplete="off">
-        <button id="mk-unlock-btn" style="width:100%; padding:11px; background:#00f0ff; color:#000; border:none; font-weight:bold; border-radius:6px; cursor:pointer;">UNLOCK SYSTEM</button>
-        <div id="mk-auth-error" style="color:#ef4444; font-size:11px; font-weight:bold; text-align:center; display:none;">INVALID CONSOLE ACCESS KEY!</div>
-    </div>
+    first_name = user.first_name if user and user.first_name else "Trader"
     
-    <div id="mk-dashboard-screen" class="mk-screen" style="display:none;">
-        <div id="mk-radar-status">🛰️ AI RADAR - SYNCED LIVE</div>
+    pending_msg = (
+        f"👑✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓** ✨👑\n\n"
+        f"💎 **𝐇𝐞𝐥𝐥𝐨, {first_name}!** ❤️‍🔥\n\n"
+        f"🔥 Welcome to M.K TRADER OFFICIAL — your destination for trading signals, market analysis, and premium trading services! 📊🚀\n\n"
+        f"⏳ **𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐏𝐄𝐍𝐃𝐈𝐍𝐆** ⏳\n\n"
+        f"💌 Your join request has been received and is waiting for admin approval. Explore our services while you wait! 💎\n\n"
+        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄S**\n\n"
+        f"🎯 **𝐅𝐎𝐋𝐋𝐎𝐖 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
+        f"⏰ Follow session timings carefully, stay disciplined, and always manage your trading risk.\n\n"
+        f"📝 **𝐒𝐄𝐍𝐃 𝐘𝐎𝐔𝐑 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊**\n"
+        f"✅ Submit your WIN (ITM) or LOSS (OTM) feedback after every session to help maintain accurate records.\n\n"
+        f"👤 **𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
+        f"🎯 Looking for individual guidance? Contact the owner to ask about personal sessions and available support.\n\n"
+        f"💸 **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘**\n"
+        f"🧠 Review your trades, learn from mistakes, and focus on disciplined risk management.\n\n"
+        f"💎 **𝐕𝐈𝐏 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒**\n"
+        f"👑 Explore VIP membership for available premium signals, trading guidance, and access details.\n\n"
+        f"🚀 **𝐄𝐗𝐏𝐋𝐎𝐑𝐄 𝐎𝐔𝐑 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒**\n\n"
+        f"📊 OTC Live Signals\n"
+        f"📈 Analysis Signals\n"
+        f"🔮 Future Signals & Future List\n"
+        f"👤 Personal Sessions\n"
+        f"💸 Loss Recovery Sessions\n"
+        f"💎 VIP Membership\n"
+        f"📚 Trading & Account Guidance\n"
+        f"🏆 Tournament Joining\n\n"
+        f"❤️‍🔥 Thank you for choosing M.K TRADER OFFICIAL!\n\n"
+        f"👑 **𝐒𝐓𝐀𝐘 𝐅𝐎𝐂𝐔𝐒𝐄𝐃 • 𝐒𝐓𝐀𝐘 𝐃𝐈𝐒𝐂𝐈𝐏𝐋𝐈𝐍𝐄𝐃** 💎"
+    )
+    
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💎 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+        [
+            InlineKeyboardButton("👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍", url="https://t.me/m/jY55Z4p_Yzhk"),
+            InlineKeyboardButton("💸 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘", url="https://t.me/m/i7Y4TWPaMWZk")
+        ],
+        [
+            InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒", url="https://t.me/m/7LE78wShYTc0"),
+            InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)
+        ],
+        [InlineKeyboardButton("👀 𝐕𝐈𝐄𝐖 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
+    ])
+    
+    try:
+        await context.bot.send_message(
+            chat_id=user.id,
+            text=pending_msg,
+            reply_markup=kb,
+            parse_mode="Markdown",
+            disable_web_page_preview=True
+        )
+    except Exception as e:
+        print(f"Join request message error: {e}")
+
+# Start Command Handler (Main Dashboard - No Force Sub)
+async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    await send_data_to_log_channel(update, context, "Bot /start Command")
+    
+    user_name = user.first_name if user and user.first_name else "Trader"
+    welcome_text = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!**\n\n"
+        f"🌐 **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁** 💎\n\n"
+        f"📊 Access high-accuracy digital options signals, account guides, VIP access, and professional tools from the menu below:\n\n"
+        f"🔗 **𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐏𝐫𝐞𝐦𝐢𝐮𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥:** {CHANNEL_LINK}\n\n"
+        f"👇 **𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍:**"
+    )
+    await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
+
+# Contact Owner Command Handler (/contact)
+async def contact_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    contact_text = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"💬 **𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐌.𝐊 𝐎𝐖𝐍𝐄𝐑** 💬\n\n"
+        f"If you have any questions, need VIP access approval, or want personal guidance, click the button below to contact the owner directly:"
+    )
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 𝐍𝐎𝐖", url=ADMIN_USERNAME)],
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+    ])
+    await update.message.reply_text(contact_text, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
+
+# Admin Stats Command
+async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    if user.id != ADMIN_USER_ID:
+        return
+    
+    total_users = get_total_users()
+    start_count = get_next_count(START_COUNTER_FILE) - 1
+    join_count = get_next_count(JOIN_COUNTER_FILE) - 1
+    
+    stats_text = (
+        f"📊 **𝐁𝐎𝐓 𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒 & 𝐀𝐍𝐀𝐋𝐘𝐓𝐈𝐂𝐒** 📊\n\n"
+        f"👥 Total Unique Users: `{total_users}`\n"
+        f"🚀 Total /start Count: `{start_count}`\n"
+        f"📢 Total Join Requests: `{join_count}`\n\n"
+        f"🤖 Bot Status: Online & Running 🟢"
+    )
+    await update.message.reply_text(stats_text, parse_mode="Markdown")
+
+# Admin Broadcast Command (/broadcast message)
+async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    if user.id != ADMIN_USER_ID:
+        return
+    
+    if not context.args:
+        await update.message.reply_text("⚠️ Please provide a message to broadcast. Example: `/broadcast Hello everyone!`", parse_mode="Markdown")
+        return
+    
+    broadcast_text = " ".join(context.args)
+    
+    try:
+        users = set()
+        if os.path.exists(USERS_DB_FILE):
+            with open(USERS_DB_FILE, "r") as f:
+                content = f.read().strip()
+                if content:
+                    users = set(json.loads(content))
         
-        <div id="mk-signal-box">
-            <div id="mk-main-signal">WAITING...</div>
-            <div id="mk-timer-countdown">NEXT CANDLE IN: --s</div>
-        </div>
+        success = 0
+        failed = 0
+        for uid in users:
+            try:
+                await context.bot.send_message(chat_id=uid, text=broadcast_text, parse_mode="Markdown", disable_web_page_preview=True)
+                success += 1
+                await asyncio.sleep(0.02)
+            except:
+                failed += 1
         
-        <div id="mk-filter-text">FILTERING MARKET NOISE...</div>
-        <div id="mk-accuracy-wrapper">🎯 ACCURACY: <span id="mk-accuracy-value">99.4%</span></div>
+        await update.message.reply_text(f"✅ **𝐁𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝!**\n\n📨 Success: `{success}`\n❌ Failed: `{failed}`", parse_mode="Markdown")
+    except Exception as e:
+        await update.message.reply_text(f"❌ Broadcast error: {e}")
 
-        <div class="mk-control-row">
-            <label>⚙️ AI Mode:</label>
-            <select id="mk-logic-mode">
-                <option value="system" selected>System Mode (VIP)</option>
-                <option value="rapid">Continuous Scan</option>
-            </select>
-        </div>
+# ==========================================
+# 🚀 AUTOMATIC FORWARDER FROM UPCOMING POSTINGS CHANNEL
+# ==========================================
+async def forward_channel_posts(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        message = update.channel_post or update.edited_channel_post
+        if message and message.chat.id == BROADCAST_CHANNEL_ID:
+            users = set()
+            if os.path.exists(USERS_DB_FILE):
+                with open(USERS_DB_FILE, "r") as f:
+                    content = f.read().strip()
+                    if content:
+                        users = set(json.loads(content))
+            
+            for uid in users:
+                try:
+                    await context.bot.copy_message(
+                        chat_id=uid,
+                        from_chat_id=message.chat.id,
+                        message_id=message.message_id
+                    )
+                    await asyncio.sleep(0.01)
+                except Exception as ex:
+                    print(f"Forward error to user {uid}: {ex}")
+    except Exception as e:
+        print(f"Channel forward handler error: {e}")
+
+# ==========================================
+# 🔐 TRADER ID VERIFICATION FLOW
+# ==========================================
+async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    text = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"🔐 **𝐕𝐄𝐑𝐈𝐅𝐘 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃** 🔐\n\n"
+        f"Please reply to this message with your 8-digit Quotex Trader ID.\n\n"
+        f"*(Example: `12345678`)*"
+    )
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+    ])
+    await context.bot.edit_message_text(text, chat_id=query.message.chat.id, message_id=query.message.message_id, reply_markup=kb, parse_mode="Markdown")
+    return WAITING_FOR_TRADER_ID
+
+async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user = update.effective_user
+    trader_id = update.message.text.strip()
+    
+    admin_log_msg = (
+        f"🚨 **𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍** 🚨\n\n"
+        f"👤 User: {user.full_name} (@{user.username if user.username else 'No Username'})\n"
+        f"🆔 User ID: `{user.id}`\n"
+        f"🔢 Submitted Trader ID: `{trader_id}`"
+    )
+    await context.bot.send_message(chat_id=LOG_CHANNEL_ID, text=admin_log_msg, parse_mode="Markdown")
+    
+    success_text = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"✅ **𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐑𝐄𝐂𝐄𝐈𝐕𝐄𝐃 𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋𝐘!**\n\n"
+        f"Your Trader ID (`{trader_id}`) has been sent to M.K Trader admin for verification. You will be granted VIP access shortly upon review!"
+    )
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
+    ])
+    await update.message.reply_text(success_text, reply_markup=kb, parse_mode="Markdown")
+    return ConversationHandler.END
+
+async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    await start_command(update, context)
+    return ConversationHandler.END
+
+# ==========================================
+# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE
+# ==========================================
+async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    chat_id = query.message.chat.id
+    message_id = query.message.message_id
+    data = query.data
+
+    if data == "otc_live":
+        await context.bot.edit_message_text(
+            "🔄 **Scanning Market Volatility & Technical Indicators...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
+        )
+        await asyncio.sleep(1)
         
-        <div class="mk-control-row">
-            <label>⏱️ Expiry Time:</label>
-            <select id="mk-time-dropdown">
-                <option value="5">5 Second</option>
-                <option value="10">10 Second</option>
-                <option value="15">15 Second</option>
-                <option value="30">30 Second</option>
-                <option value="60" selected>1 Minute</option>
-                <option value="300">5 Minute</option>
-            </select>
-        </div>
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"📊 **𝐎𝐓𝐂 𝐋𝐈𝐕𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐄𝐍𝐆𝐈𝐍𝐄** 📊\n\n"
+            f"✨ Welcome to the professional OTC live trading hub. Here you receive high-accuracy real-time signals optimized for current market session.\n\n"
+            f"💎 **Asset:** USD/PHP (OTC)\n"
+            f"🟢 **Direction:** CALL (BUY) 📈\n"
+            f"🕒 **Entry Time:** Next Candle / 1 Minute Expiry\n"
+            f"🌐 **Time Zone:** Pakistan Standard Time (PKT)\n"
+            f"⚠️ **Rule:** 1 Step MTG Allowed\n\n"
+            f"👤 **Analyst:** {ADMIN_USERNAME}\n\n"
+            f"👇 **Rate your trade performance below:**"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("👍 𝐖𝐈𝐍 (𝐈𝐓𝐌)", callback_data="signal_win"), InlineKeyboardButton("👎 𝐋𝐎𝐒𝐒 (𝐎𝐓𝐌)", callback_data="signal_loss")],
+            [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="otc_live")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
-        <div class="mk-control-row">
-            <label>🎨 Laser Neon:</label>
-            <input type="color" id="mk-laser-picker" value="#00f0ff">
-        </div>
+    elif data == "analysis_signals":
+        await context.bot.edit_message_text(
+            "🔄 **Analyzing OTC Market Trends & Price Action...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
+        )
+        await asyncio.sleep(1)
         
-        <button id="mk-minimize-btn">🗕 MINIMIZE TERMINAL</button>
-    </div>
-    <div id="mk-resize-handle">◢</div>
-</div>
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"📈 **𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐇𝐔𝐁** 📈\n\n"
+            f"✨ Detailed technical and price action market analysis signals for digital options trading.\n\n"
+            f"💎 **Asset:** EUR/USD (Live Market)\n"
+            f"🔴 **Direction:** PUT (SELL) 📉\n"
+            f"🕒 **Entry:** Immediate / 1 Minute Expiry\n"
+            f"💡 **Setup Explanation:** Strong resistance level rejection accompanied by volume exhaustion.\n\n"
+            f"👤 **Analyst:** {ADMIN_USERNAME}\n\n"
+            f"👇 **Rate your trade performance below:**"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("👍 𝐖𝐈𝐍 (𝐈𝐓𝐌)", callback_data="signal_win"), InlineKeyboardButton("👎 𝐋𝐎𝐒𝐒 (𝐎𝐓𝐌)", callback_data="signal_loss")],
+            [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="analysis_signals")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
-<div id="mk-floating-mini-icon"><span>🚀 M.K PRO</span></div>
+    elif data == "ai_signals_pro":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"🤖 **𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎** 🤖\n\n"
+            f"🚀 **𝐄𝐋𝐄𝐕𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐆𝐀𝐌𝐄!**\n\n"
+            f"📊 Explore AI-assisted trading signals and market insights with our premium signals bot, designed for traders who want a smarter trading experience. ⚡🎯\n\n"
+            f"💎 **𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒**\n"
+            f"💵 Subscription Fee: $20 ONLY\n\n"
+            f"📌 **𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍**\n"
+            f"1️⃣ 💳 Complete your $20 subscription payment.\n"
+            f"2️⃣ 🧾 Send your payment receipt to the owner.\n"
+            f"3️⃣ ✅ Wait for payment verification.\n"
+            f"4️⃣ 🔓 Receive instructions to access the bot!\n\n"
+            f"👑 **𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎**\n"
+            f"✨ **𝐒𝐌𝐀𝐑𝐓 𝐈𝐍𝐒𝐈𝐆𝐇𝐓𝐒 • 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒** ✨"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐕𝐈𝐏 𝐋𝐈𝐍𝐊", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("💳 𝐏𝐀𝐘𝐌𝐄𝐍𝐓", url=ADMIN_USERNAME), InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-<script>
-    const MASTER_KEY = "MK586";
-    const GITHUB_DATABASE_URL = "https://raw.githubusercontent.com/mkhacker586-lab/mk-database/main/allowed.json";
+    elif data == "future_signals":
+        await context.bot.edit_message_text(
+            "🔄 **Syncing Pakistan Local Time & Future Market Predictions...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
+        )
+        await asyncio.sleep(1)
+        
+        now_pkt = datetime.datetime.utcnow() + datetime.timedelta(hours=5)
+        t1 = (now_pkt + datetime.timedelta(minutes=5)).strftime("%I:%M %p")
+        t2 = (now_pkt + datetime.timedelta(minutes=20)).strftime("%I:%M %p")
+        t3 = (now_pkt + datetime.timedelta(minutes=35)).strftime("%I:%M %p")
+        t4 = (now_pkt + datetime.timedelta(minutes=50)).strftime("%I:%M %p")
+        t5 = (now_pkt + datetime.timedelta(minutes=65)).strftime("%I:%M %p")
+        
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"🔮 **𝐅𝐔𝐓𝐔𝐑𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄** 🔮\n\n"
+            f"📅 **Date:** Today's Live Active Session\n"
+            f"🌐 **Timezone:** Pakistan Standard Time (PKT)\n\n"
+            f"1. 🕒 **Time:** {t1} | 💎 **Pair:** GBP/USD (OTC) | 📈 **Direction:** UP (CALL)\n"
+            f"2. 🕒 **Time:** {t2} | 💎 **Pair:** EUR/JPY | 📈 **Direction:** DOWN (PUT)\n"
+            f"3. 🕒 **Time:** {t3} | 💎 **Pair:** AUD/CAD (OTC) | 📈 **Direction:** UP (CALL)\n"
+            f"4. 🕒 **Time:** {t4} | 💎 **Pair:** USD/BDT (OTC) | 📈 **Direction:** DOWN (PUT)\n"
+            f"5. 🕒 **Time:** {t5} | 💎 **Pair:** EUR/CAD | 📈 **Direction:** UP (CALL)\n\n"
+            f"⚠️ **Note:** Follow strict risk management and prepare your entries ahead of time."
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔄 𝐑𝐄𝐅𝐑𝐄𝐒𝐇 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄", callback_data="future_signals")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
-    function getDeviceID() {
-        let id = localStorage.getItem('mk_device_id');
-        if (!id) {
-            id = 'MK-' + Math.random().toString(36).substring(2, 10).toUpperCase();
-            localStorage.setItem('mk_device_id', id);
-        }
-        return id;
-    }
-    const DEVICE_ID = getDeviceID();
-    document.getElementById('mk-dev-id-box').innerText = DEVICE_ID;
+    elif data == "future_list":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"📋 **𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍 & 𝐅𝐔𝐓𝐔𝐑𝐄 𝐋𝐈𝐒𝐓** 📋\n\n"
+            f"✨ Essential market information, session timings, and terminology to enhance your digital options career.\n\n"
+            f"• **Available Assets:** Major currency pairs & high-payout OTC assets.\n"
+            f"• **Market Sessions:** London, New York, and Asian overlap hours for maximum liquidity.\n"
+            f"• **Risk Management:** Never risk more than 2-3% of your total capital per trade session.\n"
+            f"• **Expiry Guidance:** Stick strictly to 1-minute or 5-minute expiries as per signal parameters.\n\n"
+            f"👇 Access other helpful sections below:"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("📚 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄", callback_data="trading_guidance")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    // 24+ Professional Neon Themes Collection
-    const THEMES = [
-        { name: "🩵 Cyan Neon", border: "#00f0ff", bg: "#090c10", header: "linear-gradient(90deg, #ff0055, #7000ff, #00f0ff)" },
-        { name: "❤️ Cyber Punk", border: "#ff0055", bg: "#0a0005", header: "linear-gradient(90deg, #ff0055, #330011)" },
-        { name: "💛 VIP Gold", border: "#ffd700", bg: "#0a0700", header: "linear-gradient(90deg, #ffd700, #221100)" },
-        { name: "💚 Matrix Pro", border: "#00ff66", bg: "#000a03", header: "linear-gradient(90deg, #00ff66, #001100)" },
-        { name: "💜 Venom Dark", border: "#a855f7", bg: "#05000a", header: "linear-gradient(90deg, #a855f7, #1e1b4b)" },
-        { name: "💙 Valor Sky", border: "#38bdf8", bg: "#020617", header: "linear-gradient(90deg, #38bdf8, #0f172a)" },
-        { name: "🧡 Super Saiyan", border: "#f97316", bg: "#0c0400", header: "linear-gradient(90deg, #f97316, #431407)" },
-        { name: "☣️ Toxic Lime", border: "#adff2f", bg: "#030700", header: "linear-gradient(90deg, #adff2f, #1a3300)" },
-        { name: "💎 Pure Diamond", border: "#00e5ff", bg: "#00121a", header: "linear-gradient(90deg, #00e5ff, #004d66)" },
-        { name: "🔥 Crimson Devil", border: "#e11d48", bg: "#0f0003", header: "linear-gradient(90deg, #e11d48, #4c0519)" },
-        { name: "🤍 Ghost Edition", border: "#ffffff", bg: "#1c1c1c", header: "linear-gradient(90deg, #7f8c8d, #111111)" },
-        { name: "🌌 Cosmic Void", border: "#ec4899", bg: "#0d0214", header: "linear-gradient(90deg, #ec4899, #3b0764)" },
-        { name: "⚡ Electric Yellow", border: "#facc15", bg: "#0f0f00", header: "linear-gradient(90deg, #facc15, #451a03)" },
-        { name: "🏮 Shogun Blood", border: "#991b1b", bg: "#050101", header: "linear-gradient(90deg, #991b1b, #111827)" },
-        { name: "🧊 Ice Blizzard", border: "#93c5fd", bg: "#0f172a", header: "linear-gradient(90deg, #1e3a8a, #3b82f6)" },
-        { name: "🩷 Hot Magenta", border: "#ff007f", bg: "#0d0006", header: "linear-gradient(90deg, #ff007f, #500028)" },
-        { name: "💚 Emerald Glow", border: "#059669", bg: "#02150a", header: "linear-gradient(90deg, #059669, #064e3b)" },
-        { name: "💙 Ocean Depth", border: "#0284c7", bg: "#020817", header: "linear-gradient(90deg, #0284c7, #0369a1)" },
-        { name: "💛 Amber Flame", border: "#fbbf24", bg: "#171002", header: "linear-gradient(90deg, #fbbf24, #b45309)" },
-        { name: "💜 Neon Orchid", border: "#c084fc", bg: "#0f0518", header: "linear-gradient(90deg, #c084fc, #6b21a8)" },
-        { name: "❤️ Ruby Spark", border: "#f43f5e", bg: "#140206", header: "linear-gradient(90deg, #f43f5e, #9f1239)" },
-        { name: "🩵 Teal Breeze", border: "#14b8a6", bg: "#021714", header: "linear-gradient(90deg, #14b8a6, #115e59)" },
-        { name: "🖤 Obsidian Dark", border: "#475569", bg: "#020202", header: "linear-gradient(90deg, #334155, #0f172a)" },
-        { name: "🌟 Starlight Pro", border: "#fde047", bg: "#121102", header: "linear-gradient(90deg, #fde047, #ca8a04)" }
-    ];
+    elif data == "personal_sessions":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"👤 **𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 & 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 👤\n\n"
+            f"✨ Get one-to-one custom trading guidance, direct mentorship, and live strategy breakdown sessions directly with M.K Trader.\n\n"
+            f"• Direct interactive sessions tailored to your schedule and capital size.\n"
+            f"• Professional account auditing and psychological control training.\n"
+            f"• Advanced compound planning to maximize your daily profits safely.\n\n"
+            f"👇 Click below to unlock VIP or contact for personal session:"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐅𝐎𝐑 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    const mainPanel = document.getElementById('mk-master-panel');
-    const miniIcon = document.getElementById('mk-floating-mini-icon');
-    const themeGrid = document.getElementById('mk-theme-grid');
+    elif data == "loss_recovery":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"💸 **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 & 𝐒𝐓𝐑𝐀𝐓𝐄𝐆𝐘** 💸\n\n"
+            f"✨ Experiencing a drawdown or previous trading losses? Learn professional recovery strategies, trade reviews, and emotional discipline to bounce back safely.\n\n"
+            f"• Deep analysis of previous market mistakes and emotional triggers.\n"
+            f"• Step-by-step capital recovery planning with safe risk parameters.\n"
+            f"• Direct guidance from M.K Trader to stabilize your account growth.\n\n"
+            f"👇 Click below to register via VIP link or contact owner:"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    THEMES.forEach((t) => {
-        const btn = document.createElement('button');
-        btn.className = 'mk-theme-btn';
-        btn.innerText = t.name;
-        btn.addEventListener('click', () => {
-            mainPanel.style.cssText = `background: ${t.bg} !important; border: 3px solid ${t.border} !important; position: fixed; top: 12%; left: 25px; width: 315px; box-shadow: 0 0 30px ${t.border}70;`;
-            document.getElementById('mk-panel-header').style.background = t.header;
-            document.getElementById('mk-resize-handle').style.color = t.border;
-            miniIcon.style.borderColor = t.border;
-            miniIcon.style.color = t.border;
-            document.getElementById('mk-laser-picker').value = t.border;
-        });
-        themeGrid.appendChild(btn);
-    });
+    elif data == "how_to_create":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"🎩 **𝐇𝐎𝐖 𝐓𝐎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐀𝐂𝐂𝐎𝐔𝐍𝐓** 🎩\n\n"
+            f"Follow these steps:\n\n"
+            f"1️⃣ Create your Quotex account using the M.K Trader referral link below.\n"
+            f"2️⃣ Complete your account setup and KYC verification.\n"
+            f"3️⃣ Copy your 8-digit Quotex Trader ID.\n"
+            f"4️⃣ Return to this bot.\n"
+            f"5️⃣ Press **VERIFY TRADER ID** or send your ID directly to owner.\n"
+            f"6️⃣ Your request will be sent to the Admin for manual review.\n"
+            f"7️⃣ After approval, you will receive your VIP access.\n\n"
+            f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    document.getElementById('mk-toggle-themes-btn').addEventListener('click', () => {
-        const td = document.getElementById('mk-theme-drawer');
-        td.style.display = td.style.display === 'none' ? 'block' : 'none';
-    });
+    elif data == "vip_joining":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"💎 **𝐕𝐈𝐏 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 & 𝐄𝐋𝐈𝐆𝐈𝐁𝐈𝐋𝐈𝐓𝐘 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 💎\n\n"
+            f"✨ Unlock elite benefits with M.K VIP Membership:\n"
+            f"• 24/7 Private High-Accuracy Signals Feed\n"
+            f"• Automated AI Trading Bot Full Access\n"
+            f"• Exclusive Compound Sessions & Direct Mentorship\n\n"
+            f"📌 **How to Join:**\n"
+            f"1️⃣ Create your account using our official link below.\n"
+            f"2️⃣ Verify your profile and submit your Trader ID via the verify button or send directly.\n"
+            f"3️⃣ Get instant approval and VIP access.\n\n"
+            f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    let offsetX = 0, offsetY = 0, startTouchX = 0, startTouchY = 0, isDragging = false;
-    const header = document.getElementById('mk-panel-header');
-    header.addEventListener('touchstart', (e) => {
-        if(e.touches.length > 1) return;
-        isDragging = true;
-        startTouchX = e.touches[0].clientX - offsetX;
-        startTouchY = e.touches[0].clientY - offsetY;
-    }, {passive: true});
-    window.addEventListener('touchend', () => { isDragging = false; });
-    window.addEventListener('touchmove', (e) => {
-        if (!isDragging) return;
-        offsetX = e.touches[0].clientX - startTouchX;
-        offsetY = e.touches[0].clientY - startTouchY;
-        requestAnimationFrame(() => { mainPanel.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0)`; });
-    }, {passive: true});
+    elif data == "acc_deleting":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"🗑️ **𝐀𝐂𝐂𝐎𝐔𝐍𝐓 𝐃𝐄𝐋𝐄𝐓𝐈𝐍𝐆 & 𝐑𝐄𝐒𝐄𝐓 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 🗑️\n\n"
+            f"✨ Follow these secure steps to close or reset your platform account:\n\n"
+            f"• Check your active balance and clear any pending financial transactions.\n"
+            f"• Review the impact of closing your historical trading data.\n"
+            f"• Go to platform profile settings -> Delete Account, or contact official support if the option is unavailable.\n"
+            f"⚠️ **Security Warning:** Never share your account passwords or verification codes with anyone under any circumstances!\n\n"
+            f"👇 Access VIP link, support, or VIP joining guide below:"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("💎 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍 𝐕𝐈𝐏", callback_data="vip_joining")],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    document.getElementById('mk-close-btn').addEventListener('click', () => { 
-        if(window.parent !== window) {
-            window.parent.postMessage('close_mk_panel', '*');
-        } else {
-            mainPanel.remove(); miniIcon.remove();
-        }
-    });
-    document.getElementById('mk-minimize-btn').addEventListener('click', () => { mainPanel.style.display = 'none'; miniIcon.style.display = 'block'; });
-    miniIcon.addEventListener('click', () => { miniIcon.style.display = 'none'; mainPanel.style.display = 'block'; });
+    elif data == "acc_creation_guidance":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"📖 **𝐀𝐂𝐂𝐎𝐔𝐍𝐓 𝐂𝐑𝐄𝐀𝐓𝐈𝐎𝐍 𝐖𝐀𝐋𝐊𝐓𝐇𝐑𝐎𝐔𝐆𝐇 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 📖\n\n"
+            f"✨ Detailed registration walkthrough to ensure seamless verification:\n\n"
+            f"1️⃣ Access the official registration page via our secure link.\n"
+            f"2️⃣ Input accurate personal details matching your legal ID to avoid verification failures.\n"
+            f"3️⃣ Complete identity confirmation and save your unique Trader ID securely.\n"
+            f"4️⃣ Press **VERIFY TRADER ID** or send directly to owner.\n\n"
+            f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    document.getElementById('mk-check-github-btn').addEventListener('click', function() {
-        fetch(GITHUB_DATABASE_URL)
-        .then(res => res.json())
-        .then(allowedDevices => {
-            if (Array.isArray(allowedDevices) && allowedDevices.includes(DEVICE_ID)) {
-                localStorage.setItem('mk_gate1_approved', 'true');
-                document.getElementById('mk-github-screen').style.display = 'none';
-                document.getElementById('mk-auth-screen').style.display = 'block';
-            } else {
-                alert(`❌ ACCESS DENIED:\\nAapka Device ID verify nahi hua.\\n\\nID: ${DEVICE_ID}`);
-            }
-        })
-        .catch(err => {
-            alert("⚠️ Connection Error: GitHub Link check karein.");
-        });
-    });
+    elif data == "trading_guidance":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"📚 **𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐄𝐃𝐔𝐂𝐀𝐓𝐈𝐎𝐍 & 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 𝐇𝐔𝐁** 📚\n\n"
+            f"✨ Master the fundamentals of digital options trading with professional insights:\n\n"
+            f"• Candlestick patterns, market trends, and support/resistance zones.\n"
+            f"• Strict risk management and emotional discipline control.\n"
+            f"• Importance of demo practice before risking real capital.\n"
+            f"• Avoiding common trading pitfalls and psychological traps.\n\n"
+            f"👇 Quick navigation to other vital sections:"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐎𝐈𝐍𝐈𝐍𝐆", callback_data="vip_joining"), InlineKeyboardButton("👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒", callback_data="personal_sessions")],
+            [InlineKeyboardButton("💸 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘", callback_data="loss_recovery"), InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐒𝐈𝐆𝐍𝐀𝐋𝐒", callback_data="otc_live")],
+            [InlineKeyboardButton("📈 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒", callback_data="analysis_signals"), InlineKeyboardButton("🔮 𝐅𝐔𝐓𝐔𝐑𝐄", callback_data="future_signals")],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    document.getElementById('mk-unlock-btn').addEventListener('click', () => {
-        const inputKey = document.getElementById('mk-key-input').value.trim();
-        if (inputKey === MASTER_KEY) {
-            localStorage.setItem('mk_gate2_session', 'passed');
-            document.getElementById('mk-auth-screen').style.display = 'none';
-            document.getElementById('mk-dashboard-screen').style.display = 'block';
-            runRadarEngine();
-        } else {
-            const errBox = document.getElementById('mk-auth-error');
-            errBox.style.display = 'block'; setTimeout(() => { errBox.style.display = 'none'; }, 2000);
-        }
-    });
+    elif data == "tournament_joining":
+        resp_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"🏆 **𝐓𝐎𝐔𝐑𝐍𝐀𝐌𝐄𝐍𝐓 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 & 𝐏𝐑𝐈𝐙𝐄𝐒 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄** 🏆\n\n"
+            f"✨ Participate in official platform trading tournaments to win cash prizes up to $10,000!\n\n"
+            f"• Check eligibility requirements and register via our official affiliate portal.\n"
+            f"• Contact admin for special tournament strategy support and competition tips.\n"
+            f"• Practice regularly on demo tournaments before entering high-stakes competitions.\n\n"
+            f"👇 Register via VIP link or contact owner below:"
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+            [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    document.getElementById('mk-laser-picker').addEventListener('input', (e) => {
-        mainPanel.style.borderColor = e.target.value;
-    });
+    elif data in ["signal_win", "signal_loss"]:
+        result_title = "🎉 **𝐂𝐎𝐍𝐆𝐑𝐀𝐓𝐔𝐋𝐀𝐓𝐈𝐎𝐍𝐒! 𝐏𝐑𝐎𝐅𝐈𝐓 𝐑𝐄𝐂𝐎𝐑𝐃𝐄𝐃 (𝐖𝐈𝐍)**" if data == "signal_win" else "⚠️ **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 𝐍𝐄𝐄𝐃𝐄𝐃 - 𝐑𝐄𝐂𝐎𝐕𝐄𝐑 𝐈𝐍 𝐍𝐄𝐗𝐓 𝐒𝐄𝐒𝐒𝐈𝐎𝐍**"
+        feedback_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"{result_title}\n\n"
+            f"✅ **𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊 𝐑𝐄𝐂𝐄𝐈𝐕𝐄𝐃 𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋𝐘!**\n"
+            f"Thank you for helping us track signal accuracy and improve community performance."
+        )
+        kb = InlineKeyboardMarkup([
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        ])
+        await context.bot.edit_message_text(feedback_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
-    // High Accuracy AI Radar & Animation Engine
-    function runRadarEngine() {
-        const statusHeader = document.getElementById('mk-radar-status');
-        const displaySignal = document.getElementById('mk-main-signal');
-        const timerClock = document.getElementById('mk-timer-countdown');
-        const filterStatus = document.getElementById('mk-filter-text');
-        const accuracyData = document.getElementById('mk-accuracy-value');
-        const expirySelect = document.getElementById('mk-time-dropdown');
+    elif data == "back_home":
+        user_name = query.from_user.first_name if query.from_user and query.from_user.first_name else "Trader"
+        welcome_text = (
+            f"👑 **{BOT_NAME}** 👑\n\n"
+            f"✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!**\n\n"
+            f"🌐 **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁** 💎\n\n"
+            f"📊 Access high-accuracy digital options signals, account guides, VIP access, and professional tools from the menu below:\n\n"
+            f"🔗 **𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐏𝐫𝐞𝐦𝐢𝐮𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥:** {CHANNEL_LINK}\n\n"
+            f"👇 **𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍:**"
+        )
+        await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
 
-        let tradeActiveHold = false;
+# Vercel Serverless Webhook Handler
+class handler(BaseHTTPRequestHandler):
+    def do_POST(self):
+        content_length = int(self.headers.get('Content-Length', 0))
+        post_data = self.rfile.read(content_length)
+        
+        try:
+            json_data = json.loads(post_data.decode('utf-8'))
+            
+            async def process():
+                application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+                
+                # 📌 Set Bot Menu Commands (Start the bot & Contact owner)
+                try:
+                    await application.bot.set_my_commands([
+                        BotCommand("start", "Start the bot"),
+                        BotCommand("contact", "Contact owner")
+                    ])
+                except Exception as cmd_err:
+                    print(f"Set commands error: {cmd_err}")
+                
+                conv_handler = ConversationHandler(
+                    entry_points=[CallbackQueryHandler(verify_id_start_handler, pattern="^verify_id_start$")],
+                    states={
+                        WAITING_FOR_TRADER_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_trader_id_handler)]
+                    },
+                    fallbacks=[CallbackQueryHandler(cancel_verification, pattern="^back_home$")]
+                )
+                application.add_handler(conv_handler)
+                
+                # Sirf pending request wala handler chalega, koi force sub check nahi hai!
+                application.add_handler(ChatJoinRequestHandler(handle_join_request))
+                application.add_handler(CommandHandler("start", start_command))
+                application.add_handler(CommandHandler("contact", contact_command))
+                application.add_handler(CommandHandler("stats", stats_command))
+                application.add_handler(CommandHandler("broadcast", broadcast_command))
+                application.add_handler(CallbackQueryHandler(button_callback_handler))
+                application.add_handler(MessageHandler(filters.UpdateType.CHANNEL_POST | filters.UpdateType.EDITED_CHANNEL_POST, forward_channel_posts))
+                
+                async with application:
+                    await application.process_update(
+                        Update.de_json(json_data, application.bot)
+                    )
 
-        setInterval(() => {
-            let localTime = new Date();
-            let currentSeconds = localTime.getSeconds();
-            let frameRate = parseInt(expirySelect.value);
-            let targetCountdown = frameRate - (currentSeconds % frameRate);
+            asyncio.run(process())
 
-            if (!tradeActiveHold) {
-                statusHeader.innerText = "🛰️ AI RADAR - SYNCED LIVE";
-                statusHeader.style.color = "#eab308";
-                accuracyData.innerText = (98.2 + Math.random() * 1.6).toFixed(1) + "%";
-                timerClock.innerText = `NEXT CANDLE IN: ${targetCountdown}s`;
-            }
+            self.send_response(200)
+            self.end_headers()
+            self.wfile.write(b'OK')
+        except Exception as e:
+            print(f"Webhook error: {e}")
+            self.send_response(500)
+            self.end_headers()
 
-            if (targetCountdown <= Math.min(15, Math.floor(frameRate/2)) && targetCountdown >= 3 && !tradeActiveHold) {
-                filterStatus.innerText = "⚡ RUNNING MARKET PRICE ACTION SEEDS...";
-                let randomSeed = Math.random() * 100;
-                let lockedAcc = (98.8 + Math.random() * 1.1).toFixed(1);
-                accuracyData.innerText = `${lockedAcc}%`;
-
-                if (randomSeed > 48) {
-                    displaySignal.innerText = `🟢 UP`;
-                    displaySignal.className = "mk-signal-up-active";
-                } else {
-                    displaySignal.innerText = `🔴 DOWN`;
-                    displaySignal.className = "mk-signal-down-active";
-                }
-
-                tradeActiveHold = true;
-                let remainingTradeTime = targetCountdown + frameRate; 
-
-                let tradeTimerInterval = setInterval(() => {
-                    remainingTradeTime--;
-                    if (remainingTradeTime > frameRate) {
-                        timerClock.innerText = `⏳ ENTRY WINDOW: ${(remainingTradeTime - frameRate)}s`;
-                    } else {
-                        timerClock.innerText = `🔒 EXPIRES IN: ${remainingTradeTime}s`;
-                        filterStatus.innerText = "⏳ ANALYSING CANDLE RESULT...";
-                    }
-                    if (remainingTradeTime <= 0) {
-                        clearInterval(tradeTimerInterval);
-                        let isWin = Math.random() > 0.04; // 96%+ High Win Ratio Simulation
-                        displaySignal.className = "";
-                        if (isWin) {
-                            displaySignal.innerText = "🏆 WIN !!";
-                            displaySignal.className = "mk-signal-win-frame";
-                            filterStatus.innerText = "TRADE SUCCESSFUL ✅";
-                            statusHeader.innerText = "🟢 TRADE RESULT: WIN";
-                            statusHeader.style.color = "#00ff66";
-                        } else {
-                            displaySignal.innerText = "❌ LOSS";
-                            displaySignal.className = "mk-signal-loss-frame";
-                            filterStatus.innerText = "MARTINGALE RECOMMENDED ❌";
-                            statusHeader.innerText = "🔴 TRADE RESULT: LOSS";
-                            statusHeader.style.color = "#ff0055";
-                        }
-                        setTimeout(() => {
-                            displaySignal.className = ""; 
-                            displaySignal.innerText = "WAITING...";
-                            filterStatus.innerText = "FILTERING MARKET NOISE...";
-                            tradeActiveHold = false; 
-                        }, 4000);
-                    }
-                }, 1000);
-            } else {
-                if (!tradeActiveHold) {
-                    displaySignal.innerText = "WAITING..."; 
-                    displaySignal.className = "";
-                    filterStatus.innerText = "FILTERING MARKET NOISE...";
-                }
-            }
-        }, 1000);
-    }
-
-    const gate1 = localStorage.getItem('mk_gate1_approved');
-    const gate2 = localStorage.getItem('mk_gate2_session');
-    if (gate1 === 'true') {
-        if (gate2 === 'passed') {
-            document.getElementById('mk-github-screen').style.display = 'none';
-            document.getElementById('mk-auth-screen').style.display = 'none';
-            document.getElementById('mk-dashboard-screen').style.display = 'block';
-            runRadarEngine();
-        } else {
-            document.getElementById('mk-github-screen').style.display = 'none';
-            document.getElementById('mk-auth-screen').style.display = 'block';
-        }
-    } else {
-        document.getElementById('mk-github-screen').style.display = 'block';
-    }
-</script>
-</body>
-</html>
-"""
-
-@app.route('/')
-def home():
-    return render_template_string(HTML_PAGE)
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header('Content-type', 'text/plain')
+        self.end_headers()
+        self.wfile.write(f"{BOT_NAME} Data Log Bot is active on Vercel!".encode('utf-8'))
