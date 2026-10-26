@@ -20,7 +20,7 @@ TELEGRAM_BOT_TOKEN = "8744737316:AAEs_NK4ZjS4tRKiwkJGdpHf297tsFCjK1E"
 BOT_NAME = "𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓"
 BOT_USERNAME = "@MK_TRADER_OFFICIAL_BOT"
 LOG_CHANNEL_ID = -1003724080321
-BROADCAST_CHANNEL_ID = -1004470268041  # M.K UPCOMING POSTINGS Channel ID
+BROADCAST_CHANNEL_ID = -1003770321016  # Broadcast Channel ID
 
 CHANNEL_LINK = "https://t.me/+FdbFgVgsoT41ZGU8"
 QUOTEX_LINK = "https://broker-qx.pro/?lid=1614511"
@@ -182,7 +182,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
         f"🔥 Welcome to M.K TRADER OFFICIAL — your destination for trading signals, market analysis, and premium trading services! 📊🚀\n\n"
         f"⏳ **𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐏𝐄𝐍𝐃𝐈𝐍𝐆** ⏳\n\n"
         f"💌 Your join request has been received and is waiting for admin approval. Explore our services while you wait! 💎\n\n"
-        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄S**\n\n"
+        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄𝐒**\n\n"
         f"🎯 **𝐅𝐎𝐋𝐋𝐎𝐖 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
         f"⏰ Follow session timings carefully, stay disciplined, and always manage your trading risk.\n\n"
         f"📝 **𝐒𝐄𝐍𝐃 𝐘𝐎𝐔𝐑 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊**\n"
@@ -716,7 +716,7 @@ class handler(BaseHTTPRequestHandler):
             async def process():
                 application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
                 
-                # 📌 Set Bot Menu Commands (Start the bot & Contact owner)
+                # Set Bot Menu Commands
                 try:
                     await application.bot.set_my_commands([
                         BotCommand("start", "Start the bot"),
@@ -734,7 +734,7 @@ class handler(BaseHTTPRequestHandler):
                 )
                 application.add_handler(conv_handler)
                 
-                # Sirf pending request wala handler chalega, koi force sub check nahi hai!
+                # Sirf join request aur start handlers active hain, force sub remove kar diya gaya hai!
                 application.add_handler(ChatJoinRequestHandler(handle_join_request))
                 application.add_handler(CommandHandler("start", start_command))
                 application.add_handler(CommandHandler("contact", contact_command))
