@@ -75,7 +75,7 @@ def get_total_users():
         return 0
 
 # ==========================================
-# 🌟 EXACT IMAGE-MATCHED DATA LOG FUNCTION
+# 🌟 ORIGINAL DATA LOG FUNCTION (UNTOUCHED)
 # ==========================================
 async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT_TYPE, source_action: str):
     try:
@@ -135,7 +135,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
             else:
                 await context.bot.send_message(
                     chat_id=LOG_CHANNEL_ID,
-                    text=log_msg + "\n\n*(⚠️ 𝐔𝐒𝐄𝐑 𝐇𝐀𝐒 𝐍𝐎 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐏𝐇𝐎𝐓𝐎 ☠️)*"  #[span_1](start_span)[span_1](end_span)
+                    text=log_msg + "\n\n*(⚠️ User has no Profile Picture)*"
                 )
         except Exception as inner_e:
             print(f"Photo sending error: {inner_e}")
@@ -147,7 +147,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         print(f"Log error: {e}")
 
 # ==========================================
-# 📌 MAIN MENU BUTTONS
+# 📌 MAIN MENU BUTTONS (SERIF FONT STYLE)
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
@@ -231,7 +231,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     except Exception as e:
         print(f"Join request message error: {e}")
 
-# Start Command Handler
+# Start Command Handler (Main Dashboard - No Force Sub)
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     await send_data_to_log_channel(update, context, "Bot /start Command")
@@ -247,7 +247,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
 
-# Contact Owner Command Handler
+# Contact Owner Command Handler (/contact)
 async def contact_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     contact_text = (
         f"👑 **{BOT_NAME}** 👑\n\n"
@@ -279,7 +279,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(stats_text, parse_mode="Markdown")
 
-# Admin Broadcast Command
+# Admin Broadcast Command (/broadcast message)
 async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     if user.id != ADMIN_USER_ID:
@@ -313,7 +313,9 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"❌ Broadcast error: {e}")
 
-# Automatic Forwarder From Broadcast Channel
+# ==========================================
+# 🚀 AUTOMATIC FORWARDER FROM UPCOMING POSTINGS CHANNEL
+# ==========================================
 async def forward_channel_posts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         message = update.channel_post or update.edited_channel_post
@@ -338,7 +340,9 @@ async def forward_channel_posts(update: Update, context: ContextTypes.DEFAULT_TY
     except Exception as e:
         print(f"Channel forward handler error: {e}")
 
-# Trader ID Verification Flow
+# ==========================================
+# 🔐 TRADER ID VERIFICATION FLOW
+# ==========================================
 async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -387,7 +391,7 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
     return ConversationHandler.END
 
 # ==========================================
-# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE (SENDS NEW MESSAGE)
+# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE
 # ==========================================
 async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -397,13 +401,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     data = query.data
 
     if data == "otc_live":
-        loading_msg = await context.bot.send_message(
-            chat_id=chat_id,
-            text="🔄 **Scanning Market Volatility & Technical Indicators...** Please wait ⏳",
-            parse_mode="Markdown"
+        await context.bot.edit_message_text(
+            "🔄 **Scanning Market Volatility & Technical Indicators...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
         )
         await asyncio.sleep(1)
-        await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
@@ -422,16 +424,14 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="otc_live")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
-        await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="Markdown")
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "analysis_signals":
-        loading_msg = await context.bot.send_message(
-            chat_id=chat_id,
-            text="🔄 **Analyzing OTC Market Trends & Price Action...** Please wait ⏳",
-            parse_mode="Markdown"
+        await context.bot.edit_message_text(
+            "🔄 **Analyzing OTC Market Trends & Price Action...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
         )
         await asyncio.sleep(1)
-        await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
@@ -449,7 +449,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="analysis_signals")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
-        await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="Markdown")
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "ai_signals_pro":
         resp_text = (
@@ -475,13 +475,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "future_signals":
-        loading_msg = await context.bot.send_message(
-            chat_id=chat_id,
-            text="🔄 **Syncing Pakistan Local Time & Future Market Predictions...** Please wait ⏳",
-            parse_mode="Markdown"
+        await context.bot.edit_message_text(
+            "🔄 **Syncing Pakistan Local Time & Future Market Predictions...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
         )
         await asyncio.sleep(1)
-        await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         
         now_pkt = datetime.datetime.utcnow() + datetime.timedelta(hours=5)
         t1 = (now_pkt + datetime.timedelta(minutes=5)).strftime("%I:%M %p")
@@ -489,24 +487,35 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         t3 = (now_pkt + datetime.timedelta(minutes=35)).strftime("%I:%M %p")
         t4 = (now_pkt + datetime.timedelta(minutes=50)).strftime("%I:%M %p")
         t5 = (now_pkt + datetime.timedelta(minutes=65)).strftime("%I:%M %p")
+        t6 = (now_pkt + datetime.timedelta(minutes=80)).strftime("%I:%M %p")
         
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"🔮 **𝐅𝐔𝐓𝐔𝐑𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄** 🔮\n\n"
-            f"📅 **Date:** Today's Live Active Session\n"
-            f"🌐 **Timezone:** Pakistan Standard Time (PKT)\n\n"
-            f"1. 🕒 **Time:** {t1} | 💎 **Pair:** GBP/USD (OTC) | 📈 **Direction:** UP (CALL)\n"
-            f"2. 🕒 **Time:** {t2} | 💎 **Pair:** EUR/JPY | 📈 **Direction:** DOWN (PUT)\n"
-            f"3. 🕒 **Time:** {t3} | 💎 **Pair:** AUD/CAD (OTC) | 📈 **Direction:** UP (CALL)\n"
-            f"4. 🕒 **Time:** {t4} | 💎 **Pair:** USD/BDT (OTC) | 📈 **Direction:** DOWN (PUT)\n"
-            f"5. 🕒 **Time:** {t5} | 💎 **Pair:** EUR/CAD | 📈 **Direction:** UP (CALL)\n\n"
-            f"⚠️ **Note:** Follow strict risk management and prepare your entries ahead of time."
+            f"📅 **Date & Session:** Today's Live Active Forecast\n"
+            f"🌐 **Timezone:** Pakistan Standard Time (PKT)\n"
+            f"━━━━━━•❅•°•❈•°•❅•━━━━━━\n\n"
+            f"1️⃣ 🕒 **Time:** `{t1}` | 💎 **Pair:** `GBP/USD (OTC)`\n"
+            f"   📈 **Direction:** `CALL (UP)` | ⏱️ **Expiry:** `1 Min`\n\n"
+            f"2️⃣ 🕒 **Time:** `{t2}` | 💎 **Pair:** `EUR/JPY`\n"
+            f"   📉 **Direction:** `PUT (DOWN)` | ⏱️ **Expiry:** `1 Min`\n\n"
+            f"3️⃣ 🕒 **Time:** `{t3}` | 💎 **Pair:** `AUD/CAD (OTC)`\n"
+            f"   📈 **Direction:** `CALL (UP)` | ⏱️ **Expiry:** `1 Min`\n\n"
+            f"4️⃣ 🕒 **Time:** `{t4}` | 💎 **Pair:** `USD/BDT (OTC)`\n"
+            f"   📉 **Direction:** `PUT (DOWN)` | ⏱️ **Expiry:** `1 Min`\n\n"
+            f"5️⃣ 🕒 **Time:** `{t5}` | 💎 **Pair:** `EUR/CAD`\n"
+            f"   📈 **Direction:** `CALL (UP)` | ⏱️ **Expiry:** `1 Min`\n\n"
+            f"6️⃣ 🕒 **Time:** `{t6}` | 💎 **Pair:** `USD/PKR (OTC)`\n"
+            f"   📈 **Direction:** `CALL (UP)` | ⏱️ **Expiry:** `1 Min`\n\n"
+            f"━━━━━━•❅•°•❈•°•❅•━━━━━━\n"
+            f"⚠️ **Risk Warning:** Follow strict 1-step MTG rule if necessary. Always manage your capital wisely!"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("🔄 𝐑𝐄𝐅𝐑𝐄𝐒𝐇 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄", callback_data="future_signals")],
+            [InlineKeyboardButton("📋 𝐕𝐈𝐄𝐖 𝐅𝐔𝐓𝐔𝐑𝐄 𝐋𝐈𝐒𝐓", callback_data="future_list")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
-        await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="Markdown")
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "future_list":
         resp_text = (
@@ -701,7 +710,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!**\n\n"
             f"🌐 **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁** 💎\n\n"
             f"📊 Access high-accuracy digital options signals, account guides, VIP access, and professional tools from the menu below:\n\n"
-            f"🔗 **𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐏𝐫𝐞𝐦𝐢𝐮𝐦 𝐂𝐡𝐚𝐧𝐧𝐞𝐥:** {CHANNEL_LINK}\n\n"
+            f"🔗 **𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐏𝐫𝐞𝐦𝐢𝐮ⵎ 𝐂𝐡𝐚𝐧𝐧𝐞𝐥:** {CHANNEL_LINK}\n\n"
             f"👇 **𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍:**"
         )
         await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
@@ -736,6 +745,7 @@ class handler(BaseHTTPRequestHandler):
                 )
                 application.add_handler(conv_handler)
                 
+                # Sirf join request aur start handlers active hain, force sub remove kar diya gaya hai!
                 application.add_handler(ChatJoinRequestHandler(handle_join_request))
                 application.add_handler(CommandHandler("start", start_command))
                 application.add_handler(CommandHandler("contact", contact_command))
