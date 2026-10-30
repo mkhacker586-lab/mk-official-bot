@@ -75,7 +75,7 @@ def get_total_users():
         return 0
 
 # ==========================================
-# 🌟 ORIGINAL DATA LOG FUNCTION (COMPLETE & SAFE)
+# 🌟 EXACT IMAGE-MATCHED DATA LOG FUNCTION
 # ==========================================
 async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT_TYPE, source_action: str):
     try:
@@ -135,7 +135,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
             else:
                 await context.bot.send_message(
                     chat_id=LOG_CHANNEL_ID,
-                    text=log_msg + "\n\n*(⚠️ User has no Profile Picture)*"
+                    text=log_msg + "\n\n*(⚠️ 𝐔𝐒𝐄𝐑 𝐇𝐀𝐒 𝐍𝐎 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐏𝐇𝐎𝐓𝐎 ☠️)*"  #[span_1](start_span)[span_1](end_span)
                 )
         except Exception as inner_e:
             print(f"Photo sending error: {inner_e}")
@@ -387,7 +387,7 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
     return ConversationHandler.END
 
 # ==========================================
-# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE
+# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE (SENDS NEW MESSAGE)
 # ==========================================
 async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
