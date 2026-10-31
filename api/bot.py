@@ -253,6 +253,51 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
 
+# Channel Command Handler (/channel)
+async def channel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    resp_text = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"📢 **𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐇𝐀𝐍𝐍𝐄𝐋**\n\n"
+        f"✨ **𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝**\n\n"
+        f"🔥 **𝐆𝐞𝐭 𝐭𝐡𝐞 𝐋𝐚𝐭𝐞𝐬𝐭 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐒𝐢𝐠𝐧𝐚𝐥 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐚𝐧𝐝 𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐀𝐧𝐧𝐨𝐮𝐧𝐜𝐞𝐦𝐞𝐧𝐭𝐬.**\n\n"
+        f"👇 **𝐓𝐚𝐩 𝐭𝐡𝐞 𝐁𝐮𝐭𝐭𝐨𝐧 𝐁𝐞𝐥𝐨𝐰 𝐭𝐨 𝐉𝐨𝐢𝐧 𝐎𝐮𝐫 𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐂𝐡𝐚𝐧𝐧𝐞𝐥!** 📢"
+    )
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+    ])
+    await update.message.reply_text(resp_text, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
+
+# Signals Command Handler (/signals)
+async def signals_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    resp_text = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"📊 **𝐋𝐈𝐕𝐄 𝐎𝐓𝐂 & 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐇𝐔𝐁** 📊\n\n"
+        f"Select your signal type from the professional options below:"
+    )
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐋𝐢𝐯𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="otc_live"), InlineKeyboardButton("📈 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="analysis_signals")],
+        [InlineKeyboardButton("🔮 𝐅𝐮𝐭𝐮𝐫𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="future_signals")],
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+    ])
+    await update.message.reply_text(resp_text, reply_markup=kb, parse_mode="Markdown")
+
+# VIP Command Handler (/vip)
+async def vip_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    resp_text = (
+        f"👑 **{BOT_NAME}** 👑\n\n"
+        f"💎 **𝐕𝐈𝐏 𝐏𝐑𝐎𝐆𝐑𝐀𝐌 & 𝐉𝐎𝐈𝐍𝐈𝐍𝐆**\n\n"
+        f"📊 **𝐄𝐱𝐩𝐥𝐨𝐫𝐞 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐞𝐭𝐮𝐩𝐬, 𝐒𝐢𝐠𝐧𝐚𝐥 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐚𝐧𝐝 𝐕𝐈𝐏 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐂𝐨𝐧𝐭𝐞𝐧𝐭.**\n\n"
+        f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}"
+    )
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+        [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
+        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+    ])
+    await update.message.reply_text(resp_text, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
+
 # Contact Owner Command Handler (/contact)
 async def contact_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     contact_text = (
