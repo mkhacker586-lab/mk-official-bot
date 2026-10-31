@@ -26,8 +26,6 @@ CHANNEL_LINK = "https://t.me/+FdbFgVgsoT41ZGU8"
 QUOTEX_LINK = "https://broker-qx.pro/?lid=1614511"
 ADMIN_USERNAME = "https://t.me/MK_TRADER586"
 ADMIN_USER_ID = 7588675873
-OTHER_BOT_LINK = "https://t.me/MK_TRADER02_BOT?start=start"
-PHOTO_URL = "https://i.postimg.cc/4nRdvZ79/file-00000000f56082118b205bedf79869e1.png"
 # ==========================================
 
 WAITING_FOR_TRADER_ID = 1
@@ -149,7 +147,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         print(f"Log error: {e}")
 
 # ==========================================
-# 📌 MAIN MENU BUTTONS (EXACT @MK_TRADER02_BOT STYLE)
+# 📌 MAIN MENU BUTTONS (@MK_TRADER02_BOT EXACT STYLE)
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
@@ -157,17 +155,17 @@ def main_menu_keyboard():
         [InlineKeyboardButton("🔮 𝐅𝐮𝐭𝐮𝐫𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="future_signals"), InlineKeyboardButton("📋 𝐅𝐮𝐭𝐮𝐫𝐞 𝐋𝐢𝐬𝐭", callback_data="future_list")],
         [InlineKeyboardButton("👤 𝐏𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="personal_sessions"), InlineKeyboardButton("💸 𝐋𝐨𝐬𝐬 𝐑𝐞𝐜𝐨𝐯𝐞𝐫𝐲 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬", callback_data="loss_recovery")],
         [InlineKeyboardButton("🎩 𝐇𝐨𝐰 𝐓𝐨 𝐂𝐫𝐞𝐚𝐭𝐞 𝐍𝐞𝐰 𝐀𝐜𝐜𝐨𝐮𝐧𝐭", callback_data="how_to_create"), InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="vip_joining")],
-        [InlineKeyboardButton("🗑️ 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐃𝐞𝐥𝐞𝐭𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_deleting"), InlineKeyboardButton("📖 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐂𝐫𝐞𝐚𝐭𝐢𝐨𝐧 𝐆𝐮𝐢ד𝐚𝐧𝐜𝐞", callback_data="acc_creation_guidance")],
+        [InlineKeyboardButton("🗑️ 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐃𝐞𝐥𝐞𝐭𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_deleting"), InlineKeyboardButton("📖 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐂𝐫𝐞𝐚𝐭𝐢𝐨𝐧 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="acc_creation_guidance")],
         [InlineKeyboardButton("📚 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞", callback_data="trading_guidance"), InlineKeyboardButton("🏆 𝐓𝐨𝐮𝐫𝐧𝐚𝐦𝐞𝐧𝐭 𝐉𝐨𝐢𝐧𝐢𝐧𝐠", callback_data="tournament_joining")],
         [InlineKeyboardButton("🤖 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎", callback_data="ai_signals_pro")],
-        [InlineKeyboardButton("👑 𝐌.𝐊 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑", url=OTHER_BOT_LINK)],
+        [InlineKeyboardButton("👑 𝐌.𝐊 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑", url="https://t.me/MK_TRADER_OFFICIAL_BOT?start=start")],
         [InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 🚀", url=CHANNEL_LINK)],
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)]
     ]
     return InlineKeyboardMarkup(keyboard)
 
 # ==========================================
-# 🎯 JOIN REQUEST PENDING HANDLER (@MK_TRADER02_BOT DASHBOARD MATCH)
+# 🎯 JOIN REQUEST PENDING HANDLER (UNTOUCHED OFFICIAL STYLE)
 # ==========================================
 async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
     req = update.chat_join_request
@@ -177,26 +175,57 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     user = req.from_user
     await send_data_to_log_channel(update, context, "Channel Join Request")
     
-    user_name = user.first_name if user and user.first_name else "Trader"
-    welcome_text = (
-        f"👑 **{BOT_NAME}** 👑\n\n"
-        f"✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!**\n\n"
-        f"🌐 **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁** 💎\n\n"
-        f"📊 **𝐀𝐜𝐜𝐞𝐬𝐬 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐢𝐠𝐧𝐚𝐥𝐬, 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐆𝐮𝐢𝐝𝐞𝐬, 𝐕𝐈𝐏 𝐀𝐜𝐜𝐞𝐬𝐬, 𝐚𝐧𝐝 𝐁𝐨𝐭 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 — 𝐀𝐥𝐥 𝐈𝐧 𝐎𝐧𝐞 𝐏𝐥𝐚𝐜𝐞.**\n\n"
-        f"━━━━━━━━━━━━━━━━━━\n\n"
-        f"🔗 **𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋:**\n"
-        f"{CHANNEL_LINK}\n\n"
-        f"━━━━━━━━━━━━━━━━━━\n\n"
-        f"⚡ **𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝**\n\n"
-        f"👇 **𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍**\n\n"
-        f"🛡️ *Trading involves financial risk. Signals are not guaranteed profits.*"
+    first_name = user.first_name if user and user.first_name else "Trader"
+    
+    pending_msg = (
+        f"👑✨ **𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓** ✨👑\n\n"
+        f"💎 **𝐇𝐞𝐥𝐥𝐨, {first_name}!** ❤️‍🔥\n\n"
+        f"🔥 Welcome to M.K TRADER OFFICIAL — your destination for trading signals, market analysis, and premium trading services! 📊🚀\n\n"
+        f"⏳ **𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐏𝐄𝐍𝐃𝐈𝐍𝐆** ⏳\n\n"
+        f"💌 Your join request has been received and is waiting for admin approval. Explore our services while you wait! 💎\n\n"
+        f"📜 **𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐑𝐔𝐋𝐄S**\n\n"
+        f"🎯 **𝐅𝐎𝐋𝐋𝐎𝐖 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
+        f"⏰ Follow session timings carefully, stay disciplined, and always manage your trading risk.\n\n"
+        f"📝 **𝐒𝐄𝐍𝐃 𝐘𝐎𝐔𝐑 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊**\n"
+        f"✅ Submit your WIN (ITM) or LOSS (OTM) feedback after every session to help maintain accurate records.\n\n"
+        f"👤 **𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒**\n"
+        f"🎯 Looking for individual guidance? Contact the owner to ask about personal sessions and available support.\n\n"
+        f"💸 **𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘**\n"
+        f"🧠 Review your trades, learn from mistakes, and focus on disciplined risk management.\n\n"
+        f"💎 **𝐕𝐈𝐏 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒**\n"
+        f"👑 Explore VIP membership for available premium signals, trading guidance, and access details.\n\n"
+        f"🚀 **𝐄𝐗𝐏𝐋𝐎𝐑𝐄 𝐎𝐔𝐑 𝐒𝐄𝐑𝐕𝐈𝐂𝐄𝐒**\n\n"
+        f"📊 OTC Live Signals\n"
+        f"📈 Analysis Signals\n"
+        f"🔮 Future Signals & Future List\n"
+        f"👤 Personal Sessions\n"
+        f"💸 Loss Recovery Sessions\n"
+        f"💎 VIP Membership\n"
+        f"📚 Trading & Account Guidance\n"
+        f"🏆 Tournament Joining\n\n"
+        f"❤️‍🔥 Thank you for choosing M.K TRADER OFFICIAL!\n\n"
+        f"👑 **𝐒𝐓𝐀𝐘 𝐅𝐎𝐂𝐔𝐒𝐄𝐃 • 𝐒𝐓𝐀𝐘 𝐃𝐈𝐒𝐂𝐈𝐏𝐋𝐈𝐍𝐄𝐃** 💎"
     )
+    
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💎 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
+        [
+            InlineKeyboardButton("👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍", url="https://t.me/m/jY55Z4p_Yzhk"),
+            InlineKeyboardButton("💸 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘", url="https://t.me/m/i7Y4TWPaMWZk")
+        ],
+        [
+            InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒", url="https://t.me/m/7LE78wShYTc0"),
+            InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)
+        ],
+        [InlineKeyboardButton("👀 𝐕𝐈𝐄𝐖 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
+    ])
     
     try:
         await context.bot.send_message(
             chat_id=user.id,
-            text=welcome_text,
-            reply_markup=main_menu_keyboard(),
+            text=pending_msg,
+            reply_markup=kb,
             parse_mode="Markdown",
             disable_web_page_preview=True
         )
@@ -224,60 +253,12 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard(), parse_mode="Markdown", disable_web_page_preview=True)
 
-# Additional Commands Matching @MK_TRADER02_BOT
-async def channel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    resp_text = (
-        f"👑 **{BOT_NAME}** 👑\n\n"
-        f"📢 **𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐇𝐀𝐍𝐍𝐄𝐋**\n\n"
-        f"✨ **𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝**\n\n"
-        f"🔥 **𝐆𝐞𝐭 𝐭𝐡𝐞 𝐋𝐚𝐭𝐞𝐬𝐭 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐒𝐢𝐠𝐧𝐚𝐥 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐚𝐧𝐝 𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐀𝐧𝐧𝐨𝐮𝐧𝐜𝐞𝐦𝐞𝐧𝐭𝐬.**\n\n"
-        f"💎 **𝐘𝐨𝐮𝐫 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐔𝐩𝐝𝐚𝐭𝐞𝐬 • 𝐎𝐧𝐞 𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐏𝐥𝐚𝐜𝐞**\n\n"
-        f"👇 **𝐓𝐚𝐩 𝐭𝐡𝐞 𝐁𝐮𝐭𝐭𝐨𝐧 𝐁𝐞𝐥𝐨𝐰 𝐭𝐨 𝐉𝐨𝐢𝐧 𝐎𝐮𝐫 𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐂𝐡𝐚𝐧𝐧𝐞𝐥!** 📢"
-    )
-    kb = InlineKeyboardMarkup([
-        [InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
-        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
-    ])
-    await update.message.reply_text(resp_text, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
-
-async def signals_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    resp_text = (
-        f"👑 **{BOT_NAME}** 👑\n\n"
-        f"📊 **𝐋𝐈𝐕𝐄 𝐎𝐓𝐂 & 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐇𝐔𝐁** 📊\n\n"
-        f"Select your signal type from the professional options below:"
-    )
-    kb = InlineKeyboardMarkup([
-        [InlineKeyboardButton("📊 𝐎𝐓𝐂 𝐋𝐢𝐯𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="otc_live"), InlineKeyboardButton("📈 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="analysis_signals")],
-        [InlineKeyboardButton("🔮 𝐅𝐮𝐭𝐮𝐫𝐞 𝐒𝐢𝐠𝐧𝐚𝐥𝐬", callback_data="future_signals")],
-        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
-    ])
-    await update.message.reply_text(resp_text, reply_markup=kb, parse_mode="Markdown")
-
-async def vip_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    resp_text = (
-        f"👑 **{BOT_NAME}** 👑\n\n"
-        f"💎 **𝐕𝐈𝐏 𝐏𝐑𝐎𝐆𝐑𝐀𝐌 & 𝐉𝐎𝐈𝐍𝐈𝐍𝐆**\n\n"
-        f"📊 **𝐄𝐱𝐩𝐥𝐨𝐫𝐞 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐞𝐭𝐮𝐩𝐬, 𝐒𝐢𝐠𝐧𝐚𝐥 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐚𝐧𝐝 𝐕𝐈𝐏 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐂𝐨𝐧𝐭𝐞𝐧𝐭.**\n\n"
-        f"⚡ **𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝 • 𝐋𝐞𝐚𝐫𝐧 𝐑𝐢𝐬𝐤 𝐌𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭**\n\n"
-        f"🔗 **𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:**\n{QUOTEX_LINK}\n\n"
-        f"👇 **𝐓𝐚𝐩 𝐁𝐞𝐥𝐨𝐰 𝐭𝐨 𝐂𝐨𝐧𝐭𝐢𝐧𝐮𝐞**"
-    )
-    kb = InlineKeyboardMarkup([
-        [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-        [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
-        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑", url=ADMIN_USERNAME)],
-        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
-    ])
-    await update.message.reply_text(resp_text, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
-
+# Contact Owner Command Handler (/contact)
 async def contact_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     contact_text = (
         f"👑 **{BOT_NAME}** 👑\n\n"
-        f"💬 **𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐖𝐍𝐄𝐑**\n\n"
-        f"⚡ **𝐍𝐞𝐞𝐝 𝐇𝐞𝐥𝐩, 𝐕𝐈𝐏 𝐀𝐜𝐜𝐞𝐬𝐬 𝐀𝐩𝐩𝐫𝐨𝐯𝐚𝐥, 𝐨𝐫 𝐏𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐆𝐮𝐢𝐝𝐚𝐧𝐜𝐞?**\n\n"
-        f"🤝 **𝐂𝐨𝐧𝐭𝐚𝐜𝐭 𝐭𝐡𝐞 𝐎𝐰𝐧𝐞𝐫 𝐟𝐨𝐫 𝐁𝐨𝐭 𝐒𝐮𝐩𝐩𝐨𝐫𝐭, 𝐕𝐈𝐏 𝐈𝐧𝐪𝐮𝐢𝐫𝐢𝐞𝐬, 𝐚𝐧𝐝 𝐆𝐞𝐧𝐞𝐫𝐚𝐥 𝐀𝐬𝐬𝐢𝐬𝐭𝐚𝐧𝐜𝐞.**\n\n"
-        f"👑 **𝐃𝐢𝐫𝐞𝐜𝐭 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 • 𝐏𝐞𝐫𝐬𝐨𝐧𝐚𝐥𝐢𝐳𝐞𝐝 𝐒𝐮𝐩𝐩𝐨𝐫𝐭**\n\n"
-        f"👇 **𝐓𝐚𝐩 𝐭𝐡𝐞 𝐁𝐮𝐭𝐭𝐨𝐧 𝐁𝐞𝐥𝐨𝐰 𝐭𝐨 𝐂𝐨𝐧𝐭𝐚𝐜𝐭 𝐭𝐡𝐞 𝐎𝐰𝐧𝐞𝐫!** 💬"
+        f"💬 **𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐌.𝐊 𝐎𝐖𝐍𝐄𝐑** 💬\n\n"
+        f"If you have any questions, need VIP access approval, or want personal guidance, click the button below to contact the owner directly:"
     )
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 𝐍𝐎𝐖", url=ADMIN_USERNAME)],
@@ -416,7 +397,7 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
     return ConversationHandler.END
 
 # ==========================================
-# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE (EXACT 02 BOT MATCH)
+# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE (8 FUTURES SCHEDULE FROM 02 BOT)
 # ==========================================
 async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -426,18 +407,16 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     data = query.data
 
     if data == "otc_live":
-        loading_msg = await context.bot.send_message(
-            chat_id=chat_id,
-            text="🔄 **𝐒𝐜𝐚𝐧𝐧𝐢𝐧𝐠 𝐌𝐚𝐫𝐤𝐞𝐭 𝐕𝐨𝐥𝐚𝐭𝐢𝐥𝐢𝐭𝐲 & 𝐓𝐞𝐜𝐡𝐧𝐢𝐜𝐚𝐥 𝐈𝐧𝐝𝐢𝐜𝐚𝐭𝐨𝐫𝐬...** 𝐏𝐥𝐞𝐚𝐬𝐞 𝐖𝐚𝐢𝐭 ⏳",
-            parse_mode="Markdown"
+        await context.bot.edit_message_text(
+            "🔄 **Scanning Market Volatility & Technical Indicators...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
         )
         await asyncio.sleep(1)
-        await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
             f"📊 **𝐎𝐓𝐂 𝐋𝐈𝐕𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐄𝐍𝐆𝐈𝐍𝐄** 📊\n\n"
-            f"✨ High-accuracy real-time signals optimized for current market session.\n\n"
+            f"✨ Welcome to the professional OTC live trading hub. Here you receive high-accuracy real-time signals optimized for current market session.\n\n"
             f"💎 **Asset:** USD/PHP (OTC)\n"
             f"🟢 **Direction:** CALL (BUY) 📈\n"
             f"🕒 **Entry Time:** Next Candle / 1 Minute Expiry\n"
@@ -451,16 +430,14 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="otc_live")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
-        await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="Markdown")
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "analysis_signals":
-        loading_msg = await context.bot.send_message(
-            chat_id=chat_id,
-            text="🔄 **𝐀𝐧𝐚𝐥𝐲𝐳𝐢𝐧𝐠 𝐎𝐓𝐂 𝐌𝐚𝐫𝐤𝐞𝐭 𝐓𝐫𝐞𝐧𝐝𝐬 & 𝐏𝐫𝐢𝐜𝐞 𝐀𝐜𝐭𝐢𝐨𝐧...** 𝐏𝐥𝐞𝐚𝐬𝐞 𝐖𝐚𝐢𝐭 ⏳",
-            parse_mode="Markdown"
+        await context.bot.edit_message_text(
+            "🔄 **Analyzing OTC Market Trends & Price Action...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
         )
         await asyncio.sleep(1)
-        await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         
         resp_text = (
             f"👑 **{BOT_NAME}** 👑\n\n"
@@ -478,7 +455,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="analysis_signals")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
-        await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="Markdown")
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "ai_signals_pro":
         resp_text = (
@@ -504,13 +481,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown", disable_web_page_preview=True)
 
     elif data == "future_signals":
-        loading_msg = await context.bot.send_message(
-            chat_id=chat_id,
-            text="🔄 **𝐒𝐲𝐧𝐜𝐢𝐧𝐠 𝐏𝐚𝐤𝐢𝐬𝐭𝐚𝐧 𝐋𝐨𝐜𝐚𝐥 𝐓𝐢𝐦𝐞 & 𝐅𝐮𝐭𝐮𝐫𝐞 𝐌𝐚𝐫𝐤𝐞𝐭 𝐏𝐫𝐞𝐝𝐢𝐜𝐭𝐢𝐨𝐧𝐬...** 𝐏𝐥𝐞𝐚𝐬𝐞 𝐖𝐚𝐢𝐭 ⏳",
-            parse_mode="Markdown"
+        await context.bot.edit_message_text(
+            "🔄 **Syncing Pakistan Local Time & Future Market Predictions...** Please wait ⏳",
+            chat_id=chat_id, message_id=message_id, parse_mode="Markdown"
         )
         await asyncio.sleep(1)
-        await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         
         now_pkt = datetime.datetime.utcnow() + datetime.timedelta(hours=5)
         t1 = (now_pkt + datetime.timedelta(minutes=5)).strftime("%I:%M %p")
@@ -541,7 +516,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             [InlineKeyboardButton("🔄 𝐑𝐄𝐅𝐑𝐄𝐒𝐇 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄", callback_data="future_signals")],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
-        await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="Markdown")
+        await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="Markdown")
 
     elif data == "future_list":
         resp_text = (
@@ -758,7 +733,7 @@ class handler(BaseHTTPRequestHandler):
             async def process():
                 application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
                 
-                # 📌 Set Bot Menu Commands (Exact Left-Side Menu from @MK_TRADER02_BOT)
+                # 📌 Set Bot Menu Commands (Left-side menu buttons from 02 bot)
                 try:
                     await application.bot.set_my_commands([
                         BotCommand("start", "🚀 𝐒𝐓𝐀𝐑𝐓  𝐓𝐇𝐄 𝐁𝐎𝐓 & 𝐎𝐏𝐄𝐍 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃 🚀"),
