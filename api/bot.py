@@ -151,7 +151,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         print(f"Log error: {e}")
 
 # ==========================================
-# 📌 MAIN MENU BUTTONS (WITH 4 NEW BUTTONS ADDED IN PAIRS)
+# 📌 MAIN MENU BUTTONS
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
@@ -172,7 +172,7 @@ def main_menu_keyboard():
     return InlineKeyboardMarkup(keyboard)
 
 # ==========================================
-# 🎯 JOIN REQUEST PENDING HANDLER (UPDATED TEXT)
+# 🎯 JOIN REQUEST PENDING HANDLER
 # ==========================================
 async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE):
     req = update.chat_join_request
@@ -181,8 +181,6 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
 
     user = req.from_user
     await send_data_to_log_channel(update, context, "Channel Join Request")
-    
-    first_name = html.escape(user.first_name if user and user.first_name else "Trader")
     
     pending_msg = (
         f"👑✨ <b>𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓</b> ✨👑\n\n"
@@ -229,9 +227,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
     except Exception as e:
         print(f"Join request message error: {e}")
 
-# ==========================================
-# 🚀 START COMMAND HANDLER (NEW MESSAGE WITH DELETE ANIMATION WHEN OPEN DASHBOARD)
-# ==========================================
+# Start Command Handler
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     await send_data_to_log_channel(update, context, "Bot /start Command")
@@ -337,7 +333,7 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
     await update.message.reply_text(stats_text, parse_mode="HTML")
 
-# Admin Broadcast Command (/broadcast message)
+# Admin Broadcast Command
 async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     if user.id != ADMIN_USER_ID:
@@ -371,9 +367,7 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"❌ Broadcast error: {e}")
 
-# ==========================================
-# 🚀 AUTOMATIC FORWARDER FROM UPCOMING POSTINGS CHANNEL
-# ==========================================
+# Automatic Forwarder from Upcoming Postings Channel
 async def forward_channel_posts(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
         message = update.channel_post or update.edited_channel_post
@@ -398,9 +392,7 @@ async def forward_channel_posts(update: Update, context: ContextTypes.DEFAULT_TY
     except Exception as e:
         print(f"Channel forward handler error: {e}")
 
-# ==========================================
-# 🔐 TRADER ID VERIFICATION FLOW
-# ==========================================
+# Trader ID Verification Flow
 async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -449,7 +441,7 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
     return ConversationHandler.END
 
 # ==========================================
-# 📄 DETAILED BUTTON HANDLERS & SIGNALS ENGINE (NEW MESSAGE WITH LOADING ANIMATION FOR 3 BUTTONS)
+# 📄 BUTTON CALLBACK HANDLER (EXACT LOGIC REQUESTED)
 # ==========================================
 async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -458,6 +450,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     message_id = query.message.message_id
     data = query.data
 
+    # 1. OTC LIVE SIGNALS (NEW MESSAGE WITH DELETE ANIMATION)
     if data == "otc_live":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -485,10 +478,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("👍 𝐖𝐈𝐍 (𝐈𝐓𝐌)", callback_data="signal_win"), InlineKeyboardButton("👎 𝐋𝐎𝐒𝐒 (𝐎𝐓𝐌)", callback_data="signal_loss")],
             [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="otc_live")],
-            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home_delete")]
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="HTML")
 
+    # 2. ANALYSIS SIGNALS (NEW MESSAGE WITH DELETE ANIMATION)
     elif data == "analysis_signals":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -515,10 +509,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("👍 𝐖𝐈𝐍 (𝐈𝐓𝐌)", callback_data="signal_win"), InlineKeyboardButton("👎 𝐋𝐎𝐒𝐒 (𝐎𝐓𝐌)", callback_data="signal_loss")],
             [InlineKeyboardButton("🔄 𝐆𝐄𝐍𝐄𝐑𝐀𝐓𝐄 𝐍𝐄𝐖 𝐒𝐈𝐆𝐍𝐀𝐋", callback_data="analysis_signals")],
-            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home_delete")]
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="HTML")
 
+    # 3. FUTURE SIGNALS (NEW MESSAGE WITH DELETE ANIMATION)
     elif data == "future_signals":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -558,10 +553,13 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("🔄 𝐑𝐄𝐅𝐑𝐄𝐒𝐇 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄", callback_data="future_signals")],
-            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home_delete")]
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb, parse_mode="HTML")
 
+    # ==========================================
+    # 4. ALL OTHER BUTTONS (REPLACE ON SAME POST, NO DELETE UNTIL BACK)
+    # ==========================================
     elif data == "ai_signals_pro":
         resp_text = (
             f"👑 <b>{BOT_NAME}</b> 👑\n\n"
@@ -912,12 +910,30 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"Thank you for helping us track signal accuracy and improve community performance."
         )
         kb = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+            [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home_delete")]
         ])
         await context.bot.edit_message_text(feedback_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, parse_mode="HTML", disable_web_page_preview=True)
 
+    # BACK TO HOME (REPLACE EDIT FOR NORMAL MENUS)
     elif data == "back_home":
-        # Delete old dashboard message and send a new one with animation effect
+        user_name = html.escape(query.from_user.first_name if query.from_user and query.from_user.first_name else "Trader")
+        welcome_text = (
+            f"👑 <b>{BOT_NAME}</b> 👑\n\n"
+            f"✨ <b>𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!</b>\n\n"
+            f"🌐 <b>𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁</b> 💎\n\n"
+            f"📊 <b>𝐀𝐜𝐜𝐞𝐬𝐬 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐢𝐠𝐧𝐚𝐥𝐬, 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐆𝐮𝐢𝐝𝐞𝐬, 𝐕𝐈𝐏 𝐀𝐜𝐜𝐞𝐬𝐬, 𝐚𝐧𝐝 𝐁𝐨𝐭 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 — 𝐀𝐥𝐥 𝐈𝐧 𝐎𝐧𝐞 𝐏𝐥𝐚𝐜𝐞.</b>\n\n"
+            f"━━━━━━━━━━━━━━━━━━\n\n"
+            f"🔗 <b>𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋:</b>\n"
+            f"{CHANNEL_LINK}\n\n"
+            f"━━━━━━━━━━━━━━━━━━\n\n"
+            f"⚡ <b>𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝</b>\n\n"
+            f"👇 <b>𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍</b>\n\n"
+            f"🛡️ <i>Trading involves financial risk. Signals are not guaranteed profits.</i>"
+        )
+        await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard(), parse_mode="HTML", disable_web_page_preview=True)
+
+    # BACK TO HOME WITH DELETE (FOR SIGNALS / NEW MESSAGES)
+    elif data == "back_home_delete":
         try:
             await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
         except Exception as e:
@@ -951,7 +967,6 @@ class handler(BaseHTTPRequestHandler):
             async def process():
                 application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
                 
-                # 📌 Set Bot Menu Commands
                 try:
                     await application.bot.set_my_commands([
                         BotCommand("start", "🚀 𝐒𝐓𝐀𝐑𝐓  𝐓𝐇𝐄 𝐁𝐎𝐓 & 𝐎𝐏𝐄𝐍 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃 🚀"),
