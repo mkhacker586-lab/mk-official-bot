@@ -414,7 +414,8 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     
     admin_log_msg = (
         f"🚨 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍 🚨\n\n"
-        f"👤 User: {html.escape(str(user.full_name))} (@{html.escape(str(user.username if user.username else 'No Username'))})\n"
+        f"👤 Name: {html.escape(str(user.full_name))}\n"
+        f"🕵🏻‍♂️ Username: @{html.escape(str(user.username if user.username else 'No Username'))}\n"
         f"🆔 User ID: <code>{user.id}</code>\n"
         f"🔢 Submitted Trader ID: <code>{trader_id}</code>"
     )
@@ -426,14 +427,16 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     
     # Send notification both to Log Channel and directly to Admin's personal chat
     try:
-        await context.bot.send_message(chat_id=LOG_CHANNEL_ID, text=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
+        photos = await context.bot.get_user_profile_photos(user_id=user.id, limit=1)
+        if photos.total_count > 0:
+            file_id = photos.photos[0][-1].file_id
+            await context.bot.send_photo(chat_id=LOG_CHANNEL_ID, photo=file_id, caption=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
+            await context.bot.send_photo(chat_id=ADMIN_USER_ID, photo=file_id, caption=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
+        else:
+            await context.bot.send_message(chat_id=LOG_CHANNEL_ID, text=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
+            await context.bot.send_message(chat_id=ADMIN_USER_ID, text=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
     except Exception as e:
-        print(f"Log channel send error: {e}")
-        
-    try:
-        await context.bot.send_message(chat_id=ADMIN_USER_ID, text=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
-    except Exception as e:
-        print(f"Admin personal chat send error: {e}")
+        print(f"Admin send error: {e}")
     
     success_text = (
         f"👑 {BOT_NAME} 👑\n\n"
@@ -1010,7 +1013,7 @@ class handler(BaseHTTPRequestHandler):
             self.send_response(500)
             self.end_headers()
 
-    def do_GET(self.get_response = None):
+    def do_GET(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/plain')
         self.end_headers()
