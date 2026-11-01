@@ -213,7 +213,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
             InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)
         ],
         [InlineKeyboardButton("👀 𝐕𝐈𝐄𝐖 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
-        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home_delete")]
+        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="pending_open_dashboard")]
     ])
     
     try:
@@ -406,7 +406,8 @@ async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
         [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
     ])
-    await context.bot.edit_message_text(text, chat_id=query.message.chat.id, message_id=query.message.message_id, reply_markup=kb, parse_mode="HTML")
+    # Send as a NEW message so dashboard remains untouched
+    await context.bot.send_message(chat_id=query.message.chat.id, text=text, reply_markup=kb, parse_mode="HTML")
     return WAITING_FOR_TRADER_ID
 
 async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -418,13 +419,27 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         
     trader_id = html.escape(text_input)
     
-    # 1. Delete user's message containing Trader ID instantly
+    # Delete user's message containing Trader ID
     try:
         await update.message.delete()
     except Exception as e:
         print(f"Delete user message error: {e}")
     
-    # Message sent to the verification channel (-1003873965542) with clickable Trader ID
+    # Also delete the prompt message if stored in context
+    prompt_msg_id = context.user_data.get("verify_prompt_msg_id")
+    if prompt_msg_id:
+        try:
+            await context.bot.delete_message(chat_id=user.id, message_id=prompt_msg_id)
+        except:
+            pass
+            
+    # Also delete the last message in chat if it was the prompt
+    try:
+        await context.bot.delete_message(chat_id=user.id, message_id=update.message.message_id - 1)
+    except:
+        pass
+    
+    # Message sent to verification channel with "OPEN THE BOT" button linking to bot
     verify_channel_msg = (
         f"👑 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑\n\n"
         f"✦ 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 ✦\n\n"
@@ -433,12 +448,12 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         f"🆔 𝐔𝐬𝐞𝐫 𝐈𝐃: <code>{user.id}</code>\n"
         f"🔢 𝐓𝐫𝐚𝐝𝐞𝐫 𝐈𝐃: <code>{trader_id}</code>\n"
         f"⏳ 𝐒𝐭𝐚𝐭𝐮𝐬: PENDING REVIEW\n\n"
-        f"👇 Click below to chat with user or contact owner:"
+        f"👇 Click below to chat with user or open bot:"
     )
     
     admin_kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐂𝐇𝐀𝐓 𝐖𝐈𝐓𝐇 𝐔𝐒𝐄𝐑", url=f"tg://user?id={user.id}")],
-        [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)]
+        [InlineKeyboardButton("🤖 𝐎𝐏𝐄𝐍 𝐓𝐇𝐄 𝐁𝐎𝐓", url=f"https://t.me/MK_TRADER_OFFICIAL_BOT")]
     ])
     
     try:
@@ -451,7 +466,7 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     except Exception as e:
         print(f"Verify channel send error: {e}")
     
-    # Message sent back to the User (Processing Page)
+    # Message sent back to User as a NEW message (leaving dashboard intact)
     user_success_text = (
         f"👑 {BOT_NAME} 👑\n\n"
         f"✦ 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍 𝐈𝐍 𝐏𝐑𝐎𝐆𝐑𝐄𝐒𝐒 ✦\n\n"
@@ -468,7 +483,7 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     
     user_kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
-        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home_delete")]
     ])
     
     await context.bot.send_message(chat_id=user.id, text=user_success_text, reply_markup=user_kb, parse_mode="HTML")
@@ -477,7 +492,10 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
 async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
-    await start_command(update, context)
+    try:
+        await query.message.delete()
+    except:
+        pass
     return ConversationHandler.END
 
 # Universal direct text handler for numbers (Trader ID anytime)
@@ -498,7 +516,29 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     message_id = query.message.message_id
     data = query.data
 
-    if data == "otc_live":
+    if data == "pending_open_dashboard":
+        try:
+            await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
+        except Exception as e:
+            print(f"Delete pending message error: {e}")
+        
+        user_name = html.escape(query.from_user.first_name if query.from_user and query.from_user.first_name else "Trader")
+        welcome_text = (
+            f"👑 {BOT_NAME} 👑\n\n"
+            f"✨ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!\n\n"
+            f"🌐 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁 💎\n\n"
+            f"📊 𝐀𝐜𝐜𝐞𝐬𝐬 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐢𝐠𝐧𝐚𝐥𝐬, 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐆𝐮𝐢𝐝𝐞𝐬, 𝐕𝐈𝐏 𝐀𝐜𝐜𝐞𝐬𝐬, 𝐚𝐧𝐝 𝐁𝐨𝐭 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 — 𝐀𝐥𝐥 𝐈𝐧 𝐎𝐧𝐞 𝐏𝐥𝐚𝐜𝐞.\n\n"
+            f"━━━━━━━━━━━━━━━━━━\n\n"
+            f"🔗 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋:\n"
+            f"{CHANNEL_LINK}\n\n"
+            f"━━━━━━━━━━━━━━━━━━\n\n"
+            f"⚡ 𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝\n\n"
+            f"👇 𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍\n\n"
+            f"🛡️ Trading involves financial risk. Signals are not guaranteed profits."
+        )
+        await context.bot.send_message(chat_id=chat_id, text=welcome_text, reply_markup=main_menu_keyboard(), disable_web_page_preview=True)
+
+    elif data == "otc_live":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
             text="🔄 𝐀𝐧𝐚𝐥𝐲𝐳𝐢𝐧𝐠 𝐎𝐓𝐂 𝐌𝐚𝐫𝐤𝐞𝐭 𝐓𝐫𝐞𝐧𝐝𝐬 & 𝐏𝐫𝐢𝐜𝐞 𝐀𝐜𝐭𝐢𝐨𝐧... 𝐏𝐥𝐞𝐚𝐬𝐞 𝐖𝐚𝐢𝐭 ⏳"
