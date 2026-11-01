@@ -152,7 +152,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
         print(f"Log error: {e}")
 
 # ==========================================
-# 📌 MAIN MENU BUTTONS
+# 📌 MAIN MENU BUTTONS (WITH ALL ORIGINAL BUTTONS & EMOJIS)
 # ==========================================
 def main_menu_keyboard():
     keyboard = [
@@ -428,18 +428,6 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     except Exception as e:
         print(f"Delete user message error: {e}")
     
-    prompt_msg_id = context.user_data.get("verify_prompt_msg_id")
-    if prompt_msg_id:
-        try:
-            await context.bot.delete_message(chat_id=user.id, message_id=prompt_msg_id)
-        except:
-            pass
-            
-    try:
-        await context.bot.delete_message(chat_id=user.id, message_id=update.message.message_id - 1)
-    except:
-        pass
-    
     verify_channel_msg = (
         f'<emoji id="5438496463044752972">👑</emoji> 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 <emoji id="5438496463044752972">👑</emoji>\n\n'
         f'<emoji id="5224607267797606837">⚡</emoji> ✦ 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 ✦ <emoji id="5224607267797606837">⚡</emoji>\n\n'
@@ -505,7 +493,7 @@ async def global_text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE
         await receive_trader_id_handler(update, context)
 
 # ==========================================
-# 📄 BUTTON CALLBACK HANDLER
+# 📄 BUTTON CALLBACK HANDLER (ALL ORIGINAL CALLBACKS)
 # ==========================================
 async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -625,14 +613,14 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f'<emoji id="5436113877181941026">🔮</emoji> 𝟖 𝐅𝐔𝐓𝐔𝐑𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐒𝐂𝐇𝐄𝐃𝐔𝐋𝐄 <emoji id="5436113877181941026">🔮</emoji>\n\n'
             f'<emoji id="5413879192267805083">📅</emoji> 𝐃𝐚𝐭𝐞: Today\'s Live Active Session\n'
             f'<emoji id="5447410659077661506">🌐</emoji> 𝐓𝐢𝐦𝐞𝐳𝐨𝐧𝐞: Pakistan Standard Time (UTC+05:00)\n\n'
-            f"1. <emoji id="5330157467781312171">🕒</emoji> {t1} | <emoji id="5409048419211682843">💎</emoji> GBP/USD (OTC) | <emoji id="5449683594425410231">📈</emoji> UP (CALL)\n"
-            f"2. <emoji id="5330157467781312171">🕒</emoji> {t2} | <emoji id="5409048419211682843">💎</emoji> EUR/JPY | <emoji id="5447183459602669338">📉</emoji> DOWN (PUT)\n"
-            f"3. <emoji id="5330157467781312171">🕒</emoji> {t3} | <emoji id="5409048419211682843">💎</emoji> AUD/CAD (OTC) | <emoji id="5449683594425410231">📈</emoji> UP (CALL)\n"
-            f"4. <emoji id="5330157467781312171">🕒</emoji> {t4} | <emoji id="5409048419211682843">💎</emoji> USD/BDT (OTC) | <emoji id="5447183459602669338">📉</emoji> DOWN (PUT)\n"
-            f"5. <emoji id="5330157467781312171">🕒</emoji> {t5} | <emoji id="5409048419211682843">💎</emoji> EUR/CAD | <emoji id="5449683594425410231">📈</emoji> UP (CALL)\n"
-            f"6. <emoji id="5330157467781312171">🕒</emoji> {t6} | <emoji id="5409048419211682843">💎</emoji> NZD/USD (OTC) | <emoji id="5447183459602669338">📉</emoji> DOWN (PUT)\n"
-            f"7. <emoji id="5330157467781312171">🕒</emoji> {t7} | <emoji id="5409048419211682843">💎</emoji> EUR/GBP | <emoji id="5449683594425410231">📈</emoji> UP (CALL)\n"
-            f"8. <emoji id="5330157467781312171">🕒</emoji> {t8} | <emoji id="5409048419211682843">💎</emoji> USD/JPY (OTC) | <emoji id="5447183459602669338">📉</emoji> DOWN (PUT)\n\n"
+            f"1. <emoji id=\"5330157467781312171\">🕒</emoji> {t1} | <emoji id=\"5409048419211682843\">💎</emoji> GBP/USD (OTC) | <emoji id=\"5449683594425410231\">📈</emoji> UP (CALL)\n"
+            f"2. <emoji id=\"5330157467781312171\">🕒</emoji> {t2} | <emoji id=\"5409048419211682843\">💎</emoji> EUR/JPY | <emoji id=\"5447183459602669338\">📉</emoji> DOWN (PUT)\n"
+            f"3. <emoji id=\"5330157467781312171\">🕒</emoji> {t3} | <emoji id=\"5409048419211682843\">💎</emoji> AUD/CAD (OTC) | <emoji id=\"5449683594425410231\">📈</emoji> UP (CALL)\n"
+            f"4. <emoji id=\"5330157467781312171\">🕒</emoji> {t4} | <emoji id=\"5409048419211682843\">💎</emoji> USD/BDT (OTC) | <emoji id=\"5447183459602669338\">📉</emoji> DOWN (PUT)\n"
+            f"5. <emoji id=\"5330157467781312171\">🕒</emoji> {t5} | <emoji id=\"5409048419211682843\">💎</emoji> EUR/CAD | <emoji id=\"5449683594425410231\">📈</emoji> UP (CALL)\n"
+            f"6. <emoji id=\"5330157467781312171\">🕒</emoji> {t6} | <emoji id=\"5409048419211682843\">💎</emoji> NZD/USD (OTC) | <emoji id=\"5447183459602669338\">📉</emoji> DOWN (PUT)\n"
+            f"7. <emoji id=\"5330157467781312171\">🕒</emoji> {t7} | <emoji id=\"5409048419211682843\">💎</emoji> EUR/GBP | <emoji id=\"5449683594425410231\">📈</emoji> UP (CALL)\n"
+            f"8. <emoji id=\"5330157467781312171\">🕒</emoji> {t8} | <emoji id=\"5409048419211682843\">💎</emoji> USD/JPY (OTC) | <emoji id=\"5447183459602669338\">📉</emoji> DOWN (PUT)\n\n"
             f'<emoji id="5879770735999717115">👤</emoji> 𝐀𝐧𝐚𝐥𝐲𝐬𝐭: @MK_TRADER586 <emoji id="5438496463044752972">👑</emoji>\n\n'
             f'<emoji id="5447644880824181073">⚠️</emoji> 𝐍𝐨𝐭𝐞: Follow strict risk management and prepare your entries ahead of time.'
         )
@@ -651,10 +639,10 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f'<emoji id="5409048419211682843">💎</emoji> 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒:\n'
             f'<emoji id="5411225014148014586">⏺</emoji> <emoji id="5409048419211682843">💵</emoji> 𝐒𝐔𝐁𝐒𝐂𝐑𝐈𝐏𝐓𝐈𝐎𝐍 𝐅𝐄𝐄: $𝟐𝟎 𝐎𝐍𝐋𝐘 <emoji id="5409048419211682843">💎</emoji>\n\n'
             f'<emoji id="5877597667231534929">📌</emoji> 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍:\n'
-            f"1️⃣ <emoji id="5206636501860893075">💳</emoji> 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞 𝐲𝐨𝐮𝐫 $𝟐𝟎 𝐬𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐩𝐚𝐲𝐦𝐞𝐧𝐭.\n"
-            f"2️⃣ <emoji id="5967280668885913944">🧾</emoji> 𝐒𝐞𝐧𝐝 𝐲𝐨𝐮𝐫 𝐩𝐚𝐲𝐦𝐞𝐧𝐭 𝐫𝐞𝐜𝐞𝐢𝐩𝐭 𝐭𝐨 𝐭𝐡𝐞 𝐨𝐰𝐧𝐞𝐫.\n"
-            f"3️⃣ <emoji id="5805532930662996322">✅</emoji> 𝐖𝐚𝐢𝐭 𝐟𝐨𝐫 𝐢𝐧𝐬𝐭𝐚𝐧𝐭 𝐩𝐚𝐲𝐦𝐞𝐧𝐭 𝐯𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧.\n"
-            f"4️⃣ <emoji id="5296369303661067030">🔓</emoji> 𝐑𝐞𝐜𝐞𝐢𝐯𝐞 𝐟𝐮𝐥𝐥 𝐢𝐧𝐬𝐭𝐫𝐮𝐜𝐭𝐢𝐨𝐧𝐬 𝐭𝐨 𝐚𝐜𝐜𝐞𝐬𝐬 𝐭𝐡𝐞 𝐛𝐨𝐭!\n\n"
+            f"1️⃣ <emoji id=\"5206636501860893075\">💳</emoji> 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞 𝐲𝐨𝐮𝐫 $𝟐𝟎 𝐬𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐩𝐚𝐲𝐦𝐞𝐧𝐭.\n"
+            f"2️⃣ <emoji id=\"5967280668885913944\">🧾</emoji> 𝐒𝐞𝐧𝐝 𝐲𝐨𝐮𝐫 𝐩𝐚𝐲𝐦𝐞𝐧𝐭 𝐫𝐞𝐜𝐞𝐢𝐩𝐭 𝐭𝐨 𝐭𝐡𝐞 𝐨𝐰𝐧𝐞𝐫.\n"
+            f"3️⃣ <emoji id=\"5805532930662996322\">✅</emoji> 𝐖𝐚𝐢𝐭 𝐟𝐨𝐫 𝐢𝐧𝐬𝐭𝐚𝐧𝐭 𝐩𝐚𝐲𝐦𝐞𝐧𝐭 𝐯𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧.\n"
+            f"4️⃣ <emoji id=\"5296369303661067030\">🔓</emoji> 𝐑𝐞𝐜𝐞𝐢𝐯𝐞 𝐟𝐮𝐥𝐥 𝐢𝐧𝐬𝐭𝐫𝐮𝐜𝐭𝐢𝐨𝐧𝐬 𝐭𝐨 𝐚𝐜𝐜𝐞𝐬𝐬 𝐭𝐡𝐞 𝐛𝐨𝐭!\n\n"
             f'<emoji id="5438496463044752972">👑</emoji> 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎\n'
             f'<emoji id="4996980495100150380">✨</emoji> 𝐒𝐌𝐀𝐑𝐓 𝐈𝐍𝐒𝐈𝐆𝐇𝐓𝐒 • 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒 <emoji id="4996980495100150380">✨</emoji>\n\n'
             f'<emoji id="5443038326535759644">💬</emoji> 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏 𝐎𝐑 𝐑𝐄𝐀𝐃𝐘 𝐓𝐎 𝐏𝐀𝐘?\n'
@@ -831,7 +819,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f'<emoji id="5438496463044752972">⭐️</emoji> VIP access to private compounding group included\n'
             f'<emoji id="5224607267797606837">⚡️</emoji> Only serious traders should join this project\n\n'
             f'<emoji id="5447410659077661506">🌐</emoji> 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍 𝐓𝐇𝐈𝐒 𝐏𝐑𝐎𝐉𝐄𝐂𝐓:\n\n'
-            f"1️⃣ 𝐑𝐄𝐆𝐈𝐒𝐓𝐄𝐑 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\n{QUOTEX_LINK} <emoji id="5447410659077661506">🌐</emoji>\n\n"
+            f"1️⃣ 𝐑𝐄𝐆𝐈𝐒𝐓𝐄𝐑 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\n{QUOTEX_LINK} <emoji id=\"5447410659077661506\">🌐</emoji>\n\n"
             f'2️⃣ 𝐃𝐄𝐏𝐎𝐒𝐈𝐓 & 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nTap the "🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃" button below! <emoji id="5805532930662996322">✅</emoji>'
         )
         kb = InlineKeyboardMarkup([
@@ -859,7 +847,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f'<emoji id="5438496463044752972">⭐️</emoji> VIP access to private signals included\n'
             f'<emoji id="5224607267797606837">⚡️</emoji> Only serious traders should join this challenge\n\n'
             f'<emoji id="5447410659077661506">🌐</emoji> 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍 𝐓𝐇𝐈𝐒 𝐓𝐎𝐔𝐑𝐍𝐀𝐌𝐄𝐍𝐓:\n\n'
-            f"1️⃣ 𝐑𝐄𝐆𝐈𝐒𝐓𝐄𝐑 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\n{QUOTEX_LINK} <emoji id="5447410659077661506">🌐</emoji>\n\n"
+            f"1️⃣ 𝐑𝐄𝐆𝐈𝐒𝐓𝐄𝐑 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\n{QUOTEX_LINK} <emoji id=\"5447410659077661506\">🌐</emoji>\n\n"
             f'2️⃣ 𝐃𝐄𝐏𝐎𝐒𝐈𝐓 $𝟑𝟎 & 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nTap the "🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃" button below! <emoji id="5805532930662996322">✅</emoji>'
         )
         kb = InlineKeyboardMarkup([
