@@ -163,7 +163,7 @@ def main_menu_keyboard():
         [InlineKeyboardButton("⏱️ 𝐌.𝐊 𝐃𝐀𝐈𝐋𝐘 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 𝐓𝐈𝐌𝐈𝐍𝐆𝐒 ⏱️", callback_data="session_timings")],
         [InlineKeyboardButton("🤖 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎", callback_data="ai_signals_pro")],
         [InlineKeyboardButton("👑 𝐌.𝐊 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑", url="https://t.me/MK_TRADER_OFFICIAL_BOT?start=start")],
-        [InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈Ւ𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 🚀", url=CHANNEL_LINK)],
+        [InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋 🚀", url=CHANNEL_LINK)],
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)]
     ]
     return InlineKeyboardMarkup(keyboard)
@@ -302,7 +302,7 @@ async def contact_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐌.𝐊 𝐎𝐖𝐍𝐄𝐑 💬\n\n"
         f"✨ If you have any questions, need VIP access approval, or want personal guidance, click the button below to contact the owner directly:\n\n"
         f"🔗 𝐃𝐈𝐑𝐄𝐂𝐓 𝐂𝐎𝐍𝐓𝐀𝐂𝐓:\n{ADMIN_USERNAME} 🌐\n\n"
-        f"👇 Tap the \"💬 CONTACT OWNER NOW 👑\" button below! ✅"
+        f"👇 Tap the \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 𝐍𝐎𝐖 👑\" button below! ✅"
     )
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 𝐍𝐎𝐖 👑", url=ADMIN_USERNAME)],
@@ -397,37 +397,48 @@ async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_
         f"👑 {BOT_NAME} 👑\n\n"
         f"🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 🔐\n\n"
         f"Please reply to this message with your 8-digit Quotex Trader ID.\n\n"
-        f"(Example: 12345678)"
+        f"(Example: <code>12345678</code>)"
     )
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
         [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
     ])
-    await context.bot.edit_message_text(text, chat_id=query.message.chat.id, message_id=query.message.message_id, reply_markup=kb)
+    await context.bot.edit_message_text(text, chat_id=query.message.chat.id, message_id=query.message.message_id, reply_markup=kb, parse_mode="HTML")
     return WAITING_FOR_TRADER_ID
 
 async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-    trader_id = html.escape(update.message.text.strip())
+    trader_id = update.message.text.strip()
     
+    # Check if trader_id is valid (e.g. 8 digits or numeric)
     admin_log_msg = (
         f"🚨 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍 🚨\n\n"
         f"👤 User: {html.escape(str(user.full_name))} (@{html.escape(str(user.username if user.username else 'No Username'))})\n"
-        f"🆔 User ID: {user.id}\n"
-        f"🔢 Submitted Trader ID: {trader_id}"
+        f"🆔 User ID: <code>{user.id}</code>\n"
+        f"🔢 Submitted Trader ID: <code>{trader_id}</code>"
     )
-    await context.bot.send_message(chat_id=LOG_CHANNEL_ID, text=admin_log_msg)
+    
+    # Send notification to admin / log channel with buttons to approve or reject/contact user
+    admin_kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("💬 𝐂𝐇𝐀𝐓 𝐖𝐈𝐓𝐇 𝐔𝐒𝐄𝐑", url=f"tg://user?id={user.id}")],
+        [InlineKeyboardButton("📢 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)]
+    ])
+    
+    try:
+        await context.bot.send_message(chat_id=LOG_CHANNEL_ID, text=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
+    except Exception as e:
+        print(f"Admin log send error: {e}")
     
     success_text = (
         f"👑 {BOT_NAME} 👑\n\n"
         f"✅ 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐑𝐄𝐂𝐄𝐈𝐕𝐄𝐃 𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋𝐘!\n\n"
-        f"Your Trader ID ({trader_id}) has been sent to M.K Trader admin for verification. You will be granted VIP access shortly upon review!"
+        f"Your Trader ID (<code>{trader_id}</code>) has been sent to M.K Trader admin for verification. You will be granted VIP access shortly upon review!"
     )
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐓𝐎 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
         [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
     ])
-    await update.message.reply_text(success_text, reply_markup=kb)
+    await update.message.reply_text(success_text, reply_markup=kb, parse_mode="HTML")
     return ConversationHandler.END
 
 async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -446,13 +457,13 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     message_id = query.message.message_id
     data = query.data
 
-    # 1. OTC LIVE SIGNALS (NEW MESSAGE WITH DELETE ANIMATION)
+    # 1. OTC LIVE SIGNALS (NEW MESSAGE WITH DELETE ANIMATION - 2 SECONDS)
     if data == "otc_live":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
             text="🔄 𝐀𝐧𝐚𝐥𝐲𝐳𝐢𝐧𝐠 𝐎𝐓𝐂 𝐌𝐚𝐫𝐤𝐞𝐭 𝐓𝐫𝐞𝐧𝐝𝐬 & 𝐏𝐫𝐢𝐜𝐞 𝐀𝐜𝐭𝐢𝐨𝐧... 𝐏𝐥𝐞𝐚𝐬𝐞 𝐖𝐚𝐢𝐭 ⏳"
         )
-        await asyncio.sleep(3)
+        await asyncio.sleep(2)
         try:
             await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         except:
@@ -477,13 +488,13 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb)
 
-    # 2. ANALYSIS SIGNALS (NEW MESSAGE WITH DELETE ANIMATION)
+    # 2. ANALYSIS SIGNALS (NEW MESSAGE WITH DELETE ANIMATION - 2 SECONDS)
     elif data == "analysis_signals":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
             text="🔄 𝐀𝐧𝐚𝐥𝐲𝐳𝐢𝐧𝐠 𝐎𝐓𝐂 𝐌𝐚𝐫𝐤𝐞𝐭 𝐓𝐫𝐞𝐧𝐝𝐬 & 𝐏𝐫𝐢𝐜𝐞 𝐀𝐜𝐭𝐢𝐨𝐧... 𝐏𝐥𝐞𝐚𝐬𝐞 𝐖𝐚𝐢𝐭 ⏳"
         )
-        await asyncio.sleep(3)
+        await asyncio.sleep(2)
         try:
             await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         except:
@@ -508,13 +519,13 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb)
 
-    # 3. FUTURE SIGNALS (NEW MESSAGE WITH DELETE ANIMATION)
+    # 3. FUTURE SIGNALS (NEW MESSAGE WITH DELETE ANIMATION - 2 SECONDS)
     elif data == "future_signals":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
             text="🔄 𝐀𝐧𝐚𝐥𝐲𝐳𝐢𝐧𝐠 𝐎𝐓𝐂 𝐌𝐚𝐫𝐤𝐞𝐭 𝐓𝐫𝐞𝐧𝐝𝐬 & 𝐏𝐫𝐢𝐜𝐞 𝐀𝐜𝐭𝐢𝐨𝐧... 𝐏𝐥𝐞𝐚𝐬𝐞 𝐖𝐚𝐢𝐭 ⏳"
         )
-        await asyncio.sleep(3)
+        await asyncio.sleep(2)
         try:
             await context.bot.delete_message(chat_id=chat_id, message_id=loading_msg.message_id)
         except:
@@ -592,7 +603,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"⏱️ 𝐄𝐗𝐏𝐈𝐑𝐘 𝐓𝐈𝐌𝐄 𝐆𝐔𝐈𝐃𝐄:\nUnderstand 1-minute and 5-minute execution strategies and key differences.\n\n"
             f"📚 𝐏𝐑𝐎 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐓𝐄𝐑𝐌𝐒:\nLearn essential market vocabulary, technical terms, and core definitions.\n\n"
             f"🔗 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐀𝐓𝐈𝐎𝐍 𝐋𝐈𝐍𝐊:\n{QUOTEX_LINK} 🌐\n\n"
-            f"💬 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?\nTap the \"💬 CONTACT OWNER 👑\" button below for direct assistance! ✅"
+            f"💬 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?\nTap the \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑\" button below for direct assistance! ✅"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("📚 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄", callback_data="trading_guidance")],
@@ -845,7 +856,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"1️⃣ 𝐀𝐂𝐂𝐄𝐒𝐒 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐏𝐎𝐑𝐓𝐀𝐋:\nOpen the official registration page using the secure link provided below.\n\n"
             f"2️⃣ 𝐄𝐍𝐓𝐄𝐑 𝐀𝐂𝐂𝐔𝐑𝐀𝐓𝐄 𝐃𝐄𝐓𝐀𝐈𝐋𝐒:\nInput your real details matching your legal government ID to prevent verification issues.\n\n"
             f"3️⃣ 𝐒𝐀𝐕𝐄 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nComplete your profile confirmation and copy your unique 8-digit Trader ID.\n\n"
-            f"4️⃣ 𝐒𝐔𝐁𝐌𝐈𝐓 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍:\nTap the \"🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃\" button below and send your ID directly into the bot.\n\n"
+            f"4️⃣ 𝐒𝐔𝐁𝐌𝐈𝐓 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍:\nTap the \"🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃\" below and send your ID directly into the bot.\n\n"
             f"🔗 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐀𝐓𝐈𝐎𝐍 𝐋𝐈𝐍𝐊:\n{QUOTEX_LINK} 🌐\n\n"
             f"💬 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?\nTap the \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑\" button below for direct assistance! ✅"
         )
@@ -969,7 +980,7 @@ class handler(BaseHTTPRequestHandler):
                 
                 application.add_handler(ChatJoinRequestHandler(handle_join_request))
                 application.add_handler(CommandHandler("start", start_command))
-                application.add_handler(CommandHandler("channel", channel_command))
+                application.add_handler(CommandHandler("channel", channel_second := channel_command))
                 application.add_handler(CommandHandler("signals", signals_command))
                 application.add_handler(CommandHandler("vip", vip_command))
                 application.add_handler(CommandHandler("contact", contact_command))
