@@ -391,7 +391,7 @@ async def forward_channel_posts(update: Update, context: ContextTypes.DEFAULT_TY
     except Exception as e:
         print(f"Channel forward handler error: {e}")
 
-# Trader ID Verification Flow
+# Trader ID Verification Flow via Button
 async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
@@ -414,12 +414,11 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     text_input = update.message.text.strip()
     
     if not text_input.isdigit() or len(text_input) < 5:
-        await update.message.reply_text("⚠️ Please send a valid numeric Trader ID (e.g. 12345678).")
-        return WAITING_FOR_TRADER_ID
+        return
         
     trader_id = html.escape(text_input)
     
-    # 1. Delete user's message containing Trader ID
+    # 1. Delete user's message containing Trader ID instantly
     try:
         await update.message.delete()
     except Exception as e:
@@ -472,7 +471,7 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
     ])
     
-    await update.message.reply_text(user_success_text, reply_markup=user_kb, parse_mode="HTML")
+    await context.bot.send_message(chat_id=user.id, text=user_success_text, reply_markup=user_kb, parse_mode="HTML")
     return ConversationHandler.END
 
 async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -481,13 +480,13 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
     await start_command(update, context)
     return ConversationHandler.END
 
+# Universal direct text handler for numbers (Trader ID anytime)
 async def global_text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    if not update.message or not update.message.text:
+        return
     text = update.message.text.strip()
     if text.isdigit() and len(text) >= 5:
-        update.message.text = text
         await receive_trader_id_handler(update, context)
-    else:
-        await start_command(update, context)
 
 # ==========================================
 # 📄 BUTTON CALLBACK HANDLER
@@ -979,23 +978,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
         except Exception as e:
             print(f"Delete message error: {e}")
-        
-        # Send fresh dashboard message
-        user_name = html.escape(query.from_user.first_name if query.from_user and query.from_user.first_name else "Trader")
-        welcome_text = (
-            f"👑 {BOT_NAME} 👑\n\n"
-            f"✨ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!\n\n"
-            f"🌐 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁 💎\n\n"
-            f"📊 𝐀𝐜𝐜𝐞𝐬𝐬 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐢𝐠𝐧𝐚𝐥𝐬, 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐆𝐮𝐢𝐝𝐞𝐬, 𝐕𝐈𝐏 𝐀𝐜𝐜𝐞𝐬𝐬, 𝐚𝐧𝐝 𝐁𝐨𝐭 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 — 𝐀𝐥𝐥 𝐈𝐧 𝐎𝐧𝐞 𝐏𝐥𝐚𝐜𝐞.\n\n"
-            f"━━━━━━━━━━━━━━━━━━\n\n"
-            f"🔗 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋:\n"
-            f"{CHANNEL_LINK}\n\n"
-            f"━━━━━━━━━━━━━━━━━━\n\n"
-            f"⚡ 𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝\n\n"
-            f"👇 𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍\n\n"
-            f"🛡️ Trading involves financial risk. Signals are not guaranteed profits."
-        )
-        await context.bot.send_message(chat_id=chat_id, text=welcome_text, reply_markup=main_menu_keyboard(), disable_web_page_preview=True)
 
 # Vercel Serverless Webhook Handler
 class handler(BaseHTTPRequestHandler):
