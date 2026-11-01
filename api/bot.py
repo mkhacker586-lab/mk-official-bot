@@ -743,7 +743,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, disable_web_page_preview=True)
 
-    elif data in ["vip_joining", "vip_program"]:
+    elif data == "vip_joining":
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"💎 𝐕𝐈𝐏 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 & 𝐄𝐋𝐈𝐆𝐈𝐁𝐈𝐋𝐈𝐓𝐘 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 💎\n\n"
