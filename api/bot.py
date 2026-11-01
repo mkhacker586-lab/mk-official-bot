@@ -186,18 +186,18 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
         f"👑✨ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 ✨👑\n\n"
         f"💎 𝐇𝐄𝐋𝐋𝐎, {real_user_name}!\n\n"
         f"⏳ 𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐏𝐄𝐍𝐃𝐈𝐍𝐆 ⏳\n\n"
-        f"💌 𝐘𝐨𝐮𝐫 𝐣𝐨𝐢𝐧 𝐫𝐞𝐪𝐮𝐞𝐬𝐭 𝐡𝐚𝐬 𝐛𝐞𝐞𝐧 𝐫𝐞𝐜𝐞𝐢𝐯𝐞𝐝 𝐚𝐧𝐝 𝐢𝐬 𝐜𝐮𝐫𝐫𝐞𝐧𝐭𝐥𝐲 𝐩𝐞𝐧𝐝𝐢𝐧𝐠 𝐚𝐝𝐦𝐢𝐧 𝐚𝐩𝐩𝐫𝐨𝐯𝐚𝐥. 𝐘𝐨𝐮'𝐥𝐥 𝐠𝐞𝐭 𝐚𝐜𝐜𝐞𝐬𝐬 𝐨𝐧𝐜𝐞 𝐲𝐨𝐮𝐫 𝐫𝐞𝐪𝐮𝐞𝐬𝐭 𝐢𝐬 𝐚𝐜𝐜𝐞𝐩𝐭𝐞𝐝. ❤️‍🔥\n\n"
+        f"💌 Your join request has been received and is currently pending admin approval. You'll get access once your request is accepted. ❤️‍🔥\n\n"
         f"📜 𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐆𝐔𝐈𝐃𝐄𝐋𝐈𝐍𝐄𝐒\n\n"
         f"🎯 𝐅𝐎𝐋𝐋𝐎𝐖 𝐀𝐋𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒\n"
-        f"⏰ 𝐉𝐨𝐢𝐧 𝐨𝐧 𝐭𝐢𝐦𝐞 𝐚𝐧𝐝 𝐬𝐭𝐚𝐲 𝐚𝐜𝐭𝐢𝐯𝐞 𝐝𝐮𝐫𝐢𝐧𝐠 𝐬𝐜𝐡𝐞𝐝𝐮𝐥𝐞𝐝 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬.\n\n"
+        f"⏰ Join on time and stay active during scheduled sessions.\n\n"
         f"📝 𝐒𝐄𝐍𝐃 𝐅𝐄𝐄𝐃𝐁𝐀𝐂𝐊\n"
-        f"✅ 𝐒𝐮𝐛𝐦𝐢𝐭 𝐲𝐨𝐮𝐫 𝐬𝐞𝐬𝐬𝐢𝐨𝐧 𝐟𝐞𝐞𝐝𝐛𝐚𝐜𝐤 𝐚𝐟𝐭𝐞𝐫 𝐞𝐯𝐞𝐫𝐲 𝐬𝐞𝐬𝐬𝐢𝐨𝐧.\n\n"
+        f"✅ Submit your session feedback after every session.\n\n"
         f"📊 𝐒𝐓𝐀𝐘 𝐔𝐏𝐃𝐀𝐓𝐄𝐃\n"
-        f"⚡ 𝐅𝐨𝐥𝐥𝐨𝐰 𝐨𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐚𝐧𝐧𝐨𝐮𝐧𝐜𝐞𝐦𝐞𝐧𝐭𝐬 𝐚𝐧𝐝 𝐦𝐚𝐫𝐤𝐞𝐭 𝐮𝐩𝐝𝐚𝐭𝐞𝐬.\n\n"
+        f"⚡ Follow official announcements and market updates.\n\n"
         f"🤝 𝐌𝐀𝐈𝐍𝐓𝐀𝐈𝐍 𝐃𝐈𝐒𝐂𝐈𝐏𝐋𝐈𝐍𝐄\n"
-        f"💎 𝐑𝐞𝐬𝐩𝐞𝐜𝐭 𝐜𝐨𝐦𝐦𝐮𝐧𝐢𝐭𝐲 𝐫𝐮𝐥𝐞𝐬 𝐚𝐧𝐝 𝐟𝐨𝐥𝐥𝐨𝐰 𝐭𝐡𝐞 𝐢𝐧𝐬𝐭𝐫𝐮𝐜𝐭𝐢𝐨𝐧𝐬.\n\n"
+        f"💎 Respect community rules and follow the instructions.\n\n"
         f"🛡️ 𝐌𝐀𝐍𝐀𝐆𝐄 𝐑𝐈𝐒𝐊 𝐖𝐈𝐒𝐄𝐋𝐘\n"
-        f"𝐍𝐞𝐯𝐞𝐫 𝐦𝐚𝐤𝐞 𝐝𝐞𝐜𝐢𝐬𝐢𝐨𝐧𝐬 𝐰𝐢𝐭𝐡𝐨𝐮𝐭 𝐮𝐧𝐝𝐞𝐫𝐬𝐭𝐚𝐧𝐝𝐢𝐧𝐠 𝐭𝐡𝐞 𝐫𝐢𝐬𝐤𝐬.\n\n"
+        f"Never make decisions without understanding the risks.\n\n"
         f"🚀 𝐀𝐂𝐂𝐄𝐒𝐒 𝐀𝐋𝐋 𝐁𝐎𝐓 𝐅𝐄𝐀𝐓𝐔𝐑𝐄𝐒\n\n"
         f"👇 𝐂𝐋𝐈𝐂𝐊 𝐓𝐎 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃"
     )
@@ -243,7 +243,7 @@ async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"━━━━━━━━━━━━━━━━━━\n\n"
         f"⚡ 𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝\n\n"
         f"👇 𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍\n\n"
-        f"🛡️ 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐢𝐧𝐯𝐨𝐥𝐯𝐞𝐬 𝐟𝐢𝐧𝐚𝐧𝐜𝐢𝐚𝐥 𝐫𝐢𝐬𝐤. 𝐒𝐢𝐠𝐧𝐚𝐥𝐬 𝐚𝐫𝐞 𝐧𝐨𝐭 𝐠𝐮𝐚𝐫𝐚𝐧𝐭𝐞𝐞𝐝 𝐩𝐫𝐨𝐟𝐢𝐭𝐬."
+        f"🛡️ Trading involves financial risk. Signals are not guaranteed profits."
     )
     await update.message.reply_text(welcome_text, reply_markup=main_menu_keyboard(), disable_web_page_preview=True)
 
@@ -267,10 +267,10 @@ async def signals_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     resp_text = (
         f"👑 {BOT_NAME} 👑\n\n"
         f"📊 𝐋𝐈𝐕𝐄 𝐎𝐓𝐂 & 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐇𝐔𝐁 📊\n\n"
-        f"✨ 𝐀𝐜𝐜𝐞𝐬𝐬 𝐡𝐢𝐠𝐡-𝐚𝐜𝐜𝐮𝐫𝐚𝐜𝐲 𝐦𝐚𝐫𝐤𝐞𝐭 𝐩𝐫𝐞𝐝𝐢𝐜𝐭𝐢𝐨𝐧𝐬 𝐚𝐧𝐝 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐭𝐞𝐜𝐡𝐧𝐢𝐜𝐚𝐥 𝐬𝐞𝐭𝐮𝐩𝐬:\n\n"
-        f"⚡ 𝐋𝐈𝐕𝐄 𝐌𝐀𝐑𝐊𝐄𝐓 𝐓𝐑𝐄𝐍𝐃𝐒:\n𝐆𝐞𝐭 𝐢𝐧𝐬𝐭𝐚𝐧𝐭 𝐮𝐩𝐝𝐚𝐭𝐞𝐬 𝐨𝐧 𝐫𝐮𝐧𝐧𝐢𝐧𝐠 𝐦𝐚𝐫𝐤𝐞𝐭 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬 𝐚𝐧𝐝 𝐚𝐜𝐭𝐢𝐯𝐞 𝐚𝐬𝐬𝐞𝐭 𝐦𝐨𝐯𝐞𝐦𝐞𝐧𝐭𝐬.\n\n"
-        f"📈 𝐏𝐑𝐈𝐂𝐄 𝐀𝐂𝐓𝐈𝐎𝐍 & 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒:\n𝐄𝐱𝐩𝐥𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥𝐞𝐝 𝐬𝐮𝐩𝐩𝐨𝐫𝐭/𝐫𝐞𝐬𝐢𝐬𝐭𝐚𝐧𝐜𝐞 𝐥𝐞𝐯𝐞𝐥𝐬 𝐚𝐧𝐝 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐜𝐡𝐚𝐫𝐭 𝐛𝐫𝐞𝐚𝐤𝐝𝐨𝐰𝐧𝐬.\n\n"
-        f"🎯 𝐒𝐈𝐆𝐍𝐀𝐋 𝐎𝐏𝐓𝐈𝐎𝐍𝐒:\n𝐂𝐡𝐨𝐨𝐬𝐞 𝐛𝐞𝐭𝐰𝐞𝐞𝐧 𝐎𝐓𝐂 𝐥𝐢𝐯𝐞 𝐬𝐢𝐠𝐧𝐚𝐥𝐬, 𝐭𝐫𝐞𝐧𝐝 𝐚𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐚𝐧𝐝 𝐟𝐮𝐭𝐮𝐫𝐞 𝐩𝐫𝐞𝐝𝐢𝐜𝐭𝐢𝐨𝐧𝐬.\n\n"
+        f"✨ Access high-accuracy market predictions and professional technical setups:\n\n"
+        f"⚡ 𝐋𝐈𝐕𝐄 𝐌𝐀𝐑𝐊𝐄𝐓 𝐓𝐑𝐄𝐍𝐃𝐒:\nGet instant updates on running market sessions and active asset movements.\n\n"
+        f"📈 𝐏𝐑𝐈𝐂𝐄 𝐀𝐂𝐓𝐈𝐎𝐍 & 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒:\nExplore detailed support/resistance levels and professional chart breakdowns.\n\n"
+        f"🎯 𝐒𝐈𝐆𝐍𝐀𝐋 𝐎𝐏𝐓𝐈𝐎𝐍𝐒:\nChoose between OTC live signals, trend analysis, and future predictions.\n\n"
         f"👇 𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐏𝐑𝐄𝐅𝐄𝐑𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍 𝐅𝐑𝐎𝐌 𝐓𝐇𝐄 𝐌𝐄𝐍𝐔 𝐁𝐄𝐋𝐎𝐖:"
     )
     kb = InlineKeyboardMarkup([
@@ -285,8 +285,8 @@ async def vip_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     resp_text = (
         f"👑 {BOT_NAME} 👑\n\n"
         f"💎 𝐕𝐈𝐏 𝐏𝐑𝐎𝐆𝐑𝐀𝐌 & 𝐉𝐎𝐈𝐍𝐈𝐍𝐆\n\n"
-        f"✨ 𝐔𝐧𝐥𝐨𝐜𝐤 𝐞𝐱𝐜𝐥𝐮𝐬𝐢𝐯𝐞 𝐚𝐝𝐯𝐚𝐧𝐭𝐚𝐠𝐞𝐬 𝐚𝐧𝐝 𝐞𝐥𝐞𝐯𝐚𝐭𝐞 𝐲𝐨𝐮𝐫 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐣𝐨𝐮𝐫𝐧𝐞𝐲 𝐰𝐢𝐭𝐡 𝐞𝐥𝐢𝐭𝐞 𝐦𝐞𝐦𝐛𝐞𝐫𝐬𝐡𝐢𝐩:\n\n"
-        f"📊 𝐄𝐱𝐩𝐥𝐨𝐫𝐞 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐞𝐭𝐮𝐩𝐬, 𝐒𝐢𝐠𝐧𝐚𝐥 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐚𝐧𝐝 𝐕𝐈𝐏 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 𝐂𝐨𝐧𝐭𝐞𝐧𝐭.\n\n"
+        f"✨ Unlock exclusive advantages and elevate your trading journey with elite membership:\n\n"
+        f"📊 Explore Market Analysis, Trading Setups, Signal Updates, and VIP Channel Content.\n\n"
         f"🔗 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\n{QUOTEX_LINK} 🌐\n\n"
         f"👇 𝐒𝐄𝐋𝐄𝐂𝐓 𝐀𝐍𝐘 𝐎𝐏𝐓𝐈𝐎𝐍 𝐅𝐑𝐎𝐌 𝐓𝐇𝐄 𝐌𝐄𝐍𝐔 𝐁𝐄𝐋𝐎𝐖:"
     )
@@ -303,9 +303,9 @@ async def contact_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     contact_text = (
         f"👑 {BOT_NAME} 👑\n\n"
         f"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐌.𝐊 𝐎𝐖𝐍𝐄𝐑 💬\n\n"
-        f"✨ 𝐈𝐟 𝐲𝐨𝐮 𝐡𝐚𝐯𝐞 𝐚𝐧𝐲 𝐪𝐮𝐞𝐬𝐭𝐢𝐨𝐧𝐬, 𝐧𝐞𝐞𝐝 𝐕𝐈𝐏 𝐚𝐜𝐜𝐞𝐬𝐬 𝐚𝐩𝐩𝐫𝐨𝐯𝐚𝐥, 𝐨𝐫 𝐰𝐚𝐧𝐭 𝐩𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐠𝐮𝐢𝐝𝐚𝐧𝐜𝐞, 𝐜𝐥𝐢𝐜𝐤 𝐭𝐡𝐞 𝐛𝐮𝐭𝐭𝐨𝐧 𝐛𝐞𝐥𝐨𝐰 𝐭𝐨 𝐜𝐨𝐧𝐭𝐚𝐜𝐭 𝐭𝐡𝐞 𝐨𝐰𝐧𝐞𝐫 𝐝𝐢𝐫𝐞𝐜𝐭𝐥𝐲:\n\n"
+        f"✨ If you have any questions, need VIP access approval, or want personal guidance, click the button below to contact the owner directly:\n\n"
         f"🔗 𝐃𝐈𝐑𝐄𝐂𝐓 𝐂𝐎𝐍𝐓𝐀𝐂𝐓:\n{ADMIN_USERNAME} 🌐\n\n"
-        f"👇 𝐓𝐚𝐩 𝐭𝐡𝐞 \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 𝐍𝐎𝐖 👑\" 𝐛𝐮𝐭𝐭𝐨𝐧 𝐛𝐞𝐥𝐨𝐰! ✅"
+        f"👇 Tap the \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 𝐍𝐎𝐖 👑\" button below! ✅"
     )
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 𝐍𝐎𝐖 👑", url=ADMIN_USERNAME)],
@@ -325,10 +325,10 @@ async def stats_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     stats_text = (
         f"📊 𝐁𝐎𝐓 𝐒𝐓𝐀𝐓𝐈𝐒𝐓𝐈𝐂𝐒 & 𝐀𝐍𝐀𝐋𝐘𝐓𝐈𝐂𝐒 📊\n\n"
-        f"👥 𝐓𝐨𝐭𝐚𝐥 𝐔𝐧𝐢𝐪𝐮𝐞 𝐔𝐬𝐞𝐫𝐬: {total_users}\n"
-        f"🚀 𝐓𝐨𝐭𝐚𝐥 /𝐬𝐭𝐚𝐫𝐭 𝐂𝐨𝐮𝐧𝐭: {start_count}\n"
-        f"📢 𝐓𝐨𝐭𝐚𝐥 𝐉𝐨𝐢𝐧 𝐑𝐞𝐪𝐮𝐞𝐬𝐭𝐬: {join_count}\n\n"
-        f"🤖 𝐁𝐨𝐭 𝐒𝐭𝐚𝐭𝐮𝐬: 𝐎𝐧𝐥𝐢𝐧𝐞 & 𝐑𝐮𝐧𝐧𝐢𝐧𝐠 🟢"
+        f"👥 Total Unique Users: {total_users}\n"
+        f"🚀 Total /start Count: {start_count}\n"
+        f"📢 Total Join Requests: {join_count}\n\n"
+        f"🤖 Bot Status: Online & Running 🟢"
     )
     await update.message.reply_text(stats_text)
 
@@ -339,7 +339,7 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
     
     if not context.args:
-        await update.message.reply_text("⚠️ 𝐏𝐥𝐞𝐚𝐬𝐞 𝐩𝐫𝐨𝐯𝐢𝐝𝐞 𝐚 𝐦𝐞𝐬𝐬𝐚𝐠𝐞 𝐭𝐨 𝐛𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭. 𝐄𝐱𝐚𝐦𝐩𝐥𝐞: /𝐛𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭 𝐇𝐞𝐥𝐥𝐨 𝐞𝐯𝐞𝐫𝐲𝐨𝐧𝐞!")
+        await update.message.reply_text("⚠️ Please provide a message to broadcast. Example: /broadcast Hello everyone!")
         return
     
     broadcast_text = " ".join(context.args)
@@ -362,9 +362,9 @@ async def broadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             except:
                 failed += 1
         
-        await update.message.reply_text(f"✅ 𝐁𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝!\n\n📨 𝐒𝐮𝐜𝐜𝐞𝐬𝐬: {success}\n❌ 𝐅𝐚𝐢𝐥𝐞𝐝: {failed}")
+        await update.message.reply_text(f"✅ 𝐁𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞𝐝!\n\n📨 Success: {success}\n❌ Failed: {failed}")
     except Exception as e:
-        await update.message.reply_text(f"❌ 𝐁𝐫𝐨𝐚𝐝𝐜𝐚𝐬𝐭 𝐞𝐫𝐫𝐨𝐫: {e}")
+        await update.message.reply_text(f"❌ Broadcast error: {e}")
 
 # Automatic Forwarder from Upcoming Postings Channel
 async def forward_channel_posts(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -399,13 +399,14 @@ async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_
     text = (
         f"👑 {BOT_NAME} 👑\n\n"
         f"🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 🔐\n\n"
-        f"𝐏𝐥𝐞𝐚𝐬𝐞 𝐫𝐞𝐩𝐥𝐲 𝐭𝐨 𝐭𝐡𝐢𝐬 𝐦𝐞𝐬𝐬𝐚𝐠𝐞 𝐰𝐢𝐭𝐡 𝐲𝐨𝐮𝐫 𝟖-𝐝𝐢𝐠𝐢𝐭 𝐐𝐮𝐨𝐭𝐞𝐱 𝐓𝐫𝐚𝐝𝐞𝐫 𝐈𝐃.\n\n"
-        f"(𝐄𝐱𝐚𝐦𝐩𝐥𝐞: <code>12345678</code>)"
+        f"Please reply to this message with your 8-digit Quotex Trader ID.\n\n"
+        f"(Example: <code>12345678</code>)"
     )
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
         [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
     ])
+    # Send as a NEW message so dashboard remains untouched
     await context.bot.send_message(chat_id=query.message.chat.id, text=text, reply_markup=kb, parse_mode="HTML")
     return WAITING_FOR_TRADER_ID
 
@@ -418,11 +419,13 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         
     trader_id = html.escape(text_input)
     
+    # Delete user's message containing Trader ID
     try:
         await update.message.delete()
     except Exception as e:
         print(f"Delete user message error: {e}")
     
+    # Also delete the prompt message if stored in context
     prompt_msg_id = context.user_data.get("verify_prompt_msg_id")
     if prompt_msg_id:
         try:
@@ -430,11 +433,13 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         except:
             pass
             
+    # Also delete the last message in chat if it was the prompt
     try:
         await context.bot.delete_message(chat_id=user.id, message_id=update.message.message_id - 1)
     except:
         pass
     
+    # Message sent to verification channel with "OPEN THE BOT" button linking to bot
     verify_channel_msg = (
         f"👑 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑\n\n"
         f"✦ 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 ✦\n\n"
@@ -442,8 +447,8 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         f"🕵🏻‍♂️ 𝐔𝐬𝐞𝐫𝐧𝐚𝐦𝐞: @{html.escape(str(user.username if user.username else 'No Username'))}\n"
         f"🆔 𝐔𝐬𝐞𝐫 𝐈𝐃: <code>{user.id}</code>\n"
         f"🔢 𝐓𝐫𝐚𝐝𝐞𝐫 𝐈𝐃: <code>{trader_id}</code>\n"
-        f"⏳ 𝐒𝐭𝐚𝐭𝐮𝐬: 𝐏𝐄𝐍𝐃𝐈𝐍𝐆 𝐑𝐄𝐕𝐈𝐄𝐖\n\n"
-        f"👇 𝐂𝐥𝐢𝐜𝐤 𝐛𝐞𝐥𝐨𝐰 𝐭𝐨 𝐜𝐡𝐚𝐭 𝐰𝐢𝐭𝐡 𝐮𝐬𝐞𝐫 𝐨𝐫 𝐨𝐩𝐞𝐧 𝐛𝐨𝐭:"
+        f"⏳ 𝐒𝐭𝐚𝐭𝐮𝐬: PENDING REVIEW\n\n"
+        f"👇 Click below to chat with user or open bot:"
     )
     
     admin_kb = InlineKeyboardMarkup([
@@ -461,17 +466,18 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     except Exception as e:
         print(f"Verify channel send error: {e}")
     
+    # Message sent back to User as a NEW message (leaving dashboard intact)
     user_success_text = (
         f"👑 {BOT_NAME} 👑\n\n"
         f"✦ 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍 𝐈𝐍 𝐏𝐑𝐎𝐆𝐑𝐄𝐒𝐒 ✦\n\n"
-        f"𝐘𝐨𝐮𝐫 𝐬𝐮𝐛𝐦𝐢𝐬𝐬𝐢𝐨𝐧 𝐡𝐚𝐬 𝐛𝐞𝐞𝐧 𝐬𝐮𝐜𝐜𝐞𝐬𝐬𝐟𝐮𝐥𝐥𝐲 𝐫𝐞𝐜𝐞𝐢𝐯𝐞𝐝!\n\n"
+        f"Your submission has been successfully received!\n\n"
         f"💎 𝐒𝐔𝐁𝐌𝐈𝐒𝐒𝐈𝐎𝐍 𝐃𝐄𝐓𝐀𝐈𝐋𝐒\n\n"
         f"🆔 𝐓𝐫𝐚𝐝𝐞𝐫 𝐈𝐃: <code>{trader_id}</code>\n"
-        f"⏳ 𝐑𝐞𝐯𝐢𝐞𝐰 𝐒𝐭𝐚𝐭𝐮𝐬: 𝐏𝐄𝐍𝐃𝐈𝐍𝐆\n"
-        f"🛡️ 𝐕𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧: 𝐀𝐝𝐦𝐢𝐧 𝐑𝐞𝐯𝐢𝐞𝐰\n\n"
-        f"✨ 𝐘𝐨𝐮𝐫 𝐝𝐞𝐭𝐚𝐢𝐥𝐬 𝐚𝐫𝐞 𝐧𝐨𝐰 𝐚𝐰𝐚𝐢𝐭𝐢𝐧𝐠 𝐚𝐝𝐦𝐢𝐧 𝐫𝐞𝐯𝐢𝐞𝐰. 𝐘𝐨𝐮 𝐰𝐢𝐥𝐥 𝐫𝐞𝐜𝐞𝐢𝐯𝐞 𝐚𝐧 𝐮𝐩𝐝𝐚𝐭𝐞 𝐨𝐧𝐜𝐞 𝐭𝐡𝐞 𝐯𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧 𝐩𝐫𝐨𝐜𝐞𝐬𝐬 𝐢𝐬 𝐜𝐨𝐦𝐩𝐥𝐞𝐭𝐞.\n\n"
+        f"⏳ 𝐑𝐞𝐯𝐢𝐞𝐰 𝐒𝐭𝐚𝐭𝐮𝐬: PENDING\n"
+        f"🛡️ 𝐕𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧: Admin Review\n\n"
+        f"✨ Your details are now awaiting admin review. You will receive an update once the verification process is complete.\n\n"
         f"💬 𝐍𝐄𝐄𝐃 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐀𝐒𝐒𝐈𝐒𝐓𝐀𝐍𝐂𝐄?\n\n"
-        f"𝐖𝐚𝐧𝐭 𝐝𝐢𝐫𝐞𝐜𝐭 𝐬𝐮𝐩𝐩𝐨𝐫𝐭 𝐟𝐫𝐨𝐦 𝐭𝐡𝐞 𝐨𝐰𝐧𝐞𝐫? 𝐓𝐚𝐩 𝐭𝐡𝐞 𝐛𝐮𝐭𝐭𝐨𝐧 𝐛𝐞𝐥𝐨𝐰 𝐭𝐨 𝐠𝐞𝐭 𝐢𝐧 𝐭𝐨𝐮𝐜𝐡! 👑\n\n"
+        f"Want direct support from the owner? Tap the button below to get in touch! 👑\n\n"
         f"𝐖𝐀𝐈𝐓𝐈𝐍𝐆 𝐅𝐎𝐑 𝐑𝐄𝐕𝐈𝐄𝐖"
     )
     
@@ -492,6 +498,7 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
         pass
     return ConversationHandler.END
 
+# Universal direct text handler for numbers (Trader ID anytime)
 async def global_text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not update.message or not update.message.text:
         return
@@ -527,7 +534,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"━━━━━━━━━━━━━━━━━━\n\n"
             f"⚡ 𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝\n\n"
             f"👇 𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍\n\n"
-            f"🛡️ 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐢𝐧𝐯𝐨𝐥𝐯𝐞𝐬 𝐟𝐢𝐧𝐚𝐧𝐜𝐢𝐚𝐥 𝐫𝐢𝐬𝐤. 𝐒𝐢𝐠𝐧𝐚𝐥𝐬 𝐚𝐫𝐞 𝐧𝐨𝐭 𝐠𝐮𝐚𝐫𝐚𝐧𝐭𝐞𝐞𝐝 𝐩𝐫𝐨𝐟𝐢𝐭𝐬."
+            f"🛡️ Trading involves financial risk. Signals are not guaranteed profits."
         )
         await context.bot.send_message(chat_id=chat_id, text=welcome_text, reply_markup=main_menu_keyboard(), disable_web_page_preview=True)
 
@@ -545,14 +552,14 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑\n\n"
             f"📊 𝐎𝐓𝐂 𝐋𝐈𝐕𝐄 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐄𝐍𝐆𝐈𝐍𝐄 📊\n\n"
-            f"✨ 𝐖𝐞𝐥𝐜𝐨𝐦𝐞 𝐭𝐨 𝐭𝐡𝐞 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐎𝐓𝐂 𝐥𝐢𝐯𝐞 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐡𝐮𝐛. 𝐇𝐞𝐫𝐞 𝐲𝐨𝐮 𝐫𝐞𝐜𝐞𝐢𝐯𝐞 𝐡𝐢𝐠𝐡-𝐚𝐜𝐜𝐮𝐫𝐚𝐜𝐲 𝐫𝐞𝐚𝐥-𝐭𝐢𝐦𝐞 𝐬𝐢𝐠𝐧𝐚𝐥𝐬 𝐨𝐩𝐭𝐢𝐦𝐢𝐳𝐞𝐝 𝐟𝐨𝐫 𝐜𝐮𝐫𝐫𝐞𝐧𝐭 𝐦𝐚𝐫𝐤𝐞𝐭 𝐬𝐞𝐬𝐬𝐢𝐨𝐧.\n\n"
+            f"✨ Welcome to the professional OTC live trading hub. Here you receive high-accuracy real-time signals optimized for current market session.\n\n"
             f"💎 𝐀𝐬𝐬𝐞𝐭: USD/PHP (OTC)\n"
             f"🟢 𝐃𝐢𝐫𝐞𝐜𝐭𝐢𝐨𝐧: CALL (BUY) 📈\n"
             f"🕒 𝐄𝐧𝐭𝐫𝐲 𝐓𝐢𝐦𝐞: Next Candle / 1 Minute Expiry\n"
             f"🌐 𝐓𝐢𝐦𝐞𝐳𝐨𝐧𝐞: Pakistan Standard Time (UTC+05:00)\n"
             f"⚠️ 𝐑𝐮𝐥𝐞: 1 Step MTG Allowed\n\n"
             f"👤 𝐀𝐧𝐚𝐥𝐲𝐬𝐭: @MK_TRADER586 👑\n\n"
-            f"👇 𝐑𝐚𝐭𝐞 𝐲𝐨𝐮𝐫 𝐭𝐫𝐚𝐝𝐞 𝐩𝐞𝐫𝐟𝐨𝐫𝐦𝐚𝐧𝐜𝐞 𝐛𝐞𝐥𝐨𝐰:"
+            f"👇 Rate your trade performance below:"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("👍 𝐖𝐈𝐍 (𝐈𝐓𝐌)", callback_data="signal_win"), InlineKeyboardButton("👎 𝐋𝐎𝐒𝐒 (𝐎𝐓𝐌)", callback_data="signal_loss")],
@@ -575,14 +582,14 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑\n\n"
             f"📈 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐇𝐔𝐁 📈\n\n"
-            f"✨ 𝐃𝐞𝐭𝐚𝐢𝐥𝐞𝐝 𝐭𝐞𝐜𝐡𝐧𝐢𝐜𝐚𝐥 𝐚𝐧𝐝 𝐩𝐫𝐢𝐜𝐞 𝐚𝐜𝐭𝐢𝐨𝐧 𝐦𝐚𝐫𝐤𝐞𝐭 𝐚𝐧𝐚𝐥𝐲𝐬𝐢𝐬 𝐬𝐢𝐠𝐧𝐚𝐥𝐬 𝐟𝐨𝐫 𝐝𝐢𝐠𝐢𝐭𝐚𝐥 𝐨𝐩𝐭𝐢𝐨𝐧𝐬 𝐭𝐫𝐚𝐝𝐢𝐧𝐠.\n\n"
+            f"✨ Detailed technical and price action market analysis signals for digital options trading.\n\n"
             f"💎 𝐀𝐬𝐬𝐞𝐭: EUR/USD (Live Market)\n"
             f"🔴 𝐃𝐢𝐫𝐞𝐜𝐭𝐢𝐨𝐧: PUT (SELL) 📉\n"
             f"🕒 𝐄𝐧𝐭𝐫𝐲: Immediate / 1 Minute Expiry\n"
             f"🌐 𝐓𝐢𝐦𝐞𝐳𝐨𝐧𝐞: Pakistan Standard Time (UTC+05:00)\n"
             f"💡 𝐒𝐞𝐭𝐮𝐩 𝐄𝐱𝐩𝐥𝐚𝐧𝐚𝐭𝐢𝐨𝐧: Strong resistance level rejection accompanied by volume exhaustion.\n\n"
             f"👤 𝐀𝐧𝐚𝐥𝐲𝐬𝐭: @MK_TRADER586 👑\n\n"
-            f"👇 𝐑𝐚𝐭𝐞 𝐲𝐨𝐮𝐫 𝐭𝐫𝐚𝐝𝐞 𝐩𝐞𝐫𝐟𝐨𝐫𝐦𝐚𝐧𝐜𝐞 𝐛𝐞𝐥𝐨𝐰:"
+            f"👇 Rate your trade performance below:"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("👍 𝐖𝐈𝐍 (𝐈𝐓𝐌)", callback_data="signal_win"), InlineKeyboardButton("👎 𝐋𝐎𝐒𝐒 (𝐎𝐓𝐌)", callback_data="signal_loss")],
@@ -639,18 +646,18 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👑 {BOT_NAME} 👑\n\n"
             f"🤖 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎 🤖\n\n"
             f"🚀 𝐄𝐋𝐄𝐕𝐀𝐓𝐄 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐆𝐀𝐌𝐄!\n\n"
-            f"📊 𝐄𝐱𝐩𝐥𝐨𝐫𝐞 𝐀𝐈-𝐚𝐬𝐬𝐢𝐬𝐭𝐞𝐝 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐬𝐢𝐠𝐧𝐚𝐥𝐬 𝐚𝐧𝐝 𝐦𝐚𝐫𝐤𝐞𝐭 𝐢𝐧𝐬𝐢𝐠𝐡𝐭𝐬 𝐰𝐢𝐭𝐡 𝐨𝐮𝐫 𝐩𝐫𝐞𝐦𝐢𝐮𝐦 𝐬𝐢𝐠𝐧𝐚𝐥𝐬 𝐛𝐨𝐭, 𝐝𝐞𝐬𝐢𝐠𝐧𝐞𝐝 𝐟𝐨𝐫 𝐭𝐫𝐚𝐝𝐞𝐫𝐬 𝐰𝐡𝐨 𝐰𝐚𝐧𝐭 𝐚 𝐬𝐦𝐚𝐫𝐭𝐞𝐫 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐞𝐱𝐩𝐞𝐫𝐢𝐞𝐧𝐜𝐞. ⚡🎯\n\n"
+            f"📊 Explore AI-assisted trading signals and market insights with our premium signals bot, designed for traders who want a smarter trading experience. ⚡🎯\n\n"
             f"💎 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒:\n"
             f"💵 Subscription Fee: $20 ONLY\n\n"
             f"📌 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍:\n"
-            f"1️⃣ 💳 𝐂𝐨𝐦𝐩𝐥𝐞𝐭𝐞 𝐲𝐨𝐮𝐫 $𝟐𝟎 𝐬𝐮𝐛𝐬𝐜𝐫𝐢𝐩𝐭𝐢𝐨𝐧 𝐩𝐚𝐲𝐦𝐞𝐧𝐭.\n"
-            f"2️⃣ 🧾 𝐒𝐞𝐧𝐝 𝐲𝐨𝐮𝐫 𝐩𝐚𝐲𝐦𝐞𝐧𝐭 𝐫𝐞𝐜𝐞𝐢𝐩𝐭 𝐭𝐨 𝐭𝐡𝐞 𝐨𝐰𝐧𝐞𝐫.\n"
-            f"3️⃣ ✅ 𝐖𝐚𝐢𝐭 𝐟𝐨𝐫 𝐢𝐧𝐬𝐭𝐚𝐧𝐭 𝐩𝐚𝐲𝐦𝐞𝐧𝐭 𝐯𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧.\n"
-            f"4️⃣ 🔓 𝐑𝐞𝐜𝐞𝐢𝐯𝐞 𝐟𝐮𝐥𝐥 𝐢𝐧𝐬𝐭𝐫𝐮𝐜𝐭𝐢𝐨𝐧𝐬 𝐭𝐨 𝐚𝐜𝐜𝐞𝐬𝐬 𝐭𝐡𝐞 𝐛𝐨𝐭!\n\n"
+            f"1️⃣ 💳 Complete your $20 subscription payment.\n"
+            f"2️⃣ 🧾 Send your payment receipt to the owner.\n"
+            f"3️⃣ ✅ Wait for instant payment verification.\n"
+            f"4️⃣ 🔓 Receive full instructions to access the bot!\n\n"
             f"👑 𝐌.𝐊 𝐀𝐈 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐏𝐑𝐎\n"
             f"✨ 𝐒𝐌𝐀𝐑𝐓 𝐈𝐍𝐒𝐈𝐆𝐇𝐓𝐒 • 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐀𝐂𝐂𝐄𝐒𝐒 ✨\n\n"
             f"💬 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏 𝐎𝐑 𝐑𝐄𝐀𝐃𝐘 𝐓𝐎 𝐏𝐀𝐘?\n"
-            f"𝐓𝐚𝐩 𝐭𝐡𝐞 \"💳 𝐏𝐀𝐘𝐌𝐄𝐍𝐓\" 𝐨𝐫 \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑\" 𝐛𝐮𝐭𝐭𝐨𝐧 𝐛𝐞𝐥𝐨𝐰! ✅"
+            f"Tap the \"💳 𝐏𝐀𝐘𝐌𝐄𝐍𝐓\" or \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑\" button below! ✅"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐕𝐈𝐏 𝐋𝐈𝐍𝐊", url=QUOTEX_LINK)],
@@ -663,15 +670,15 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"📋 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐈𝐍𝐅𝐎𝐑𝐌𝐀𝐓𝐈𝐎𝐍 & 𝐅𝐔𝐓𝐔𝐑𝐄 𝐋𝐈𝐒𝐓 📋\n\n"
-            f"✨ 𝐄𝐯𝐞𝐫𝐲𝐭𝐡𝐢𝐧𝐠 𝐲𝐨𝐮 𝐧𝐞𝐞𝐝 𝐭𝐨 𝐦𝐚𝐬𝐭𝐞𝐫 𝐭𝐡𝐞 𝐦𝐚𝐫𝐤𝐞𝐭 — 𝐞𝐬𝐬𝐞𝐧𝐭𝐢𝐚𝐥 𝐢𝐧𝐬𝐢𝐠𝐡𝐭𝐬, 𝐚𝐬𝐬𝐞𝐭 𝐚𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐚𝐧𝐝 𝐩𝐫𝐨 𝐠𝐮𝐢𝐝𝐚𝐧𝐜𝐞 𝐚𝐥𝐥 𝐢𝐧 𝐨𝐧𝐞 𝐩𝐥𝐚𝐜𝐞:\n\n"
-            f"💎 𝐀𝐒𝐒𝐄𝐓 𝐃𝐈𝐑𝐄𝐂𝐓𝐎𝐑𝐘:\n𝐄𝐱𝐩𝐥𝐨𝐫𝐞 𝐦𝐚𝐣𝐨𝐫 𝐜𝐮𝐫𝐫𝐞𝐧𝐜𝐲 𝐩𝐚𝐢𝐫𝐬, 𝐎𝐓𝐂 𝐚𝐬𝐬𝐞𝐭𝐬, 𝐚𝐧𝐝 𝐡𝐢𝐠𝐡-𝐲𝐢𝐞𝐥𝐝 𝐦𝐚𝐫𝐤𝐞𝐭 𝐢𝐧𝐬𝐭𝐫𝐮𝐦𝐞𝐧𝐭𝐬.\n\n"
-            f"🌍 𝐌𝐀𝐑𝐊𝐄𝐓 𝐓𝐈𝐌𝐈𝐍𝐆𝐒:\n𝐎𝐩𝐭𝐢𝐦𝐢𝐳𝐞 𝐲𝐨𝐮𝐫 𝐬𝐞𝐭𝐮𝐩𝐬 𝐚𝐜𝐫𝐨𝐬𝐬 𝐀𝐬𝐢𝐚𝐧, 𝐋𝐨𝐧𝐝𝐨𝐧, 𝐚𝐧𝐝 𝐍𝐞𝐰 𝐘𝐨𝐫𝐤 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬.\n\n"
-            f"📈 𝐏𝐑𝐈𝐂𝐄 𝐀𝐂𝐓𝐈𝐎𝐍 𝐆𝐔𝐈𝐃𝐄:\n𝐌𝐚𝐬𝐭𝐞𝐫 𝐤𝐞𝐲 𝐜𝐡𝐚𝐫𝐭 𝐩𝐚𝐭𝐭𝐞𝐫𝐧𝐬, 𝐦𝐚𝐫𝐤𝐞𝐭 𝐭𝐫𝐞𝐧𝐝𝐬, 𝐚𝐧𝐝 𝐡𝐢𝐠𝐡-𝐩𝐫𝐨𝐛𝐚𝐛𝐢𝐥𝐢𝐭𝐲 𝐩𝐫𝐢𝐜𝐞 𝐦𝐨𝐯𝐞𝐦𝐞𝐧𝐭𝐬.\n\n"
-            f"🛡️ 𝐑𝐈𝐒𝐊 𝐀𝐖𝐀𝐑𝐄𝐍𝐄𝐒𝐒:\n𝐈𝐦𝐩𝐥𝐞𝐦𝐞𝐧𝐭 𝐬𝐭𝐫𝐢𝐜𝐭 𝐜𝐚𝐩𝐢𝐭𝐚𝐥 𝐩𝐫𝐨𝐭𝐞𝐜𝐭𝐢𝐨𝐧 𝐫𝐮𝐥𝐞𝐬 𝐚𝐧𝐝 𝐝𝐢𝐬𝐜𝐢𝐩𝐥𝐢𝐧𝐞𝐝 𝐝𝐞𝐜𝐢𝐬𝐢𝐨𝐧-𝐦𝐚𝐤𝐢𝐧𝐠.\n\n"
-            f"⏱️ 𝐄𝐗𝐏𝐈𝐑𝐘 𝐓𝐈𝐌𝐄 𝐆𝐔𝐈𝐃𝐄:\n𝐔𝐧𝐝𝐞𝐫𝐬𝐭𝐚𝐧𝐝 𝟏-𝐦𝐢𝐧𝐮𝐭𝐞 𝐚𝐧𝐝 𝟓-𝐦𝐢𝐧𝐮𝐭𝐞 𝐞𝐱𝐞𝐜𝐮𝐭𝐢𝐨𝐧 𝐬𝐭𝐫𝐚𝐭𝐞𝐠𝐢𝐞𝐬 𝐚𝐧𝐝 𝐤𝐞𝐲 𝐝𝐢𝐟𝐟𝐞𝐫𝐞𝐧𝐜𝐞𝐬.\n\n"
-            f"📚 𝐏𝐑𝐎 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐓𝐄𝐑𝐌𝐒:\n𝐋𝐞𝐚𝐫𝐧 𝐞𝐬𝐬𝐞𝐧𝐭𝐢𝐚𝐥 𝐦𝐚𝐫𝐤𝐞𝐭 𝐯𝐨𝐜𝐚𝐛𝐮𝐥𝐚𝐫𝐲, 𝐭𝐞𝐜𝐡𝐧𝐢𝐜𝐚𝐥 𝐭𝐞𝐫𝐦𝐬, 𝐚𝐧𝐝 𝐜𝐨𝐫𝐞 𝐝𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧𝐬.\n\n"
+            f"✨ Everything you need to master the market — essential insights, asset analysis, and pro guidance all in one place:\n\n"
+            f"💎 𝐀𝐒𝐒𝐄𝐓 𝐃𝐈𝐑𝐄𝐂𝐓𝐎𝐑𝐘:\nExplore major currency pairs, OTC assets, and high-yield market instruments.\n\n"
+            f"🌍 𝐌𝐀𝐑𝐊𝐄𝐓 𝐓𝐈𝐌𝐈𝐍𝐆𝐒:\nOptimize your setups across Asian, London, and New York trading sessions.\n\n"
+            f"📈 𝐏𝐑𝐈𝐂𝐄 𝐀𝐂𝐓𝐈𝐎𝐍 𝐆𝐔𝐈𝐃𝐄:\nMaster key chart patterns, market trends, and high-probability price movements.\n\n"
+            f"🛡️ 𝐑𝐈𝐒𝐊 𝐀𝐖𝐀𝐑𝐄𝐍𝐄𝐒𝐒:\nImplement strict capital protection rules and disciplined decision-making.\n\n"
+            f"⏱️ 𝐄𝐗𝐏𝐈𝐑𝐘 𝐓𝐈𝐌𝐄 𝐆𝐔𝐈𝐃𝐄:\nUnderstand 1-minute and 5-minute execution strategies and key differences.\n\n"
+            f"📚 𝐏𝐑𝐎 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐓𝐄𝐑𝐌𝐒:\nLearn essential market vocabulary, technical terms, and core definitions.\n\n"
             f"🔗 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐀𝐓𝐈𝐎𝐍 𝐋𝐈𝐍𝐊:\n{QUOTEX_LINK} 🌐\n\n"
-            f"💬 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?\n𝐓𝐚𝐩 𝐭𝐡𝐞 \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑\" 𝐛𝐮𝐭𝐭𝐨𝐧 𝐛𝐞𝐥𝐨𝐰 𝐟𝐨𝐫 𝐝𝐢𝐫𝐞𝐜𝐭 𝐚𝐬𝐬𝐢𝐬𝐭𝐚𝐧𝐜𝐞! ✅"
+            f"💬 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?\nTap the \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑\" button below for direct assistance! ✅"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("📚 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄", callback_data="trading_guidance")],
@@ -683,11 +690,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"👤 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 & 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 👤\n\n"
-            f"✨ 𝐆𝐞𝐭 𝐞𝐱𝐜𝐥𝐮𝐬𝐢𝐯𝐞 𝐨𝐧𝐞-𝐭𝐨-𝐨𝐧𝐞 𝐩𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬 𝐰𝐢𝐭𝐡 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐚𝐧𝐝 𝐞𝐱𝐩𝐞𝐫𝐢𝐞𝐧𝐜𝐞 𝐝𝐢𝐫𝐞𝐜𝐭 𝐦𝐞𝐧𝐭𝐨𝐫𝐬𝐡𝐢𝐩, 𝐢𝐧𝐝𝐢𝐯𝐢𝐝𝐮𝐚𝐥 𝐚𝐭𝐭𝐞𝐧𝐭𝐢𝐨𝐧 & 𝐩𝐞𝐫𝐬𝐨𝐧𝐚𝐥𝐢𝐳𝐞𝐝 𝐦𝐚𝐫𝐤𝐞𝐭 𝐠𝐮𝐢𝐝𝐚𝐧𝐜𝐞.\n\n"
-            f"💎 𝐎𝐍𝐄-𝐓𝐎-𝐎𝐍𝐄 𝐌𝐄𝐍𝐓𝐎𝐑𝐒𝐇𝐈𝐏\n𝐄𝐧𝐣𝐨𝐲 𝐩𝐫𝐢𝐯𝐚𝐭𝐞 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬 𝐰𝐢𝐭𝐡 𝐝𝐢𝐫𝐞𝐜𝐭 𝐢𝐧𝐭𝐞𝐫𝐚𝐜𝐭𝐢𝐨𝐧 𝐚𝐧𝐝 𝐩𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐠𝐮𝐢𝐝𝐚𝐧𝐜𝐞.\n\n"
-            f"📊 𝐈𝐍𝐃𝐈𝐕𝐈𝐃𝐔𝐀𝐋 𝐌𝐀𝐑𝐊𝐄𝐓 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒\n𝐃𝐢𝐬𝐜𝐮𝐬𝐬 𝐜𝐡𝐚𝐫𝐭 𝐩𝐚𝐭𝐭𝐞𝐫𝐧𝐬, 𝐦𝐚𝐫𝐤𝐞𝐭 𝐦𝐨𝐯𝐞𝐦𝐞𝐧𝐭𝐬 & 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐬𝐭𝐫𝐚𝐭𝐞𝐠𝐢𝐞𝐬 𝐩𝐞𝐫𝐬𝐨𝐧𝐚𝐥𝐥𝐲.\n\n"
-            f"🎯 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋𝐈𝐙𝐄𝐃 𝐒𝐄𝐒𝐒𝐈𝐎𝐍 𝐏𝐋𝐀𝐍\n𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬 𝐚𝐫𝐫𝐚𝐧𝐠𝐞𝐝 𝐚𝐜𝐜𝐨𝐫𝐝𝐢𝐧𝐠 𝐭𝐨 𝐲𝐨𝐮𝐫 𝐚𝐯𝐚𝐢𝐥𝐚𝐛𝐢𝐥𝐢𝐭𝐲 𝐚𝐧𝐝 𝐥𝐞𝐚𝐫𝐧𝐢𝐧𝐠 𝐫𝐞𝐪𝐮𝐢𝐫𝐞𝐦𝐞𝐧𝐭𝐬.\n\n"
-            f"🧠 𝐃𝐈𝐑𝐄𝐂𝐓 𝐏𝐑𝐎𝐅𝐄𝐒𝐒𝐈𝐎𝐍𝐀𝐋 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄\n𝐆𝐞𝐭 𝐩𝐞𝐫𝐬𝐨𝐧𝐚𝐥 𝐚𝐭𝐭𝐞𝐧𝐭𝐢𝐨𝐧 𝐨𝐧 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐩𝐬𝐲𝐜𝐡𝐨𝐥𝐨𝐠𝐲, 𝐝𝐢𝐬𝐜𝐢𝐩𝐥𝐢𝐧𝐞 & 𝐫𝐢𝐬𝐤 𝐦𝐚𝐧𝐚𝐠𝐞𝐦𝐞𝐧𝐭.\n\n"
+            f"✨ Get exclusive one-to-one personal sessions with 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 and experience direct mentorship, individual attention & personalized market guidance.\n\n"
+            f"💎 𝐎𝐍𝐄-𝐓𝐎-𝐎𝐍𝐄 𝐌𝐄𝐍𝐓𝐎𝐑𝐒𝐇𝐈𝐏\nEnjoy private sessions with direct interaction and personal guidance.\n\n"
+            f"📊 𝐈𝐍𝐃𝐈𝐕𝐈𝐃𝐔𝐀𝐋 𝐌𝐀𝐑𝐊𝐄𝐓 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒\nDiscuss chart patterns, market movements & trading strategies personally.\n\n"
+            f"🎯 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋𝐈𝐙𝐄𝐃 𝐒𝐄𝐒𝐒𝐈𝐎𝐍 𝐏𝐋𝐀𝐍\nSessions arranged according to your availability and learning requirements.\n\n"
+            f"🧠 𝐃𝐈𝐑𝐄𝐂𝐓 𝐏𝐑𝐎𝐅𝐄𝐒𝐒𝐈𝐎𝐍𝐀𝐋 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄\nGet personal attention on trading psychology, discipline & risk management.\n\n"
             f"👑 𝐄𝐗𝐂𝐋𝐔𝐒𝐈𝐕𝐄 𝐕𝐈𝐏 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐀𝐂𝐂𝐄𝐒𝐒\nA private learning experience with direct communication and dedicated mentorship.\n\n"
             f"🔥 𝐘𝐎𝐔𝐑 𝐒𝐄𝐒𝐒𝐈𝐎𝐍. 𝐘𝐎𝐔𝐑 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄. 𝐘𝐎𝐔𝐑 𝐋𝐄𝐀𝐑𝐍𝐈𝐍𝐆.\n\n"
             f"👇 𝐂𝐋𝐈𝐂𝐊 𝐁𝐄𝐋𝐎𝐖 𝐓𝐎 𝐔𝐍𝐋𝐎𝐂𝐊 𝐕𝐈𝐏 𝐃𝐄𝐓𝐀𝐈𝐋𝐒 𝐎𝐑 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐅𝐎𝐑 𝐘𝐎𝐔𝐑 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍:"
@@ -704,7 +711,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"💸 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 & 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 💸\n\n"
-            f"✨ 𝐅𝐚𝐜𝐞𝐝 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐥𝐨𝐬𝐬𝐞𝐬? 𝐆𝐞𝐭 𝐝𝐞𝐝𝐢𝐜𝐚𝐭𝐞𝐝 𝐨𝐧𝐞-𝐭𝐨-𝐨𝐧𝐞 𝐫𝐞𝐜𝐨𝐯𝐞𝐫𝐲 𝐠𝐮𝐢𝐝𝐚𝐧𝐜𝐞 𝐰𝐢𝐭𝐡 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑. 𝐑𝐞𝐯𝐢𝐞𝐰 𝐩𝐫𝐞𝐯𝐢𝐨𝐮𝐬 𝐭𝐫𝐚𝐝𝐞𝐬, 𝐮𝐧𝐝𝐞𝐫𝐬𝐭𝐚𝐧𝐝 𝐰𝐡𝐚𝐭 𝐰𝐞𝐧𝐭 𝐰𝐫𝐨𝐧𝐠 & 𝐥𝐞𝐚𝐫𝐧 𝐚 𝐦𝐨𝐫𝐞 𝐝𝐢𝐬𝐜𝐢𝐩𝐥𝐢𝐧𝐞𝐝 𝐚𝐩𝐩𝐫𝐨𝐚𝐜𝐡 𝐛𝐞𝐟𝐨𝐫𝐞 𝐦𝐚𝐤𝐢𝐧𝐠 𝐲𝐨𝐮𝐫 𝐧𝐞𝐱𝐭 𝐝𝐞𝐜𝐢𝐬𝐢𝐨𝐧.\n\n"
+            f"✨ Faced trading losses? Get dedicated one-to-one recovery guidance with 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑. Review previous trades, understand what went wrong & learn a more disciplined approach before making your next decision.\n\n"
             f"📉 𝐏𝐑𝐄𝐕𝐈𝐎𝐔𝐒 𝐋𝐎𝐒𝐒 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒\n• Detailed review of previous trades and mistakes.\n\n"
             f"💎 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘 𝐏𝐋𝐀𝐍𝐍𝐈𝐍𝐆\n• Individual guidance to review your situation and plan your next steps responsibly.\n\n"
             f"🧠 𝐄𝐌𝐎𝐓𝐈𝐎𝐍𝐀𝐋 𝐂𝐎𝐍𝐓𝐑𝐎𝐋 & 𝐃𝐈𝐒𝐂𝐈𝐏𝐋𝐈𝐍𝐄\n• Learn to avoid revenge trading and impulsive decisions.\n\n"
@@ -725,7 +732,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"🎩 𝐇𝐎𝐖 𝐓𝐎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐀𝐍𝐃 𝐕𝐄𝐑𝐈𝐅𝐘 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓 🎩\n\n"
-            f"✨ 𝐅𝐨𝐥𝐥𝐨𝐰 𝐭𝐡𝐞𝐬𝐞 𝐬𝐢𝐦𝐩𝐥𝐞 𝐬𝐭𝐞𝐩𝐬 𝐭𝐨 𝐚𝐜𝐭𝐢𝐯𝐚𝐭𝐞 𝐲𝐨𝐮𝐫 𝐕𝐈𝐏 𝐚𝐜𝐜𝐞𝐬𝐬:\n\n"
+            f"✨ Follow these simple steps to activate your VIP access:\n\n"
             f"1️⃣ 𝐂𝐑𝐄𝐀𝐓𝐄 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\nRegister your new account using the secure link provided below.\n\n"
             f"2️⃣ 𝐂𝐎𝐌𝐏𝐋𝐄𝐓𝐄 𝐒𝐄𝐓𝐔𝐏:\nFinish your profile setup and complete your KYC identity verification.\n\n"
             f"3️⃣ 𝐂𝐎𝐏𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nGo to your account dashboard and copy your official 8-digit Trader ID.\n\n"
@@ -746,7 +753,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"💎 𝐕𝐈𝐏 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 & 𝐄𝐋𝐈𝐆𝐈𝐁𝐈𝐋𝐈𝐓𝐘 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 💎\n\n"
-            f"✨ 𝐔𝐧𝐥𝐨𝐜𝐤 𝐞𝐥𝐢𝐭𝐞 𝐟𝐢𝐧𝐚𝐧𝐜𝐢𝐚𝐥 𝐛𝐞𝐧𝐞𝐟𝐢𝐭𝐬 𝐰𝐢𝐭𝐡 𝐌.𝐊 𝐕𝐈𝐏 𝐌𝐞𝐦𝐛𝐞𝐫𝐬𝐡𝐢𝐩:\n\n"
+            f"✨ Unlock elite financial benefits with M.K VIP Membership:\n\n"
             f"🎯 𝟐𝟒/𝟕 𝐏𝐫𝐢𝐯𝐚𝐭𝐞 𝐇𝐢𝐠𝐡-𝐀𝐜𝐜𝐮𝐫𝐚𝐜𝐲 𝐒𝐢𝐠𝐧𝐚𝐥𝐬 𝐅𝐞𝐞𝐝\n"
             f"🤖 𝐀𝐮𝐭𝐨𝐦𝐚𝐭𝐞𝐝 𝐀𝐈 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐁𝐨𝐭 𝐅𝐮𝐥𝐥 𝐀𝐜𝐜𝐞𝐬𝐬\n"
             f"📈 𝐄𝐱𝐜𝐥𝐮𝐬𝐢𝐯𝐞 𝐂𝐨𝐦𝐩𝐨𝐮𝐧𝐝 𝐒𝐞𝐬𝐬𝐢𝐨𝐧𝐬 & 𝐌𝐞𝐧𝐭𝐨𝐫𝐬𝐡𝐢𝐩\n\n"
@@ -769,7 +776,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"📜 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐑𝐔𝐋𝐄𝐒 & 𝐏𝐒𝐘𝐂𝐇𝐎𝐋𝐎𝐆𝐘 𝐆𝐔𝐈𝐃𝐄 📜\n\n"
-            f"✨ 𝐁𝐮𝐢𝐥𝐝 𝐚 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐦𝐢𝐧𝐝𝐬𝐞𝐭 𝐚𝐧𝐝 𝐩𝐫𝐨𝐭𝐞𝐜𝐭 𝐲𝐨𝐮𝐫 𝐜𝐚𝐩𝐢𝐭𝐚𝐥 𝐰𝐢𝐭𝐡 𝐜𝐨𝐫𝐞 𝐝𝐢𝐬𝐜𝐢𝐩𝐥𝐢𝐧𝐞:\n\n"
+            f"✨ Build a professional trading mindset and protect your capital with core discipline:\n\n"
             f"🧠 𝐄𝐌𝐎𝐓𝐈𝐎𝐍𝐀𝐋 𝐂𝐎𝐍𝐓𝐑𝐎𝐋:\nNever trade with revenge mindset after a loss. Stay calm and stick to your strategy.\n\n"
             f"🛡️ 𝐓𝐇𝐑𝐄𝐄-𝐋𝐎𝐒𝐒 𝐒𝐓𝐎𝐏 𝐑𝐔𝐋𝐄:\nIf you hit 3 consecutive losses, close your charts immediately and take a break.\n\n"
             f"🎯 𝐃𝐀𝐈𝐋𝐘 𝐓𝐀𝐑𝐆𝐄𝐓 𝐃𝐈𝐒𝐂𝐈𝐏𝐋𝐈𝐍𝐄:\nSet daily profit goals. Once your target is achieved, stop trading and protect your gains.\n\n"
@@ -786,7 +793,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"💎 𝐌.𝐊 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐕𝐈𝐏 𝐌𝐄𝐌𝐁𝐄𝐑𝐒𝐇𝐈𝐏 💎\n\n"
-            f"✨ 𝐄𝐥𝐞𝐯𝐚𝐭𝐞 𝐲𝐨𝐮𝐫 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐰𝐢𝐭𝐡 𝐞𝐱𝐜𝐥𝐮𝐬𝐢𝐯𝐞 𝐕𝐈𝐏 𝐚𝐜𝐜𝐞𝐬𝐬, 𝐡𝐢𝐠𝐡-𝐩𝐫𝐞𝐜𝐢𝐬𝐢𝐨𝐧 𝐬𝐢𝐠𝐧𝐚𝐥𝐬, 𝐚𝐧𝐝 𝐝𝐚𝐢𝐥𝐲 𝐦𝐚𝐫𝐤𝐞𝐭 𝐚𝐧𝐚𝐥𝐲𝐬𝐢𝐬!\n\n"
+            f"✨ Elevate your trading with exclusive VIP access, high-precision signals, and daily market analysis!\n\n"
             f"📊 𝐕𝐈𝐏 𝐄𝐗𝐂𝐋𝐔𝐒𝐈𝐕𝐄 𝐅𝐄𝐀𝐓𝐔𝐑𝐄𝐒:\n"
             f"🎯 Daily 90%+ Accuracy Signal Setups\n"
             f"📈 Private Risk & Money Management Plan\n"
@@ -810,7 +817,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👑 {BOT_NAME} 👑\n\n"
             f"🚨 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐎𝐌𝐏𝐎𝐔𝐍𝐃𝐈𝐍𝐆 𝐀𝐍𝐍𝐎𝐔𝐍𝐂𝐄𝐌𝐄𝐍𝐓 🚨\n\n"
             f"⚡️ 𝐃𝐀𝐈𝐋𝐘 𝟑-𝐒𝐓𝐄𝐏 𝐂𝐎𝐌𝐏𝐎𝐔𝐍𝐃𝐈𝐍𝐆 𝐒𝐘𝐒𝐓𝐄𝐌 ⚡️\n\n"
-            f"✨ 𝐑𝐞𝐚𝐝𝐲 𝐭𝐨 𝐬𝐜𝐚𝐥𝐞 𝐲𝐨𝐮𝐫 𝐜𝐚𝐩𝐢𝐭𝐚𝐥 𝐰𝐢𝐭𝐡 𝐬𝐭𝐫𝐢𝐜𝐭 𝐝𝐢𝐬𝐜𝐢𝐩𝐥𝐢𝐧𝐞? 𝐉𝐨𝐢𝐧 𝐨𝐮𝐫 𝐜𝐨𝐦𝐩𝐨𝐮𝐧𝐝𝐢𝐧𝐠 𝐩𝐫𝐨𝐣𝐞𝐜𝐭 𝐭𝐨𝐝𝐚𝐲!\n\n"
+            f"✨ Ready to scale your capital with strict discipline? Join our compounding project today!\n\n"
             f"📊 𝐒𝐘𝐒𝐓𝐄𝐌 𝐑𝐔𝐋𝐄𝐒:\n"
             f"❌ No random entries & zero overtrading\n"
             f"🎯 Accurate entry selection & risk control\n"
@@ -838,7 +845,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"👑 {BOT_NAME} 👑\n\n"
             f"🚨 𝐈𝐌𝐏𝐎𝐑𝐓𝐀𝐍𝐓 𝐓𝐎𝐔𝐑𝐍𝐀𝐌𝐄𝐍𝐓 𝐀𝐍𝐍𝐎𝐔𝐍𝐂𝐄𝐌𝐄𝐍𝐓 🚨\n\n"
             f"🤑 𝐒𝐓𝐀𝐑𝐓: $𝟑𝟎  ➔  🎯 𝐓𝐀𝐑𝐆𝐄𝐓: $𝟓𝟎𝟎 𝐈𝐍  (𝟕-𝐃𝐀𝐘 𝐂𝐇𝐀𝐋𝐋𝐄𝐍𝐆𝐄)\n\n"
-            f"✨ 𝐓𝐡𝐢𝐧𝐤 𝐲𝐨𝐮 𝐡𝐚𝐯𝐞 𝐬𝐭𝐫𝐨𝐧𝐠 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐬𝐤𝐢𝐥𝐥𝐬? 𝐉𝐨𝐢𝐧 𝐨𝐮𝐫 𝐞𝐱𝐜𝐥𝐮𝐬𝐢𝐯𝐞 𝟕-𝐝𝐚𝐲 𝐜𝐡𝐚𝐥𝐥𝐞𝐧𝐠𝐞 𝐚𝐧𝐝 𝐠𝐫𝐨𝐰 𝐲𝐨𝐮𝐫 𝐜𝐚𝐩𝐢𝐭𝐚𝐥!\n\n"
+            f"✨ Think you have strong trading skills? Join our exclusive 7-day challenge and grow your capital!\n\n"
             f"📊 𝐓𝐎𝐔𝐑𝐍𝐀𝐌𝐄𝐍𝐓 𝐑𝐔𝐋𝐄𝐒:\n"
             f"↗️ Starting balance: $30\n"
             f"🎯 Target balance: $500\n"
@@ -865,7 +872,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"⏱️ 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐃𝐀𝐈𝐋𝐘 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒 𝐓𝐈𝐌𝐈𝐍𝐆𝐒 ⏱️\n\n"
-            f"✨ 𝐅𝐨𝐥𝐥𝐨𝐰 𝐨𝐮𝐫 𝐨𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐭𝐢𝐦𝐞𝐥𝐢𝐧𝐞 𝐭𝐨 𝐬𝐭𝐚𝐲 𝐚𝐜𝐭𝐢𝐯𝐞 𝐚𝐧𝐝 𝐣𝐨𝐢𝐧 𝐞𝐯𝐞𝐫𝐲 𝐥𝐢𝐯𝐞 𝐬𝐞𝐭𝐮𝐩 𝐨𝐧 𝐭𝐢𝐦𝐞:\n\n"
+            f"✨ Follow our official trading timeline to stay active and join every live setup on time:\n\n"
             f"☀️ 𝟏𝐒𝐓 — 𝐌𝐎𝐑𝐍𝐈𝐍𝐆 𝐏𝐔𝐁𝐋𝐈𝐂 𝐒𝐄𝐒𝐒𝐈𝐎𝐍\n"
             f"🕚 𝐓𝐈𝐌𝐄: 𝟏𝟏:𝟎𝟎 𝐀𝐌\n"
             f"• Live Market Trends & Free Public Signals\n\n"
@@ -899,7 +906,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"🗑️ 𝐀𝐂𝐂𝐎𝐔𝐍𝐓 𝐃𝐄𝐋𝐄𝐓𝐈𝐎𝐍 & 𝐑𝐄𝐒𝐄𝐓 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 🗑️\n\n"
-            f"✨ 𝐅𝐨𝐥𝐥𝐨𝐰 𝐭𝐡𝐞𝐬𝐞 𝐬𝐞𝐜𝐮𝐫𝐞 𝐬𝐭𝐞𝐩𝐬 𝐭𝐨 𝐜𝐥𝐨𝐬𝐞 𝐨𝐫 𝐫𝐞𝐬𝐞𝐭 𝐲𝐨𝐮𝐫 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐚𝐜𝐜𝐨𝐮𝐧𝐭:\n\n"
+            f"✨ Follow these secure steps to close or reset your trading account:\n\n"
             f"1️⃣ 𝐂𝐋𝐄𝐀𝐑 𝐁𝐀𝐋𝐀𝐍𝐂𝐄:\nCheck your active balance and clear all pending financial transactions.\n\n"
             f"2️⃣ 𝐑𝐄𝐕𝐈𝐄𝐖 𝐃𝐀𝐓𝐀:\nNote that closing your account will permanently reset your trading history.\n\n"
             f"3️⃣ 𝐃𝐄𝐋𝐄𝐓𝐄 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\nGo to Profile Settings ➡️ Delete Account, or contact official platform support if unavailable.\n\n"
@@ -920,7 +927,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"📖 𝐀𝐂𝐂𝐎𝐔𝐍𝐓 𝐂𝐑𝐄𝐀𝐓𝐈𝐎𝐍 𝐖𝐀𝐋𝐊𝐓𝐇𝐑𝐎𝐔𝐆𝐇 📖\n\n"
-            f"✨ 𝐅𝐨𝐥𝐥𝐨𝐰 𝐭𝐡𝐢𝐬 𝐝𝐞𝐭𝐚𝐢𝐥𝐞𝐝 𝐠𝐮𝐢𝐝𝐞 𝐭𝐨 𝐞𝐧𝐬𝐮𝐫𝐞 𝐬𝐞𝐚𝐦𝐥𝐞𝐬𝐬 𝐢𝐝𝐞𝐧𝐭𝐢𝐭𝐲 𝐯𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧:\n\n"
+            f"✨ Follow this detailed guide to ensure seamless identity verification:\n\n"
             f"1️⃣ 𝐀𝐂𝐂𝐄𝐒𝐒 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐏𝐎𝐑𝐓𝐀𝐋:\nOpen the official registration page using the secure link provided below.\n\n"
             f"2️⃣ 𝐄𝐍𝐓𝐄𝐑 𝐀𝐂𝐂𝐔𝐑𝐀𝐓𝐄 𝐃𝐄𝐓𝐀𝐈𝐋𝐒:\nInput your real details matching your legal government ID to prevent verification issues.\n\n"
             f"3️⃣ 𝐒𝐀𝐕𝐄 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nComplete your profile confirmation and copy your unique 8-digit Trader ID.\n\n"
@@ -940,7 +947,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"📚 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐄𝐃𝐔𝐂𝐀𝐓𝐈𝐎𝐍 & 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 𝐇𝐔𝐁 📚\n\n"
-            f"✨ 𝐌𝐚𝐬𝐭𝐞𝐫 𝐭𝐡𝐞 𝐟𝐮𝐧𝐝𝐚𝐦𝐞𝐧𝐭𝐚𝐥𝐬 𝐨𝐟 𝐝𝐢𝐠𝐢𝐭𝐚𝐥 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐰𝐢𝐭𝐡 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐢𝐧𝐬𝐢𝐠𝐡𝐭𝐬:\n\n"
+            f"✨ Master the fundamentals of digital trading with professional insights:\n\n"
             f"📊 𝐌𝐀𝐑𝐊𝐄𝐓 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 & 𝐎𝐓𝐂 𝐒𝐈𝐆𝐍𝐀𝐋𝐒:\nMaster candlestick patterns, market trends, support/resistance, and live OTC setups.\n\n"
             f"🛡️ 𝐑𝐈𝐒𝐊 𝐌𝐀𝐍𝐀𝐆𝐄𝐌𝐄𝐍𝐓 & 𝐋𝐎𝐒𝐒 𝐑𝐄𝐂𝐎𝐕𝐄𝐑𝐘:\nApply strict capital protection rules, loss recovery strategies, and emotional discipline.\n\n"
             f"💎 𝐕𝐈𝐏 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 & 𝐄𝐋𝐈𝐓𝐄 𝐀𝐂𝐂𝐄𝐒𝐒:\nUnlock 24/7 high-accuracy signals, automated AI bot access, and exclusive trading setups.\n\n"
@@ -961,7 +968,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
             f"🏆 𝐓𝐎𝐔𝐑𝐍𝐀𝐌𝐄𝐍𝐓 𝐉𝐎𝐈𝐍𝐈𝐍𝐆 & 𝐏𝐑𝐈𝐙𝐄𝐒 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄 🏆\n\n"
-            f"✨ 𝐏𝐚𝐫𝐭𝐢𝐜𝐢𝐩𝐚𝐭𝐞 𝐢𝐧 𝐨𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐩𝐥𝐚𝐭𝐟𝐨𝐫𝐦 𝐭𝐫𝐚𝐝𝐢𝐧𝐠 𝐭𝐨𝐮𝐫𝐧𝐚𝐦𝐞𝐧𝐭𝐬 𝐭𝐨 𝐰𝐢𝐧 𝐦𝐚𝐬𝐬𝐢𝐯𝐞 𝐜𝐚𝐬𝐡 𝐩𝐫𝐢𝐳𝐞𝐬:\n\n"
+            f"✨ Participate in official platform trading tournaments to win massive cash prizes:\n\n"
             f"💎 𝐄𝐋𝐈𝐆𝐈𝐁𝐈𝐋𝐈𝐓𝐘 & 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐀𝐓𝐈𝐎𝐍:\nCheck requirements and register your account via our official broker link.\n\n"
             f"📊 𝐒𝐓𝐑𝐀𝐓𝐄𝐆𝐘 & 𝐀𝐃𝐌𝐈𝐍 𝐒𝐔𝐏𝐏𝐎𝐑𝐓:\nGet direct guidance, specialized tournament setups, and competition tips.\n\n"
             f"🏆 𝐂𝐀𝐒𝐇 𝐏𝐑𝐈𝐙𝐄 𝐏𝐎𝐎𝐋:\nCompete on leaderboards and secure top positions for exclusive reward distribution.\n\n"
@@ -1002,7 +1009,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"━━━━━━━━━━━━━━━━━━\n\n"
             f"⚡ 𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝\n\n"
             f"👇 𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍\n\n"
-            f"🛡️ 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐢𝐧𝐯𝐨𝐥𝐯𝐞𝐬 𝐟𝐢𝐧𝐚𝐧𝐜𝐢𝐚𝐥 𝐫𝐢𝐬𝐤. 𝐒𝐢𝐠𝐧𝐚𝐥𝐬 𝐚𝐫𝐞 𝐧𝐨𝐭 𝐠𝐮𝐚𝐫𝐚𝐧𝐭𝐞𝐞𝐝 𝐩𝐫𝐨𝐟𝐢𝐭𝐬."
+            f"🛡️ Trading involves financial risk. Signals are not guaranteed profits."
         )
         await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard(), disable_web_page_preview=True)
 
