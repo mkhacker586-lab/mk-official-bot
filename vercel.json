@@ -9,7 +9,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "destination": "/api/bot.py"
+      "destination": "api/bot.py"
     }
   ]
 }
