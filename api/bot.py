@@ -850,9 +850,9 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"1️⃣ <b>𝐀𝐂𝐂𝐄𝐒𝐒 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐏𝐎𝐑𝐓𝐀𝐋:</b>\nOpen the official registration page using the secure link provided below.\n\n"
             f"2️⃣ <b>𝐄𝐍𝐓𝐄𝐑 𝐀𝐂𝐂𝐔𝐑𝐀𝐓𝐄 𝐃𝐄𝐓𝐀𝐈𝐋𝐒:</b>\nInput your real details matching your legal government ID to prevent verification issues.\n\n"
             f"3️⃣ <b>𝐒𝐀𝐕𝐄 𝐘𝐎𝐔𝐑 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:</b>\nComplete your profile confirmation and copy your unique 8-digit Trader ID.\n\n"
-            f"4️⃣ <b>𝐒𝐔𝐁𝐌𝐈𝐓 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍:</b>\nTap the \"🔓 VERIFY TRADER ID\" button below and send your ID directly into the bot.\n\n"
+            f"4️⃣ <b>𝐒𝐔𝐁𝐌𝐈𝐓 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍:</b>\nTap the \"🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃\" button below and send your ID directly into the bot.\n\n"
             f"🔗 <b>𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐀𝐓𝐈𝐎𝐍 𝐋𝐈𝐍𝐊:</b>\n{QUOTEX_LINK} 🌐\n\n"
-            f"💬 <b>𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?</b>\nTap the \"💬 CONTACT OWNER\" button below for direct assistance! ✅"
+            f"💬 <b>𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?</b>\nTap the \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑\" button below for direct assistance! ✅"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
