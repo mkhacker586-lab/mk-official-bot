@@ -21,6 +21,7 @@ TELEGRAM_BOT_TOKEN = "8744737316:AAEs_NK4ZjS4tRKiwkJGdpHf297tsFCjK1E"
 BOT_NAME = "𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓"
 BOT_USERNAME = "@MK_TRADER_OFFICIAL_BOT"
 LOG_CHANNEL_ID = -1003724080321
+VERIFY_CHANNEL_ID = -1003873965542  # Naya Trader ID Verifications Channel
 BROADCAST_CHANNEL_ID = -1004470268041  # M.K UPCOMING POSTINGS Channel ID
 
 CHANNEL_LINK = "https://t.me/+FdbFgVgsoT41ZGU8"
@@ -253,7 +254,7 @@ async def channel_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"📢 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐇𝐀𝐍𝐍𝐄𝐋\n\n"
         f"✨ 𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝\n\n"
         f"🔥 𝐆𝐞𝐭 𝐭𝐡𝐞 𝐋𝐚𝐭𝐞𝐬𝐭 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐒𝐢𝐠𝐧𝐚𝐥 𝐔𝐩𝐝𝐚𝐭𝐞𝐬, 𝐚𝐧𝐝 𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐀𝐧𝐧𝐨𝐮𝐧𝐜𝐞𝐦𝐞𝐧𝐭𝐬.\n\n"
-        f"👇 𝐓𝐚𝐩 𝐭𝐡𝐞 𝐁𝐮𝐭𝐭𝐨𝐧 𝐁𝐞𝐥𝐨𝐰 𝐭𝐨 𝐉𝐨𝐢𝐧 𝐎𝐮𝐫 𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐂𝐡𝐚𝐧𝐧𝐞𝐋! 📢"
+        f"👇 𝐓𝐚𝐩 𝐭𝐡𝐞 𝐁𝐮𝐭𝐭𝐨𝐧 𝐁𝐞𝐥𝐨𝐰 𝐭𝐨 𝐉𝐨𝐢𝐧 𝐎𝐮𝐫 𝐎𝐟𝐟𝐢𝐜𝐢𝐚𝐥 𝐂𝐇𝐀𝐍𝐍𝐄𝐋! 📢"
     )
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("📢 𝐉𝐎𝐈𝐍 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
@@ -412,12 +413,16 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     user = update.effective_user
     trader_id = html.escape(update.message.text.strip())
     
-    admin_log_msg = (
-        f"🚨 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 𝐅𝐎𝐑 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍 🚨\n\n"
-        f"👤 Name: {html.escape(str(user.full_name))}\n"
-        f"🕵🏻‍♂️ Username: @{html.escape(str(user.username if user.username else 'No Username'))}\n"
-        f"🆔 User ID: <code>{user.id}</code>\n"
-        f"🔢 Submitted Trader ID: <code>{trader_id}</code>"
+    # Message sent to the verification channel (-1003873965542)
+    verify_channel_msg = (
+        f"👑 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑\n\n"
+        f"✦ 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 ✦\n\n"
+        f"👤 𝐍𝐚𝐦𝐞: {html.escape(str(user.full_name))}\n"
+        f"🕵🏻‍♂️ 𝐔𝐬𝐞𝐫𝐧𝐚𝐦𝐞: @{html.escape(str(user.username if user.username else 'No Username'))}\n"
+        f"🆔 𝐔𝐬𝐞𝐫 𝐈𝐃: <code>{user.id}</code>\n"
+        f"🔢 𝐓𝐫𝐚𝐝𝐞𝐫 𝐈𝐃: <code>{trader_id}</code>\n"
+        f"⏳ 𝐒𝐭𝐚𝐭𝐮s: PENDING REVIEW\n\n"
+        f"👇 Click below to chat with user or contact owner:"
     )
     
     admin_kb = InlineKeyboardMarkup([
@@ -425,29 +430,38 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)]
     ])
     
-    # Send notification both to Log Channel and directly to Admin's personal chat
+    # Send notification to the Verify Channel
     try:
         photos = await context.bot.get_user_profile_photos(user_id=user.id, limit=1)
         if photos.total_count > 0:
             file_id = photos.photos[0][-1].file_id
-            await context.bot.send_photo(chat_id=LOG_CHANNEL_ID, photo=file_id, caption=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
-            await context.bot.send_photo(chat_id=ADMIN_USER_ID, photo=file_id, caption=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
+            await context.bot.send_photo(chat_id=VERIFY_CHANNEL_ID, photo=file_id, caption=verify_channel_msg, reply_markup=admin_kb, parse_mode="HTML")
         else:
-            await context.bot.send_message(chat_id=LOG_CHANNEL_ID, text=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
-            await context.bot.send_message(chat_id=ADMIN_USER_ID, text=admin_log_msg, reply_markup=admin_kb, parse_mode="HTML")
+            await context.bot.send_message(chat_id=VERIFY_CHANNEL_ID, text=verify_channel_msg, reply_markup=admin_kb, parse_mode="HTML")
     except Exception as e:
-        print(f"Admin send error: {e}")
+        print(f"Verify channel send error: {e}")
     
-    success_text = (
+    # Message sent back to the User as requested
+    user_success_text = (
         f"👑 {BOT_NAME} 👑\n\n"
-        f"✅ 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐑𝐄𝐂𝐄𝐈𝐕𝐄𝐃 𝐒𝐔𝐂𝐂𝐄𝐒𝐒𝐅𝐔𝐋𝐋𝐘!\n\n"
-        f"Your Trader ID (<code>{trader_id}</code>) has been sent to M.K Trader admin for verification. You will be granted VIP access shortly upon review!"
+        f"✦ 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍 𝐈𝐍 𝐏𝐑𝐎𝐆𝐑𝐄𝐒𝐒 ✦\n\n"
+        f"Your submission has been successfully received!\n\n"
+        f"💎 𝐒𝐔𝐁𝐌𝐈𝐒𝐒𝐈𝐎𝐍 𝐃𝐄𝐓𝐀𝐈𝐋𝐒\n\n"
+        f"🆔 𝐓𝐫𝐚𝐝𝐞𝐫 𝐈𝐃: <code>{trader_id}</code>\n"
+        f"⏳ 𝐑𝐞𝐯𝐢𝐞𝐰 𝐒𝐭𝐚𝐭𝐮𝐬: PENDING\n"
+        f"🛡️ 𝐕𝐞𝐫𝐢𝐟𝐢𝐜𝐚𝐭𝐢𝐨𝐧: Admin Review\n\n"
+        f"✨ Your details are now awaiting admin review. You will receive an update once the verification process is complete.\n\n"
+        f"💬 𝐍𝐄𝐄𝐃 𝐏𝐄𝐑𝐒𝐎𝐍𝐀𝐋 𝐀𝐒𝐒𝐈𝐒𝐓𝐀𝐍𝐂𝐄?\n\n"
+        f"Want direct support from the owner? Tap the button below to get in touch! 👑\n\n"
+        f"𝐖𝐀𝐈𝐓𝐈𝐍𝐆 𝐅𝐎𝐑 𝐑𝐄𝐕𝐈𝐄𝐖"
     )
-    kb = InlineKeyboardMarkup([
+    
+    user_kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
-        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
+        [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
     ])
-    await update.message.reply_text(success_text, reply_markup=kb, parse_mode="HTML")
+    
+    await update.message.reply_text(user_success_text, reply_markup=user_kb, parse_mode="HTML")
     return ConversationHandler.END
 
 async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE):
