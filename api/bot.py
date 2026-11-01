@@ -21,7 +21,7 @@ TELEGRAM_BOT_TOKEN = "8744737316:AAEs_NK4ZjS4tRKiwkJGdpHf297tsFCjK1E"
 BOT_NAME = "𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓"
 BOT_USERNAME = "@MK_TRADER_OFFICIAL_BOT"
 LOG_CHANNEL_ID = -1003724080321
-VERIFY_CHANNEL_ID = -1003873965542  # Naya Trader ID Verifications Channel
+VERIFY_CHANNEL_ID = -1003873965542  # Trader ID Verifications Channel
 BROADCAST_CHANNEL_ID = -1004470268041  # M.K UPCOMING POSTINGS Channel ID
 
 CHANNEL_LINK = "https://t.me/+FdbFgVgsoT41ZGU8"
@@ -77,7 +77,7 @@ def get_total_users():
         return 0
 
 # ==========================================
-# 🌟 ORIGINAL DATA LOG FUNCTION (UNTOUCHED)
+# 🌟 ORIGINAL DATA LOG FUNCTION
 # ==========================================
 async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT_TYPE, source_action: str):
     try:
@@ -411,7 +411,14 @@ async def verify_id_start_handler(update: Update, context: ContextTypes.DEFAULT_
 
 async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
-    trader_id = html.escape(update.message.text.strip())
+    text_input = update.message.text.strip()
+    
+    # Check if input looks like a Trader ID (numbers)
+    if not text_input.isdigit() or len(text_input) < 5:
+        await update.message.reply_text("⚠️ Please send a valid numeric Trader ID (e.g. 12345678).")
+        return WAITING_FOR_TRADER_ID
+        
+    trader_id = html.escape(text_input)
     
     # Message sent to the verification channel (-1003873965542)
     verify_channel_msg = (
@@ -421,7 +428,7 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         f"🕵🏻‍♂️ 𝐔𝐬𝐞𝐫𝐧𝐚𝐦𝐞: @{html.escape(str(user.username if user.username else 'No Username'))}\n"
         f"🆔 𝐔𝐬𝐞𝐫 𝐈𝐃: <code>{user.id}</code>\n"
         f"🔢 𝐓𝐫𝐚𝐝𝐞𝐫 𝐈𝐃: <code>{trader_id}</code>\n"
-        f"⏳ 𝐒𝐭𝐚𝐭𝐮s: PENDING REVIEW\n\n"
+        f"⏳ 𝐒𝐭𝐚𝐭𝐮𝐬: PENDING REVIEW\n\n"
         f"👇 Click below to chat with user or contact owner:"
     )
     
@@ -470,6 +477,17 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
     await start_command(update, context)
     return ConversationHandler.END
 
+# Fallback global handler for direct numbers sent outside conversation state
+async def global_text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    text = update.message.text.strip()
+    if text.isdigit() and len(text) >= 5:
+        # Treat as Trader ID submission automatically
+        update.message.text = text
+        await receive_trader_id_handler(update, context)
+    else:
+        # Default start response if normal text
+        await start_command(update, context)
+
 # ==========================================
 # 📄 BUTTON CALLBACK HANDLER
 # ==========================================
@@ -480,7 +498,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     message_id = query.message.message_id
     data = query.data
 
-    # 1. OTC LIVE SIGNALS (NEW MESSAGE WITH DELETE ANIMATION - 2 SECONDS)
+    # 1. OTC LIVE SIGNALS
     if data == "otc_live":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -511,7 +529,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb)
 
-    # 2. ANALYSIS SIGNALS (NEW MESSAGE WITH DELETE ANIMATION - 2 SECONDS)
+    # 2. ANALYSIS SIGNALS
     elif data == "analysis_signals":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -542,7 +560,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb)
 
-    # 3. FUTURE SIGNALS (NEW MESSAGE WITH DELETE ANIMATION - 2 SECONDS)
+    # 3. FUTURE SIGNALS
     elif data == "future_signals":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -587,7 +605,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb)
 
     # ==========================================
-    # 4. ALL OTHER BUTTONS (REPLACE ON SAME POST)
+    # 4. ALL OTHER BUTTONS
     # ==========================================
     elif data == "ai_signals_pro":
         resp_text = (
@@ -944,7 +962,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.edit_message_text(feedback_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, disable_web_page_preview=True)
 
-    # BACK TO HOME (REPLACE EDIT FOR NORMAL MENUS)
     elif data == "back_home":
         user_name = html.escape(query.from_user.first_name if query.from_user and query.from_user.first_name else "Trader")
         welcome_text = (
@@ -962,7 +979,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         )
         await context.bot.edit_message_text(welcome_text, chat_id=chat_id, message_id=message_id, reply_markup=main_menu_keyboard(), disable_web_page_preview=True)
 
-    # BACK TO HOME WITH DELETE (FOR SIGNALS) -> JUST DELETE MESSAGE AS REQUESTED
     elif data == "back_home_delete":
         try:
             await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
@@ -1011,6 +1027,9 @@ class handler(BaseHTTPRequestHandler):
                 application.add_handler(CommandHandler("broadcast", broadcast_command))
                 application.add_handler(CallbackQueryHandler(button_callback_handler))
                 application.add_handler(MessageHandler(filters.UpdateType.CHANNEL_POST | filters.UpdateType.EDITED_CHANNEL_POST, forward_channel_posts))
+                
+                # Global fallback message handler for direct ID typing
+                application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, global_text_handler))
                 
                 async with application:
                     await application.process_update(
