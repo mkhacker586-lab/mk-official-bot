@@ -213,7 +213,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
             InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)
         ],
         [InlineKeyboardButton("👀 𝐕𝐈𝐄𝐖 𝐂𝐇𝐀𝐍𝐍𝐄𝐋", url=CHANNEL_LINK)],
-        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home")]
+        [InlineKeyboardButton("🚀 𝐎𝐏𝐄𝐍 𝐁𝐎𝐓 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃", callback_data="back_home_delete")]
     ])
     
     try:
@@ -413,14 +413,19 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     user = update.effective_user
     text_input = update.message.text.strip()
     
-    # Check if input looks like a Trader ID (numbers)
     if not text_input.isdigit() or len(text_input) < 5:
         await update.message.reply_text("⚠️ Please send a valid numeric Trader ID (e.g. 12345678).")
         return WAITING_FOR_TRADER_ID
         
     trader_id = html.escape(text_input)
     
-    # Message sent to the verification channel (-1003873965542)
+    # 1. Delete user's message containing Trader ID
+    try:
+        await update.message.delete()
+    except Exception as e:
+        print(f"Delete user message error: {e}")
+    
+    # Message sent to the verification channel (-1003873965542) with clickable Trader ID
     verify_channel_msg = (
         f"👑 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 👑\n\n"
         f"✦ 𝐍𝐄𝐖 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃 𝐒𝐔𝐁𝐌𝐈𝐓𝐓𝐄𝐃 ✦\n\n"
@@ -437,7 +442,6 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)]
     ])
     
-    # Send notification to the Verify Channel
     try:
         photos = await context.bot.get_user_profile_photos(user_id=user.id, limit=1)
         if photos.total_count > 0:
@@ -448,7 +452,7 @@ async def receive_trader_id_handler(update: Update, context: ContextTypes.DEFAUL
     except Exception as e:
         print(f"Verify channel send error: {e}")
     
-    # Message sent back to the User as requested
+    # Message sent back to the User (Processing Page)
     user_success_text = (
         f"👑 {BOT_NAME} 👑\n\n"
         f"✦ 𝐕𝐄𝐑𝐈𝐅𝐈𝐂𝐀𝐓𝐈𝐎𝐍 𝐈𝐍 𝐏𝐑𝐎𝐆𝐑𝐄𝐒𝐒 ✦\n\n"
@@ -477,15 +481,12 @@ async def cancel_verification(update: Update, context: ContextTypes.DEFAULT_TYPE
     await start_command(update, context)
     return ConversationHandler.END
 
-# Fallback global handler for direct numbers sent outside conversation state
 async def global_text_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.strip()
     if text.isdigit() and len(text) >= 5:
-        # Treat as Trader ID submission automatically
         update.message.text = text
         await receive_trader_id_handler(update, context)
     else:
-        # Default start response if normal text
         await start_command(update, context)
 
 # ==========================================
@@ -498,7 +499,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
     message_id = query.message.message_id
     data = query.data
 
-    # 1. OTC LIVE SIGNALS
     if data == "otc_live":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -529,7 +529,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb)
 
-    # 2. ANALYSIS SIGNALS
     elif data == "analysis_signals":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -560,7 +559,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb)
 
-    # 3. FUTURE SIGNALS
     elif data == "future_signals":
         loading_msg = await context.bot.send_message(
             chat_id=chat_id,
@@ -604,9 +602,6 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         ])
         await context.bot.send_message(chat_id=chat_id, text=resp_text, reply_markup=kb)
 
-    # ==========================================
-    # 4. ALL OTHER BUTTONS
-    # ==========================================
     elif data == "ai_signals_pro":
         resp_text = (
             f"👑 {BOT_NAME} 👑\n\n"
@@ -797,11 +792,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"⚡️ Only serious traders should join this project\n\n"
             f"🌐 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍 𝐓𝐇𝐈𝐒 𝐏𝐑𝐎𝐉𝐄𝐂𝐓:\n\n"
             f"1️⃣ 𝐑𝐄𝐆𝐈𝐒𝐓𝐄𝐑 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\n{QUOTEX_LINK} 🌐\n\n"
-            f"2️⃣ 𝐃𝐄𝐏𝐎𝐒𝐈𝐓 & 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nTap the \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑\" button below! ✅"
+            f"2️⃣ 𝐃𝐄𝐏𝐎𝐒𝐈𝐓 & 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nTap the \"🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃\" button below! ✅"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, disable_web_page_preview=True)
@@ -825,11 +820,11 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f"⚡️ Only serious traders should join this challenge\n\n"
             f"🌐 𝐇𝐎𝐖 𝐓𝐎 𝐉𝐎𝐈𝐍 𝐓𝐇𝐈𝐒 𝐓𝐎𝐔𝐑𝐍𝐀𝐌𝐄𝐍𝐓:\n\n"
             f"1️⃣ 𝐑𝐄𝐆𝐈𝐒𝐓𝐄𝐑 𝐘𝐎𝐔𝐑 𝐀𝐂𝐂𝐎𝐔𝐍𝐓:\n{QUOTEX_LINK} 🌐\n\n"
-            f"2️⃣ 𝐃𝐄𝐏𝐎𝐒𝐈𝐓 $𝟑𝟎 & 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nTap the \"💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑\" button below! ✅"
+            f"2️⃣ 𝐃𝐄𝐏𝐎𝐒𝐈𝐓 $𝟑𝟎 & 𝐒𝐄𝐍𝐃 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃:\nTap the \"🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃\" button below! ✅"
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
-            [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
+            [InlineKeyboardButton("🔓 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start"), InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
             [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
         ])
         await context.bot.edit_message_text(resp_text, chat_id=chat_id, message_id=message_id, reply_markup=kb, disable_web_page_preview=True)
@@ -984,6 +979,23 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             await context.bot.delete_message(chat_id=chat_id, message_id=message_id)
         except Exception as e:
             print(f"Delete message error: {e}")
+        
+        # Send fresh dashboard message
+        user_name = html.escape(query.from_user.first_name if query.from_user and query.from_user.first_name else "Trader")
+        welcome_text = (
+            f"👑 {BOT_NAME} 👑\n\n"
+            f"✨ 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐁𝐀𝐂𝐊, {user_name.upper()}!\n\n"
+            f"🌐 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐇𝐔𝐁 💎\n\n"
+            f"📊 𝐀𝐜𝐜𝐞𝐬𝐬 𝐓𝐫𝐚𝐝𝐢𝐧𝐠 𝐒𝐢𝐠𝐧𝐚𝐥𝐬, 𝐌𝐚𝐫𝐤𝐞𝐭 𝐀𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐀𝐜𝐜𝐨𝐮𝐧𝐭 𝐆𝐮𝐢𝐝𝐞𝐬, 𝐕𝐈𝐏 𝐀𝐜𝐜𝐞𝐬𝐬, 𝐚𝐧𝐝 𝐁𝐨𝐭 𝐅𝐞𝐚𝐭𝐮𝐫𝐞𝐬 — 𝐀𝐥𝐥 𝐈𝐧 𝐎𝐧𝐞 𝐏𝐥𝐚𝐜𝐞.\n\n"
+            f"━━━━━━━━━━━━━━━━━━\n\n"
+            f"🔗 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐂𝐇𝐀𝐍𝐍𝐄𝐋:\n"
+            f"{CHANNEL_LINK}\n\n"
+            f"━━━━━━━━━━━━━━━━━━\n\n"
+            f"⚡ 𝐒𝐭𝐚𝐲 𝐂𝐨𝐧𝐧𝐞𝐜𝐭𝐞𝐝 • 𝐒𝐭𝐚𝐲 𝐈𝐧𝐟𝐨𝐫𝐦𝐞𝐝\n\n"
+            f"👇 𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐃𝐄𝐒𝐈𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍\n\n"
+            f"🛡️ Trading involves financial risk. Signals are not guaranteed profits."
+        )
+        await context.bot.send_message(chat_id=chat_id, text=welcome_text, reply_markup=main_menu_keyboard(), disable_web_page_preview=True)
 
 # Vercel Serverless Webhook Handler
 class handler(BaseHTTPRequestHandler):
@@ -1027,8 +1039,6 @@ class handler(BaseHTTPRequestHandler):
                 application.add_handler(CommandHandler("broadcast", broadcast_command))
                 application.add_handler(CallbackQueryHandler(button_callback_handler))
                 application.add_handler(MessageHandler(filters.UpdateType.CHANNEL_POST | filters.UpdateType.EDITED_CHANNEL_POST, forward_channel_posts))
-                
-                # Global fallback message handler for direct ID typing
                 application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, global_text_handler))
                 
                 async with application:
