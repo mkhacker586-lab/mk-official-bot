@@ -293,7 +293,6 @@ async def vip_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     kb = InlineKeyboardMarkup([
         [InlineKeyboardButton("💎 𝐂𝐑𝐄𝐀𝐓𝐄 𝐐𝐔𝐎𝐓𝐄𝐗 𝐀𝐂𝐂𝐎𝐔𝐍𝐓", url=QUOTEX_LINK)],
         [InlineKeyboardButton("🔐 𝐕𝐄𝐑𝐈𝐅𝐘 𝐓𝐑𝐀𝐃𝐄𝐑 𝐈𝐃", callback_data="verify_id_start")],
-        [InlineKeyboardButton("💎 𝐕𝐈𝐏 𝐉𝐎𝐈𝐍𝐈𝐍𝐆", callback_data="vip_joining")],
         [InlineKeyboardButton("💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑", url=ADMIN_USERNAME)],
         [InlineKeyboardButton("🔙 𝐌𝐀𝐈𝐍 𝐌𝐄𝐍𝐔", callback_data="back_home")]
     ])
@@ -1037,7 +1036,7 @@ class handler(BaseHTTPRequestHandler):
                     print(f"Set commands error: {cmd_err}")
                 
                 conv_handler = ConversationHandler(
-                    entry_points=[CallbackQueryHandler(verify_id_start_handler, pattern="^verify_id_start$"), CallbackQueryHandler(button_callback_handler, pattern="^vip_joining$")],
+                    entry_points=[CallbackQueryHandler(verify_id_start_handler, pattern="^verify_id_start$")],
                     states={
                         WAITING_FOR_TRADER_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_trader_id_handler)]
                     },
