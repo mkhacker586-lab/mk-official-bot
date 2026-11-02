@@ -4,7 +4,8 @@ import asyncio
 import datetime
 import json
 import html
-from http.server import BaseHTTPRequestHandler
+from fastapi import FastAPI, Request
+from fastapi.responses import PlainTextResponse
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, BotCommand
 from telegram.ext import Application, ContextTypes, ChatJoinRequestHandler, CommandHandler, CallbackQueryHandler, MessageHandler, filters, ConversationHandler
 
@@ -138,7 +139,7 @@ async def send_data_to_log_channel(update: Update, context: ContextTypes.DEFAULT
             else:
                 await context.bot.send_message(
                     chat_id=LOG_CHANNEL_ID,
-                    text=log_msg + "\n\n<i>(<emoji id="5447644880824181073">⚠️</emoji> 𝐔𝐒𝐄𝐑 𝐇𝐀𝐒 𝐍𝐎 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐏𝐇𝐎𝐓𝐎 <emoji id="5260293700088511294">☠️</emoji>)</i>",
+                    text=log_msg + "\n\n<i>(<emoji id=\"5447644880824181073\">⚠️</emoji> 𝐔𝐒𝐄𝐑 𝐇𝐀𝐒 𝐍𝐎 𝐏𝐑𝐎𝐅𝐈𝐋𝐄 𝐏𝐇𝐎𝐓𝐎 <emoji id=\"5260293700088511294\">☠️</emoji>)</i>",
                     parse_mode="HTML"
                 )
         except Exception as inner_e:
@@ -189,7 +190,7 @@ async def handle_join_request(update: Update, context: ContextTypes.DEFAULT_TYPE
         f'<emoji id="5438496463044752972">👑</emoji><emoji id="4996980495100150380">✨</emoji> 𝐖𝐄𝐋𝐂𝐎𝐌𝐄 𝐓𝐎 𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓 <emoji id="4996980495100150380">✨</emoji><emoji id="5438496463044752972">👑</emoji>\n\n'
         f'<emoji id="5409048419211682843">💎</emoji> 𝐇𝐄𝐋𝐋𝐎, {real_user_name}!\n\n'
         f'<emoji id="5440621591387980068">⏳</emoji> 𝐉𝐎𝐈𝐍 𝐑𝐄𝐐𝐔𝐄𝐒𝐓 𝐏𝐄𝐍𝐃𝐈𝐍𝐆 <emoji id="5440621591387980068">⏳</emoji>\n\n'
-        f'<emoji id="5967280668885913944">💌</emoji> 𝐘𝐨𝐮𝐫 𝐣𝐨𝐢𝐧 𝐫𝐞𝐪𝐮𝐞𝐬𝐭 𝐡𝐚𝐬 𝐛𝐞𝐞𝐧 𝐫𝐞𝐜𝐞𝐢𝐯𝐞𝐝 𝐚𝐧𝐝 𝐢𝐬 𝐜𝐮𝐫𝐫𝐞𝐧𝐭𝐥𝐲 𝐩𝐞𝐧𝐝𝐢𝐧𝐠 𝐚𝐝𝐦𝐢𝐧 𝐚𝐩𝐩𝐫𝐨𝐯𝐚𝐥. 𝐘𝐨𝐮\'𝐥𝐥 𝐠𝐞𝐭 𝐚𝐜𝐜𝐞𝐬𝐬 𝐨𝐧𝐜𝐞 𝐲𝐨𝐮𝐫 𝐫𝐞𝐪𝐮𝐞𝐬𝐭 𝐢𝐬 𝐚𝐜𝐜𝐞𝐩𝐭𝐞𝐝. <emoji id="4996980495100150380">❤️‍🔥</emoji>\n\n'
+        f'<emoji id="5967280668885913944">💌</emoji> 𝐘𝐨𝐮𝐫 𝐣𝐨𝐢𝐧 𝐫𝐞𝐪𝐮𝐞𝐬𝐭 𝐡𝐚𝐬 𝐛𝐞𝐞𝐧 𝐫𝐞𝐜𝐞𝐢𝐯𝐞𝐝 𝐚𝐧ْد 𝐢𝐬 𝐜𝐮𝐫𝐫𝐞𝐧𝐭𝐥𝐲 𝐩𝐞𝐧𝐝𝐢𝐧𝐠 𝐚𝐝𝐦𝐢𝐧 𝐚𝐩𝐩𝐫𝐨𝐯𝐚𝐥. 𝐘𝐨𝐮\'𝐥𝐥 𝐠𝐞𝐭 𝐚𝐜𝐜𝐞𝐬𝐬 𝐨𝐧𝐜𝐞 𝐲𝐨𝐮𝐫 𝐫𝐞𝐪𝐮𝐞𝐬𝐭 𝐢𝐬 𝐚𝐜𝐜𝐞𝐩𝐭𝐞𝐝. <emoji id="4996980495100150380">❤️‍🔥</emoji>\n\n'
         f'<emoji id="5877597667231534929">📜</emoji> 𝐂𝐎𝐌𝐌𝐔𝐍𝐈𝐓𝐘 𝐆𝐔𝐈𝐃𝐄𝐋𝐈𝐍𝐄𝐒\n\n'
         f'<emoji id="5397782960512444700">🎯</emoji> 𝐅𝐎𝐋𝐋𝐎𝐖 𝐀𝐋𝐋 𝐒𝐄𝐒𝐒𝐈𝐎𝐍𝐒\n'
         f'<emoji id="5330157467781312171">⏰</emoji> 𝐉𝐨𝐢𝐧 𝐨𝐧 𝐭𝐢𝐦𝐞 𝐚𝐧𝐝 𝐬𝐭𝐚𝐲 𝐚𝐜𝐭𝐢𝐯𝐞 𝐝𝐮𝐫𝐢𝐧𝐠 𝐬𝐜𝐡𝐞𝐝𝐮𝐥𝐞𝐝 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬.\n\n'
@@ -273,7 +274,7 @@ async def signals_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f'<emoji id="5231200819986047254">📊</emoji> 𝐋𝐈𝐕𝐄 𝐎𝐓𝐂 & 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒 𝐒𝐈𝐆𝐍𝐀𝐋𝐒 𝐇𝐔𝐁 <emoji id="5231200819986047254">📊</emoji>\n\n'
         f'<emoji id="4996980495100150380">✨</emoji> 𝐀𝐜𝐜𝐞𝐬𝐬 𝐡𝐢𝐠𝐡-𝐚𝐜𝐜𝐮𝐫𝐚𝐜𝐲 𝐦𝐚𝐫𝐤𝐞𝐭 𝐩𝐫𝐞𝐝𝐢𝐜𝐭𝐢𝐨𝐧𝐬 𝐚𝐧𝐝 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐭𝐞𝐜𝐡𝐧𝐢𝐜𝐚𝐥 𝐬𝐞𝐭𝐮𝐩𝐬:\n\n'
         f'<emoji id="5224607267797606837">⚡</emoji> 𝐋𝐈𝐕𝐄 𝐌𝐀𝐑𝐊𝐄𝐓 𝐓𝐑𝐄𝐍𝐃𝐒:\n𝐆𝐞𝐭 𝐢𝐧𝐬𝐭𝐚𝐧𝐭 𝐮𝐩𝐝𝐚𝐭𝐞𝐬 𝐨𝐧 𝐫𝐮𝐧𝐧𝐢𝐧𝐠 𝐦𝐚𝐫𝐤𝐞𝐭 𝐬𝐞𝐬𝐬𝐢𝐨𝐧𝐬 𝐚𝐧𝐝 𝐚𝐜𝐭𝐢𝐯𝐞 𝐚𝐬𝐬𝐞𝐭 𝐦𝐨𝐯𝐞𝐦𝐞𝐧𝐭𝐬.\n\n'
-        f'<emoji id="5449683594425410231">📈</emoji> 𝐏𝐑𝐈𝐂𝐄 𝐀𝐂𝐓𝐈𝐎𝐍 & 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒:\n𝐄𝐱𝐩𝐥𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥𝐞𝐝 𝐬𝐮𝐩𝐩𝐨𝐫𝐭/𝐫𝐞𝐬𝐢𝐬𝐭𝐚𝐧𝐜𝐞 𝐥𝐞𝐯𝐞𝐥𝐬 𝐚𝐧𝐝 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐜𝐡𝐚𝐫𝐭 𝐛𝐫𝐞𝐚𝐤𝐝𝐨𝐰𝐧𝐬.\n\n'
+        f'<emoji id="5449683594425410231">📈</emoji> 𝐏𝐑𝐈𝐂𝐄 𝐀𝐂𝐓𝐈𝐎𝐍 & 𝐀𝐍𝐀𝐋𝐘𝐒𝐈𝐒:\n𝐄𝐱𝐩𝐥𝐨𝐫𝐞 𝐝𝐞𝐭𝐚𝐢𝐥𝐞𝐝 𝐬𝐮𝐩𝐩𝐨𝐫𝐭/𝐫𝐞𝐬𝐢𝐬𝐭𝐚𝐧𝐜𝐞 𝐥𝐞𝐯𝐞𝐥𝐬 𝐚𝐧ْد 𝐩𝐫𝐨𝐟𝐞𝐬𝐬𝐢𝐨𝐧𝐚𝐥 𝐜𝐡𝐚𝐫𝐭 𝐛𝐫𝐞𝐚𝐤𝐝𝐨𝐰𝐧𝐬.\n\n'
         f'<emoji id="5397782960512444700">🎯</emoji> 𝐒𝐈𝐆𝐍𝐀𝐋 𝐎𝐏𝐓𝐈𝐎𝐍𝐒:\n𝐂𝐡𝐨𝐨𝐬𝐞 𝐛𝐞𝐭𝐰𝐞𝐞𝐧 𝐎𝐓𝐂 𝐥𝐢𝐯𝐞 𝐬𝐢𝐠𝐧𝐚𝐥𝐬, 𝐭𝐫𝐞𝐧𝐝 𝐚𝐧𝐚𝐥𝐲𝐬𝐢𝐬, 𝐚𝐧𝐝 𝐟𝐮𝐭𝐮𝐫𝐞 𝐩𝐫𝐞𝐝𝐢𝐜𝐭𝐢𝐨𝐧𝐬.\n\n'
         f'<emoji id="5875008416132370818">👇</emoji> 𝐒𝐄𝐋𝐄𝐂𝐓 𝐘𝐎𝐔𝐑 𝐏𝐑𝐄𝐅𝐄𝐑𝐑𝐄𝐃 𝐎𝐏𝐓𝐈𝐎𝐍 𝐅𝐑𝐎𝐌 𝐓𝐇𝐄 𝐌𝐄𝐍𝐔 𝐁𝐄𝐋𝐎𝐖:'
     )
@@ -667,7 +668,7 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
             f'<emoji id="5330157467781312171">⏱️</emoji> 𝐄𝐗𝐏𝐈𝐑𝐘 𝐓𝐈𝐌𝐄 𝐆𝐔𝐈𝐃𝐄:\n𝐔𝐧𝐝𝐞𝐫𝐬𝐭𝐚𝐧𝐝 𝟏-𝐦𝐢𝐧𝐮𝐭𝐞 𝐚𝐧𝐝 𝟓-𝐦𝐢𝐧𝐮𝐭𝐞 𝐞𝐱𝐞𝐜𝐮𝐭𝐢𝐨𝐧 𝐬𝐭𝐫𝐚𝐭𝐞𝐠𝐢𝐞𝐬 𝐚𝐧𝐝 𝐤𝐞𝐲 𝐝𝐢𝐟𝐟𝐞𝐫𝐞𝐧𝐜𝐞𝐬.\n\n'
             f'<emoji id="5992157823838984339">📚</emoji> 𝐏𝐑𝐎 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐓𝐄𝐑𝐌𝐒:\n𝐋𝐞𝐚𝐫𝐧 𝐞𝐬𝐬𝐞𝐧𝐭𝐢𝐚𝐥 𝐦𝐚𝐫𝐤𝐞𝐭 𝐯𝐨𝐜𝐚𝐛𝐮𝐥𝐚𝐫𝐲, 𝐭𝐞𝐜𝐡𝐧𝐢𝐜𝐚𝐥 𝐭𝐞𝐫𝐦𝐬, 𝐚𝐧𝐝 𝐜𝐨𝐫𝐞 𝐝𝐞𝐟𝐢𝐧𝐢𝐭𝐢𝐨𝐧𝐬.\n\n'
             f'<emoji id="5271604874419647061">🔗</emoji> 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐑𝐄𝐆𝐈𝐒𝐓𝐑𝐀𝐓𝐈𝐎𝐍 𝐋𝐈𝐍𝐊:\n{QUOTEX_LINK} <emoji id="5447410659077661506">🌐</emoji>\n\n'
-            f'<emoji id="5443038326535759644">💬</emoji> 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?\n𝐓𝐚𝐩 𝐭𝐡𝐞 "💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑" 𝐛𝐮𝐭𝐭𝐨𝐧 𝐛𝐞𝐥𝐨𝐰 𝐟𝐨𝐫 𝐝𝐢𝐫𝐞𝐜𝐭 𝐚𝐬𝐬𝐢𝐬𝐭𝐚𝐧𝐜𝐞! <emoji id="5805532930662996322">✅</emoji>'
+            f'<emoji id="5443038326535759644">💬</emoji> 𝐍𝐄𝐄𝐃 𝐇𝐄𝐋𝐏?\n𝐓𝐚𝐩 𝐭𝐡e "💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑" 𝐛𝐮𝐭𝐭𝐨𝐧 𝐛𝐞𝐥𝐨𝐰 𝐟𝐨𝐫 𝐝𝐢𝐫𝐞𝐜𝐭 𝐚𝐬𝐬𝐢𝐬𝐭𝐚𝐧𝐜𝐞! <emoji id="5805532930662996322">✅</emoji>'
         )
         kb = InlineKeyboardMarkup([
             [InlineKeyboardButton("📚 𝐓𝐑𝐀𝐃𝐈𝐍𝐆 𝐆𝐔𝐈𝐃𝐀𝐍𝐂𝐄", callback_data="trading_guidance")],
@@ -1008,67 +1009,51 @@ async def button_callback_handler(update: Update, context: ContextTypes.DEFAULT_
         except Exception as e:
             print(f"Delete message error: {e}")
 
-# Vercel Serverless Webhook Handler
-class handler(BaseHTTPRequestHandler):
-    def do_POST(self):
-        content_length = int(self.headers.get('Content-Length', 0))
-        post_data = self.rfile.read(content_length)
-        
-        try:
-            json_data = json.loads(post_data.decode('utf-8'))
-            
-            async def process():
-                application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
-                
-                try:
-                    await application.bot.set_my_commands([
-                        BotCommand("start", "🚀 𝐒𝐓𝐀𝐑𝐓  𝐓𝐇𝐄 𝐁𝐎𝐓 & 𝐎𝐏𝐄𝐍 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃 🚀"),
-                        BotCommand("channel", "📢 𝐉𝐎𝐈𝐍 𝐌.𝐊 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐇𝐀𝐍𝐍𝐄𝐋"),
-                        BotCommand("contact", "💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑"),
-                        BotCommand("signals", "📊 𝐆𝐄𝐓 𝐋𝐈𝐕𝐄 𝐎𝐓𝐂 𝐒𝐈𝐆𝐍𝐀𝐋𝐒"),
-                        BotCommand("vip", "💎 𝐉𝐎𝐈𝐍 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐕𝐈𝐏")
-                    ])
-                except Exception as cmd_err:
-                    print(f"Set commands error: {cmd_err}")
-                
-                conv_handler = ConversationHandler(
-                    entry_points=[CallbackQueryHandler(verify_id_start_handler, pattern="^verify_id_start$"), CallbackQueryHandler(button_callback_handler, pattern="^vip_joining$")],
-                    states={
-                        WAITING_FOR_TRADER_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_trader_id_handler)]
-                    },
-                    fallbacks=[CallbackQueryHandler(cancel_verification, pattern="^back_home$")]
-                )
-                application.add_handler(conv_handler)
-                
-                application.add_handler(ChatJoinRequestHandler(handle_join_request))
-                application.add_handler(CommandHandler("start", start_command))
-                application.add_handler(CommandHandler("channel", channel_command))
-                application.add_handler(CommandHandler("signals", signals_command))
-                application.add_handler(CommandHandler("vip", vip_command))
-                application.add_handler(CommandHandler("contact", contact_command))
-                application.add_handler(CommandHandler("stats", stats_command))
-                application.add_handler(CommandHandler("broadcast", broadcast_command))
-                application.add_handler(CallbackQueryHandler(button_callback_handler))
-                application.add_handler(MessageHandler(filters.UpdateType.CHANNEL_POST | filters.UpdateType.EDITED_CHANNEL_POST, forward_channel_posts))
-                application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, global_text_handler))
-                
-                async with application:
-                    await application.process_update(
-                        Update.de_json(json_data, application.bot)
-                    )
+# FastAPI App setup for Vercel
+app = FastAPI()
 
-            asyncio.run(process())
+@app.post("/")
+async def webhook(request: Request):
+    body = await request.json()
+    application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+    
+    try:
+        await application.bot.set_my_commands([
+            BotCommand("start", "🚀 𝐒𝐓𝐀𝐑𝐓  𝐓𝐇𝐄 𝐁𝐎𝐓 & 𝐎𝐏𝐄𝐍 𝐃𝐀𝐒𝐇𝐁𝐎𝐀𝐑𝐃 🚀"),
+            BotCommand("channel", "📢 𝐉𝐎𝐈𝐍 𝐌.𝐊 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐂𝐇𝐀𝐍𝐍𝐄𝐋"),
+            BotCommand("contact", "💬 𝐂𝐎𝐍𝐓𝐀𝐂𝐓 𝐎𝐖𝐍𝐄𝐑 👑"),
+            BotCommand("signals", "📊 𝐆𝐄𝐓 𝐋𝐈𝐕𝐄 𝐎𝐓𝐂 𝐒𝐈𝐆𝐍𝐀𝐋𝐒"),
+            BotCommand("vip", "💎 𝐉𝐎𝐈𝐍 𝐏𝐑𝐄𝐌𝐈𝐔𝐌 𝐕𝐈𝐏")
+        ])
+    except Exception as cmd_err:
+        print(f"Set commands error: {cmd_err}")
+    
+    conv_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(verify_id_start_handler, pattern="^verify_id_start$"), CallbackQueryHandler(button_callback_handler, pattern="^vip_joining$")],
+        states={
+            WAITING_FOR_TRADER_ID: [MessageHandler(filters.TEXT & ~filters.COMMAND, receive_trader_id_handler)]
+        },
+        fallbacks=[CallbackQueryHandler(cancel_verification, pattern="^back_home$")]
+    )
+    application.add_handler(conv_handler)
+    
+    application.add_handler(ChatJoinRequestHandler(handle_join_request))
+    application.add_handler(CommandHandler("start", start_command))
+    application.add_handler(CommandHandler("channel", channel_command))
+    application.add_handler(CommandHandler("signals", signals_command))
+    application.add_handler(CommandHandler("vip", vip_command))
+    application.add_handler(CommandHandler("contact", contact_command))
+    application.add_handler(CommandHandler("stats", stats_command))
+    application.add_handler(CommandHandler("broadcast", broadcast_command))
+    application.add_handler(CallbackQueryHandler(button_callback_handler))
+    application.add_handler(MessageHandler(filters.UpdateType.CHANNEL_POST | filters.UpdateType.EDITED_CHANNEL_POST, forward_channel_posts))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, global_text_handler))
+    
+    async with application:
+        await application.initialize()
+        await application.process_update(Update.de_json(body, application.bot))
+    return {"status": "ok"}
 
-            self.send_response(200)
-            self.end_headers()
-            self.wfile.write(b'OK')
-        except Exception as e:
-            print(f"Webhook error: {e}")
-            self.send_response(500)
-            self.end_headers()
-
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/plain')
-        self.end_headers()
-        self.wfile.write(f"{BOT_NAME} Data Log Bot is active on Vercel!".encode('utf-8'))
+@app.get("/")
+async def index():
+    return PlainTextResponse(f"{BOT_NAME} Bot is active on Vercel!")
