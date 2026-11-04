@@ -17,7 +17,7 @@ logging.basicConfig(
 # ==========================================
 # ⚙ ADMIN & BOT SETTINGS:
 # ==========================================
-TELEGRAM_BOT_TOKEN = "8744737316:AAEs_NK4ZjS4tRKiwkJGdpHf297tsFCjK1E"
+TELEGRAM_BOT_TOKEN = "8744737316:AAF0YPxMENAUF8RY0OwnhDHhoESJ-Aytsc4"
 BOT_NAME = "𝐌.𝐊 𝐓𝐑𝐀𝐃𝐄𝐑 𝐎𝐅𝐅𝐈𝐂𝐈𝐀𝐋 𝐁𝐎𝐓"
 BOT_USERNAME = "@MK_TRADER_OFFICIAL_BOT"
 LOG_CHANNEL_ID = -1003724080321
